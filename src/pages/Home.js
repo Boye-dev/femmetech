@@ -1,29 +1,14 @@
 import React from "react";
 import Navbar from "../components/Home/Navbar";
-import {
-  Box,
-  Button,
-  Divider,
-  Grid,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import HomeImage1 from "../assets/images/homeimage1.png";
 import HomeImage2 from "../assets/images/homeImage2.png";
 import {
   AccessTime,
   Email,
-  Facebook,
   House,
-  Info,
-  Instagram,
-  Inventory,
   KeyboardArrowRight,
-  LinkedIn,
-  Person2,
   Phone,
-  Policy,
-  Twitter,
 } from "@mui/icons-material";
 import { ReactComponent as Review } from "../assets/svgs/reviews.svg";
 import Dentistry from "../assets/svgs/Departments/Clean.png";
@@ -39,6 +24,8 @@ import Person from "../assets/images/Person.png";
 import Subscribe from "../assets/images/Email.png";
 import { Controller, useForm } from "react-hook-form";
 import Footer from "../components/Home/Footer";
+import TestimonialCarousel from "../components/Home/TestimonialCarousel";
+import Carousel from "../components/Home/Carousel";
 const Home = () => {
   const {
     handleSubmit,
@@ -565,16 +552,16 @@ const Home = () => {
         </Box>
       </Box>
 
-      <Box sx={{ backgroundColor: "#F3F3F3" }}>
+      <Box sx={{ backgroundColor: "#F3F3F3", pt: 5 }}>
         <Box display="flex" width="100%">
-          <Box sx={{ width: "15%" }}>
+          <Box sx={{ width: "15%", display: { xs: "none", md: "block" } }}>
             <img src={doctor} alt="" width="100%" height="100%" />
           </Box>
           <Box
             display="flex"
             alignItems="center"
             flexDirection="column"
-            width="85%"
+            sx={{ width: { xs: "100%", md: "100%" } }}
           >
             <Typography
               variant="h3"
@@ -590,10 +577,32 @@ const Home = () => {
                 height: "3px",
                 backgroundColor: "#EB2B31",
                 borderRadius: "6px",
+
                 mt: 2,
                 mb: 2,
               }}
             />
+            <Box
+              sx={{
+                width: { xs: "100%" },
+                mt: 5,
+                display: "flex",
+                justifyContent: "center",
+                overflow: "hidden",
+              }}
+            >
+              <Box>
+                <Carousel
+                  items={[
+                    Padlock,
+                    Dentistry,
+                    Ophthalmology,
+                    Orthopedic,
+                    Person,
+                  ]}
+                />
+              </Box>
+            </Box>
           </Box>
         </Box>
       </Box>
@@ -799,8 +808,18 @@ const Home = () => {
                 borderRadius: "6px",
                 mt: 2,
                 mb: 2,
+                borderBottom: "20px",
               }}
             />
+            <Box
+              sx={{
+                width: "100%",
+                height: "300px",
+              }}
+            >
+              <TestimonialCarousel />
+            </Box>
+            {/* <TestimonialCarousel /> */}
           </Box>
         </Box>
       </Box>
