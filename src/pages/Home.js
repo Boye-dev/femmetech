@@ -38,6 +38,7 @@ import Padlock from "../assets/images/Padlock.png";
 import Person from "../assets/images/Person.png";
 import Subscribe from "../assets/images/Email.png";
 import { Controller, useForm } from "react-hook-form";
+import TestimonialCarousel from "../components/Home/TestimonialCarousel";
 const Home = () => {
   const {
     handleSubmit,
@@ -798,8 +799,19 @@ const Home = () => {
                 borderRadius: "6px",
                 mt: 2,
                 mb: 2,
+                borderBottom: "20px"
               }}
             />
+            <Box
+              sx={{
+                width: "100%",
+                height: "300px",
+              }}
+            >
+              <TestimonialCarousel />
+            </Box>
+            {/* <TestimonialCarousel /> */}
+
           </Box>
         </Box>
       </Box>
