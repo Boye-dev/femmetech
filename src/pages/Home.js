@@ -790,8 +790,8 @@ const Home = () => {
       </Box>
 
       <Box sx={{ margin: "5%" }}>
-        <Box display="flex" justifyContent="center" width="100%">
-          <Box display="flex" alignItems="center" flexDirection="column">
+        <Box width="100%">
+          <Box>
             <Typography
               variant="h3"
               color="black"
@@ -802,24 +802,33 @@ const Home = () => {
             </Typography>
             <Box
               sx={{
-                width: "100px",
-                height: "3px",
-                backgroundColor: "#EB2B31",
-                borderRadius: "6px",
-                mt: 2,
-                mb: 2,
-                borderBottom: "20px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+                background: "",
               }}
-            />
+            >
+              <Box
+                sx={{
+                  width: "100px",
+                  height: "3px",
+                  backgroundColor: "#EB2B31",
+                  borderRadius: "6px",
+                  mt: 2,
+                  mb: 2,
+                  borderBottom: "20px",
+                }}
+              />
+            </Box>
             <Box
               sx={{
                 width: "100%",
-                height: "300px",
+                display: "block",
               }}
             >
               <TestimonialCarousel />
             </Box>
-            {/* <TestimonialCarousel /> */}
           </Box>
         </Box>
       </Box>
