@@ -14,8 +14,8 @@ const paths = [
     element: lazy(() => import("../../pages/Home")),
   },
   {
-    path: "singup",
-    element: lazy(() => import("./pages/Signin")),
+    path: "signup",
+    element: lazy(() => import("./pages/Signup")),
   },
   {
     path: "forgot-password",

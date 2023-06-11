@@ -36,7 +36,7 @@ const TestimonialCarousel = () => {
     return (
         <Box>
             <Grid2 container>
-                <Grid2 item xs={1}>
+                <Grid2 item xs={1} sx={{visibility: {xs: `hidden`, md: "visible"},}}>
                     <Box
                         sx={{
                             display: "flex",
@@ -82,8 +82,16 @@ const TestimonialCarousel = () => {
                             }}
                         >
                             
-                            <img src={image} style={{width: "20%"}} alt="" />
-                            
+                            <Box
+                                sx={{
+                                    width: {xs: "150px", md: '200px'},
+                                    height: {xs: "150px", md: '200px'},
+                                    backgroundImage: `url(${image})`,
+                                    backgroundSize: 'cover',
+                                    backgroundPosition: 'center',
+                                    borderRadius: '50%',
+                                }}
+                            />
                             <Typography
                                 variant="h4"
                                 sx={{
@@ -135,14 +143,15 @@ const TestimonialCarousel = () => {
                         </Box>
                     </Box>
                 </Grid2>
-                <Grid2 item xs={1}>
+                <Grid2 item xs={1} sx={{visibility: {xs: `hidden`, md: "visible"},}}>
                     <Box
                         sx={{
                             display: "flex",
                             justifyContent: "center",
                             alignItems: "center",
                             width: "100%",
-                            height: "100%"
+                            height: "100%",
+                            
                         }}
                     >
                         <Box 

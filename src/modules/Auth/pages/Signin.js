@@ -169,13 +169,13 @@ const Signin = () => {
             width: {xs: "100%", md: "60%"},
             marginLeft: {xs: "0", md: "40%"},
             textAlign: "center",
-            background: {xs: `url(${loginImg})`, md: "none"},
+            background: {xs: `none`, md: "none"},
             backgroundRepeat: {xs: "no-repeat", md: "none"},
             backgroundSize: {xs: "cover", md: "none"},
             display: "flex",
             alignItems: "center",
             height: {xs: "100vh", md: "100vh"},
-            paddingBottom: {xs: "100px", md: "0"},
+            // paddingBottom: {xs: "100px", md: "0"},
           }}
         >
           <Box
@@ -192,7 +192,7 @@ const Signin = () => {
                 textAlign: "left",
                 marginBottom: "12px",
                 fontWeight: 700,
-                marginTop: "10vh", 
+                // marginTop: "10vh", 
                 fontSize: "28px !important",
               }}
             >
