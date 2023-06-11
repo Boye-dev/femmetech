@@ -1,6 +1,6 @@
 import {
-  ADMIN_NAV_ITEMS,
-  SUPER_ADMIN_NAV_ITEMS,
+  PATIENT_NAV_ITEMS,
+  SUPER_PATIENT_NAV_ITEMS,
 } from "../constants/sidebarItems";
 import { lazy } from "react";
 import MainLayout from "../shared/layouts/Main";
@@ -15,12 +15,12 @@ const BaseRoutes = [
     useAuth: false,
   },
   {
-    path: `${BasePaths.ADMIN}/*`,
+    path: `${BasePaths.PATIENT}/*`,
     exact: true,
-    component: lazy(() => import("../modules/Admin/AdminRouter")),
+    component: lazy(() => import("../modules/Patient/PatientRouter")),
     Layout: MainLayout,
     useAuth: true,
-    // sidenavItems: ADMIN_NAV_ITEMS,
+    // sidenavItems: PATIENT_NAV_ITEMS,
   },
 
   {

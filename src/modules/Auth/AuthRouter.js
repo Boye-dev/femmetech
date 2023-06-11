@@ -2,7 +2,7 @@ import { Roles } from "../../constants/roles";
 import { useAuthenticatedUser } from "../../hooks/useAuthenticatedUser";
 import { lazy } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { AdminPaths } from "../../routes/paths";
+import { PatientPaths } from "../../routes/paths";
 
 const paths = [
   {
@@ -42,8 +42,8 @@ const paths = [
 function Auth() {
   const { userDetails } = useAuthenticatedUser();
 
-  if (userDetails && userDetails?.role === Roles.ADMIN) {
-    return <Navigate to={AdminPaths.ADMIN_DASHBOARD} replace />;
+  if (userDetails && userDetails?.role === Roles.PATIENT) {
+    return <Navigate to={PatientPaths.PATIENT_DASHBOARD} replace />;
   }
   return (
     <Routes>

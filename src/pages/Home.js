@@ -406,9 +406,10 @@ const Home = () => {
               <Box sx={{ display: "flex" }}>
                 <Review />
                 <Box ml={2} display="flex">
-                  {[1, 2, 3, 4].map((v) => {
+                  {[1, 2, 3, 4].map((v, index) => {
                     return (
                       <Box
+                        key={index}
                         sx={{
                           backgroundColor: "#00AA6C",
                           width: "18px",
@@ -741,9 +742,9 @@ const Home = () => {
           justifyContent="space-around"
           mt={10}
         >
-          {[Badge, Padlock, Chat, Person].map((item) => {
+          {[Badge, Padlock, Chat, Person].map((item, index) => {
             return (
-              <Box textAlign="center">
+              <Box key={index} textAlign="center">
                 <Box
                   sx={{
                     width: "200px",

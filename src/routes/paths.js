@@ -1,5 +1,5 @@
 export const BasePaths = {
-  ADMIN: "/admin",
+  PATIENT: "/patient",
 };
 
 export const AuthPaths = {
@@ -8,6 +8,7 @@ export const AuthPaths = {
   FORGOT_PASSWORD: "/forgot-password",
 };
 
-export const AdminPaths = {
-  ADMIN_DASHBOARD: "/admin/admindashboard",
+export const PatientPaths = {
+  PATIENT_DASHBOARD: "/patient/dashboard",
+  PATIENT_APPOINTMENT: "/patient/appointments",
 };

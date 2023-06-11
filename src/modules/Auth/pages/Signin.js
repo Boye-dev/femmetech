@@ -1,7 +1,7 @@
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import * as yup from "yup";
-import { AdminPaths, BasePaths } from "../../../routes/paths";
+import { PatientPaths, BasePaths } from "../../../routes/paths";
 import { Roles } from "../../../constants/roles";
 import { Button, CircularProgress, TextField } from "@mui/material";
 import { useAlert } from "../../../context/NotificationProvider";
@@ -30,10 +30,10 @@ const Signin = () => {
   });
 
   const setNavigationPath = (user) => {
-    if (user?.role?.includes(Roles.ADMIN)) {
-      return `${AdminPaths.MDA_DETAILS}/${user.mda}`;
-    } else if (user?.role?.includes(Roles.ADMIN)) {
-      return AdminPaths.MDAS;
+    if (user?.role?.includes(Roles.PATIENT)) {
+      return `${PatientPaths.MDA_DETAILS}/${user.mda}`;
+    } else if (user?.role?.includes(Roles.PATIENT)) {
+      return PatientPaths.MDAS;
     } else {
       return BasePaths.USER;
     }
@@ -49,12 +49,12 @@ const Signin = () => {
 
       if (
         decodedUser?.role?.length &&
-        decodedUser?.role?.includes(Roles.ADMIN)
+        decodedUser?.role?.includes(Roles.PATIENT)
       ) {
-        navigate(BasePaths.ADMIN, { replace: true });
+        navigate(BasePaths.PATIENT, { replace: true });
       } else {
         const path =
-          from?.split("/")[0] === "super" && decodedUser?.role === Roles.ADMIN
+          from?.split("/")[0] === "super" && decodedUser?.role === Roles.PATIENT
             ? from
             : setNavigationPath(decodedUser);
 
