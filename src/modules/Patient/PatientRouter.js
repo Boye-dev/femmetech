@@ -1,12 +1,18 @@
 import { lazy } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-
 const paths = [
   {
-    path: "admindashboard",
-    element: lazy(() => import("./pages/Dashboard/pages/AdminDashboard")),
+    path: "dashboard",
+    element: lazy(() => import("./pages/Dashboard/pages/Dashboard")),
   },
-
+  {
+    path: "appointments",
+    element: lazy(() => import("./pages/Appointments")),
+  },
+  // {
+  //   path: "dashboard",
+  //   element: lazy(() => import("./pages/Dashboard/pages/PatientDashboard")),
+  // },
   //For sub paths
   // {
   //   path: "files/*",
@@ -37,10 +43,10 @@ const paths = [
   },
 ];
 
-function AdminRouter() {
+function PatientRouter() {
   return (
     <Routes>
-      <Route path="" element={<Navigate to="admindashboard" replace />} />
+      <Route path="" element={<Navigate to="dashboard" replace />} />
       {paths.map(({ path, element: Element, children }) =>
         children ? (
           <Route key={path} path={path} element={<Element />}>
@@ -56,4 +62,4 @@ function AdminRouter() {
   );
 }
 
-export default AdminRouter;
+export default PatientRouter;

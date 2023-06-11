@@ -1,29 +1,14 @@
 import React from "react";
 import Navbar from "../components/Home/Navbar";
-import {
-  Box,
-  Button,
-  Divider,
-  Grid,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import HomeImage1 from "../assets/images/homeimage1.png";
 import HomeImage2 from "../assets/images/homeImage2.png";
 import {
   AccessTime,
   Email,
-  Facebook,
   House,
-  Info,
-  Instagram,
-  Inventory,
   KeyboardArrowRight,
-  LinkedIn,
-  Person2,
   Phone,
-  Policy,
-  Twitter,
 } from "@mui/icons-material";
 import { ReactComponent as Review } from "../assets/svgs/reviews.svg";
 import Dentistry from "../assets/svgs/Departments/Clean.png";
@@ -38,7 +23,9 @@ import Padlock from "../assets/images/Padlock.png";
 import Person from "../assets/images/Person.png";
 import Subscribe from "../assets/images/Email.png";
 import { Controller, useForm } from "react-hook-form";
+import Footer from "../components/Home/Footer";
 import TestimonialCarousel from "../components/Home/TestimonialCarousel";
+import Carousel from "../components/Home/Carousel";
 const Home = () => {
   const {
     handleSubmit,
@@ -419,9 +406,10 @@ const Home = () => {
               <Box sx={{ display: "flex" }}>
                 <Review />
                 <Box ml={2} display="flex">
-                  {[1, 2, 3, 4].map((v) => {
+                  {[1, 2, 3, 4].map((v, index) => {
                     return (
                       <Box
+                        key={index}
                         sx={{
                           backgroundColor: "#00AA6C",
                           width: "18px",
@@ -565,16 +553,16 @@ const Home = () => {
         </Box>
       </Box>
 
-      <Box sx={{ backgroundColor: "#F3F3F3" }}>
+      <Box sx={{ backgroundColor: "#F3F3F3", pt: 5 }}>
         <Box display="flex" width="100%">
-          <Box sx={{ width: "15%" }}>
+          <Box sx={{ width: "15%", display: { xs: "none", md: "block" } }}>
             <img src={doctor} alt="" width="100%" height="100%" />
           </Box>
           <Box
             display="flex"
             alignItems="center"
             flexDirection="column"
-            width="85%"
+            sx={{ width: { xs: "100%", md: "100%" } }}
           >
             <Typography
               variant="h3"
@@ -590,10 +578,32 @@ const Home = () => {
                 height: "3px",
                 backgroundColor: "#EB2B31",
                 borderRadius: "6px",
+
                 mt: 2,
                 mb: 2,
               }}
             />
+            <Box
+              sx={{
+                width: { xs: "100%" },
+                mt: 5,
+                display: "flex",
+                justifyContent: "center",
+                overflow: "hidden",
+              }}
+            >
+              <Box>
+                <Carousel
+                  items={[
+                    Padlock,
+                    Dentistry,
+                    Ophthalmology,
+                    Orthopedic,
+                    Person,
+                  ]}
+                />
+              </Box>
+            </Box>
           </Box>
         </Box>
       </Box>
@@ -732,9 +742,9 @@ const Home = () => {
           justifyContent="space-around"
           mt={10}
         >
-          {[Badge, Padlock, Chat, Person].map((item) => {
+          {[Badge, Padlock, Chat, Person].map((item, index) => {
             return (
-              <Box textAlign="center">
+              <Box key={index} textAlign="center">
                 <Box
                   sx={{
                     width: "200px",
@@ -781,8 +791,8 @@ const Home = () => {
       </Box>
 
       <Box sx={{ margin: "5%" }}>
-        <Box  width="100%">
-          <Box >
+        <Box width="100%">
+          <Box>
             <Typography
               variant="h3"
               color="black"
@@ -792,13 +802,13 @@ const Home = () => {
               Testimonals
             </Typography>
             <Box
-                sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    width: "100%",
-                    background: ""
-                }}
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+                background: "",
+              }}
             >
               <Box
                 sx={{
@@ -808,19 +818,18 @@ const Home = () => {
                   borderRadius: "6px",
                   mt: 2,
                   mb: 2,
-                  borderBottom: "20px"
+                  borderBottom: "20px",
                 }}
               />
             </Box>
             <Box
               sx={{
                 width: "100%",
-                display: "block"
+                display: "block",
               }}
             >
               <TestimonialCarousel />
             </Box>
-
           </Box>
         </Box>
       </Box>
@@ -1010,290 +1019,7 @@ const Home = () => {
         </Grid>
       </Box>
 
-      <Box sx={{ padding: "5%", backgroundColor: "#181A1B" }}>
-        <Grid container>
-          <Grid item xs={12} md={7}>
-            <Box
-              display="flex"
-              flexWrap="wrap"
-              justifyContent="flex-start"
-              mt={10}
-            >
-              <Box mt={2}>
-                <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <Inventory
-                    sx={{
-                      color: "white",
-                      backgroundColor: "rgba(255, 235, 235, 0.1)",
-                      p: 1,
-                      borderRadius: "4px",
-                      mr: 3,
-                      fontSize: "15px",
-                    }}
-                  />
-                  <Typography color="white" variant="subtitle2">
-                    PRODUCTS
-                  </Typography>
-                </Box>
-                <Box display="flex" flexDirection="column">
-                  <Typography
-                    color="white"
-                    variant="caption"
-                    sx={{ ml: 9, mt: 2 }}
-                  >
-                    NexHealth Online Booking
-                  </Typography>
-                  <Typography
-                    color="white"
-                    variant="caption"
-                    sx={{ ml: 9, mt: 2 }}
-                  >
-                    Waitlist
-                  </Typography>
-                  <Typography
-                    color="white"
-                    variant="caption"
-                    sx={{ ml: 9, mt: 2 }}
-                  >
-                    NexHealth Messaging
-                  </Typography>
-                  <Typography
-                    color="white"
-                    variant="caption"
-                    sx={{ ml: 9, mt: 2 }}
-                  >
-                    Appointment Reminders
-                  </Typography>
-                  <Typography
-                    color="white"
-                    variant="caption"
-                    sx={{ ml: 9, mt: 2 }}
-                  >
-                    Analytics
-                  </Typography>{" "}
-                  <Typography
-                    color="white"
-                    variant="caption"
-                    sx={{ ml: 9, mt: 2 }}
-                  >
-                    Marketing Campaigns
-                  </Typography>
-                </Box>
-              </Box>
-              <Box mt={2} ml={1}>
-                <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <Info
-                    sx={{
-                      color: "white",
-                      backgroundColor: "rgba(255, 235, 235, 0.1)",
-                      p: 1,
-                      borderRadius: "4px",
-                      mr: 3,
-                      fontSize: "15px",
-                    }}
-                  />
-                  <Typography color="white" variant="subtitle2">
-                    RESOURCES
-                  </Typography>
-                </Box>{" "}
-                <Box display="flex" flexDirection="column">
-                  <Typography
-                    color="white"
-                    variant="caption"
-                    sx={{ ml: 9, mt: 2 }}
-                  >
-                    Resource Hub
-                  </Typography>
-                  <Typography
-                    color="white"
-                    variant="caption"
-                    sx={{ ml: 9, mt: 2 }}
-                  >
-                    Company & News
-                  </Typography>
-                  <Typography
-                    color="white"
-                    variant="caption"
-                    sx={{ ml: 9, mt: 2 }}
-                  >
-                    API Support Request
-                  </Typography>
-                  <Box sx={{ display: "flex", alignItems: "center", mt: 3 }}>
-                    <Policy
-                      sx={{
-                        color: "white",
-                        backgroundColor: "rgba(255, 235, 235, 0.1)",
-                        p: 1,
-                        borderRadius: "4px",
-                        mr: 3,
-                        fontSize: "15px",
-                      }}
-                    />
-                    <Typography color="white" variant="subtitle2">
-                      LEGAL
-                    </Typography>
-                  </Box>{" "}
-                  <Box display="flex" flexDirection="column">
-                    <Typography
-                      color="white"
-                      variant="caption"
-                      sx={{
-                        ml: 9,
-                        mt: 2,
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                    >
-                      Terms & Privacy
-                    </Typography>
-                    <Typography
-                      color="white"
-                      variant="caption"
-                      sx={{ ml: 9, mt: 2 }}
-                    >
-                      FAQs
-                    </Typography>
-                  </Box>
-                </Box>
-              </Box>
-
-              <Box mt={2} ml={1}>
-                <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <Person2
-                    sx={{
-                      color: "white",
-                      backgroundColor: "rgba(255, 235, 235, 0.1)",
-                      p: 1,
-                      borderRadius: "4px",
-                      mr: 3,
-                      fontSize: "15px",
-                    }}
-                  />
-                  <Typography color="white" variant="subtitle2">
-                    ABOUT US
-                  </Typography>
-                </Box>{" "}
-                <Box display="flex" flexDirection="column">
-                  <Typography
-                    color="white"
-                    variant="caption"
-                    sx={{ ml: 9, mt: 2, display: "flex", alignItems: "center" }}
-                  >
-                    Careers
-                    <Typography
-                      sx={{
-                        color: "white",
-                        backgroundColor: "rgba(255, 235, 235, 0.1)",
-                        p: 1,
-                        borderRadius: "4px",
-                        mr: 3,
-
-                        ml: 2,
-                      }}
-                      variant="caption"
-                    >
-                      We are hiring!
-                    </Typography>
-                  </Typography>
-                  <Typography
-                    color="white"
-                    variant="caption"
-                    sx={{ ml: 9, mt: 2 }}
-                  >
-                    Refer a Provider
-                  </Typography>{" "}
-                  <Typography
-                    color="white"
-                    variant="caption"
-                    sx={{ ml: 9, mt: 2 }}
-                  >
-                    Developers
-                  </Typography>
-                </Box>
-              </Box>
-            </Box>
-          </Grid>
-          <Grid item xs={12} md={5} mt={10}>
-            <Typography variant="subtitle2" sx={{ color: "white" }}>
-              Connect
-            </Typography>
-            <Divider
-              width="80%"
-              sx={{ height: "2px", backgroundColor: "white", mt: 2, mb: 2 }}
-            />
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-around",
-                width: "80%",
-                flexWrap: "wrap",
-                flexDirection: "column",
-              }}
-            >
-              <Box sx={{ display: "flex", alignItems: "center", mt: 2 }}>
-                <Twitter
-                  sx={{
-                    color: "white",
-                    backgroundColor: "rgba(255, 235, 235, 0.1)",
-                    p: 1,
-                    borderRadius: "4px",
-                    mr: 3,
-                    fontSize: "15px",
-                  }}
-                />
-                <Typography color="white" variant="caption">
-                  Nexus-Health
-                </Typography>
-              </Box>
-              <Box sx={{ display: "flex", alignItems: "center", mt: 2 }}>
-                <Instagram
-                  sx={{
-                    color: "white",
-                    backgroundColor: "rgba(255, 235, 235, 0.1)",
-                    p: 1,
-                    borderRadius: "4px",
-                    mr: 3,
-                    fontSize: "15px",
-                  }}
-                />
-                <Typography color="white" variant="caption">
-                  Nexus-Health
-                </Typography>
-              </Box>
-              <Box sx={{ display: "flex", alignItems: "center", mt: 2 }}>
-                <Facebook
-                  sx={{
-                    color: "white",
-                    backgroundColor: "rgba(255, 235, 235, 0.1)",
-                    p: 1,
-                    borderRadius: "4px",
-                    mr: 3,
-                    fontSize: "15px",
-                  }}
-                />
-                <Typography color="white" variant="caption">
-                  Nexus-Health
-                </Typography>
-              </Box>
-              <Box sx={{ display: "flex", alignItems: "center", mt: 2 }}>
-                <LinkedIn
-                  sx={{
-                    color: "white",
-                    backgroundColor: "rgba(255, 235, 235, 0.1)",
-                    p: 1,
-                    borderRadius: "4px",
-                    mr: 3,
-                    fontSize: "15px",
-                  }}
-                />
-                <Typography color="white" variant="caption">
-                  Nexus-Health
-                </Typography>
-              </Box>
-            </Box>
-          </Grid>
-        </Grid>
-      </Box>
+      <Footer />
     </Box>
   );
 };
