@@ -159,9 +159,9 @@ themeInstance.typography.caption = {
   ...themeInstance.typography.caption,
   ...responsiveFontSizes({
     lg: 12,
-    md: 11,
-    sm: 10,
-    xs: 10,
+    md: 13,
+    sm: 12,
+    xs: 12,
     theme: themeInstance,
   }),
   color: themeInstance.palette.text.primary,
