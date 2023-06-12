@@ -28,10 +28,9 @@ import TestimonialCarousel from "../components/Home/TestimonialCarousel";
 import Carousel from "../components/Home/Carousel";
 const Home = () => {
   const {
-    handleSubmit,
     trigger,
     control,
-    reset,
+
     formState: { errors },
   } = useForm({
     defaultValues: {
