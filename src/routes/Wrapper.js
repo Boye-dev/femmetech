@@ -3,7 +3,6 @@ import { Suspense, Fragment } from "react";
 import { Routes, Route } from "react-router-dom";
 import Loader from "../shared/components/Loader";
 import BaseRoutes from "./base";
-import Home from "../pages/Home";
 
 const renderRoute = ({ component: Component, ...route }) => {
   const { Layout, useAuth } = route;
@@ -46,10 +45,5 @@ const renderRoute = ({ component: Component, ...route }) => {
 };
 
 export const RoutesWrapper = () => {
-  return (
-    <Routes>
-      {BaseRoutes.map((route) => renderRoute(route))}
-      <Route exact path="/home" element={<Home />} />
-    </Routes>
-  );
+  return <Routes>{BaseRoutes.map((route) => renderRoute(route))}</Routes>;
 };

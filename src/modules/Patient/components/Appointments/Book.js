@@ -6,7 +6,7 @@ const Book = (props) => {
     <>
       <Drawer open={props.open} anchor="right" onClose={props.onClose}>
         <Box>
-          <p>{props.time?.startTime}</p>
+          <p>hello book</p>
         </Box>
       </Drawer>
     </>

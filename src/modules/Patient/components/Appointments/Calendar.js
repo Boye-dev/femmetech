@@ -18,13 +18,13 @@ function Calendar(props) {
 
     // Add more events as needed
   ];
-  const handleSelect = (selectInfo) => {
-    props.setTime({
-      startTime: selectInfo.startStr,
-      endTime: selectInfo.endStr,
-    });
-    props.setBook(true);
-  };
+  // const handleSelect = (selectInfo) => {
+  //   // props.setTime({
+  //   //   startTime: selectInfo.startStr,
+  //   //   endTime: selectInfo.endStr,
+  //   // });
+  //   // props.setBook(true);
+  // };
   const handleEventClick = (clickInfo) => {
     setEvent(clickInfo.event);
   };
@@ -43,8 +43,6 @@ function Calendar(props) {
           center: "title",
           end: "dayGridMonth,timeGridWeek,timeGridDay", // will normally be on the right. if RTL, will be on the left
         }}
-        selectable={true} // Enable selection
-        select={handleSelect} // Set the select callback
         height={"90vh"}
       />
       <EventDrawer
