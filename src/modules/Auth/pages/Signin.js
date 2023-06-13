@@ -1,16 +1,16 @@
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import * as yup from "yup";
-import { PatientPaths, BasePaths } from "../../../routes/paths";
-import { Roles } from "../../../constants/roles";
+// import { PatientPaths, BasePaths } from "../../../routes/paths";
+// import { Roles } from "../../../constants/roles";
 import { Button, TextField } from "@mui/material";
-import { useAlert } from "../../../context/NotificationProvider";
+// import { useAlert } from "../../../context/NotificationProvider";
 // import { yupResolver } from "@hookform/resolvers/yup";
-import { getDecodedJwt, setToken } from "../../../utils/auth";
-import handleApiError from "../../../utils/handleApiError";
-import { useMutation } from "react-query";
-import { login } from "../services/authServices";
-import { useLocation, useNavigate } from "react-router-dom";
+// import { getDecodedJwt, setToken } from "../../../utils/auth";
+// import handleApiError from "../../../utils/handleApiError";
+// import { useMutation } from "react-query";
+// import { login } from "../services/authServices";
+// import { useLocation, useNavigate } from "react-router-dom";
 
 import { Grid, Typography, IconButton, Snackbar, Alert } from "@mui/material";
 import Box from "@mui/material/Box";
@@ -24,49 +24,49 @@ import loginImg from "../../../assets/images/login.png";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 const Signin = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const from = location.state?.from?.pathname;
+  // const navigate = useNavigate();
+  // const location = useLocation();
+  // const from = location.state?.from?.pathname;
 
-  const setNavigationPath = (user) => {
-    if (user?.role?.includes(Roles.PATIENT)) {
-      return `${PatientPaths.MDA_DETAILS}/${user.mda}`;
-    } else if (user?.role?.includes(Roles.PATIENT)) {
-      return PatientPaths.MDAS;
-    } else {
-      return BasePaths.USER;
-    }
-  };
-  const { mutate } = useMutation(login, {
-    onError: (error) => {
-      showNotification?.(handleApiError(error), { type: "error" });
-    },
-    onSuccess: (data) => {
-      setToken(data?.token);
+  // const setNavigationPath = (user) => {
+  //   if (user?.role?.includes(Roles.PATIENT)) {
+  //     return `${PatientPaths.MDA_DETAILS}/${user.mda}`;
+  //   } else if (user?.role?.includes(Roles.PATIENT)) {
+  //     return PatientPaths.MDAS;
+  //   } else {
+  //     return BasePaths.USER;
+  //   }
+  // };
+  // const { mutate } = useMutation(login, {
+  //   onError: (error) => {
+  //     showNotification?.(handleApiError(error), { type: "error" });
+  //   },
+  //   onSuccess: (data) => {
+  //     setToken(data?.token);
 
-      const decodedUser = getDecodedJwt();
+  //     const decodedUser = getDecodedJwt();
 
-      if (
-        decodedUser?.role?.length &&
-        decodedUser?.role?.includes(Roles.PATIENT)
-      ) {
-        navigate(BasePaths.PATIENT, { replace: true });
-      } else {
-        const path =
-          from?.split("/")[0] === "super" && decodedUser?.role === Roles.PATIENT
-            ? from
-            : setNavigationPath(decodedUser);
+  //     if (
+  //       decodedUser?.role?.length &&
+  //       decodedUser?.role?.includes(Roles.PATIENT)
+  //     ) {
+  //       navigate(BasePaths.PATIENT, { replace: true });
+  //     } else {
+  //       const path =
+  //         from?.split("/")[0] === "super" && decodedUser?.role === Roles.PATIENT
+  //           ? from
+  //           : setNavigationPath(decodedUser);
 
-        navigate(path, { replace: true });
-      }
-    },
-  });
+  //       navigate(path, { replace: true });
+  //     }
+  //   },
+  // });
 
   const onSubmit = (data) => {
-    mutate(data);
+    // mutate(data);
   };
   console.log(onSubmit);
-  const { showNotification } = useAlert();
+  // const { showNotification } = useAlert();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -109,7 +109,7 @@ const Signin = () => {
       } else {
         localStorage.setItem("loggedIn", JSON.stringify(true));
         localStorage.setItem("user", JSON.stringify(response.data.user));
-        navigate("/home/dashboard");
+        // navigate("/home/dashboard");
       }
     } catch (err) {
       if (err.response) {

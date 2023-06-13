@@ -59,10 +59,5 @@ const renderRoute = ({ component: Component, ...route }) => {
 };
 
 export const RoutesWrapper = () => {
-  return (
-    <Routes>
-      {BaseRoutes.map((route) => renderRoute(route))}
-      <Route exact path="/test" element={<div>est</div>} />
-    </Routes>
-  );
+  return <Routes>{BaseRoutes.map((route) => renderRoute(route))}</Routes>;
 };

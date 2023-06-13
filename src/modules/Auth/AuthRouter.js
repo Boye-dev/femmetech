@@ -1,8 +1,8 @@
-// import { Roles } from "../../constants/roles";
-// import { useAuthenticatedUser } from "../../hooks/useAuthenticatedUser";
+import { Roles } from "../../constants/roles";
+import { useAuthenticatedUser } from "../../hooks/useAuthenticatedUser";
 import { lazy } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-// import { PatientPaths } from "../../routes/paths";
+import { PatientPaths } from "../../routes/paths";
 
 const paths = [
   {
@@ -40,14 +40,14 @@ const paths = [
 ];
 
 function Auth() {
-  // const { userDetails } = useAuthenticatedUser();
+  const { userDetails } = useAuthenticatedUser();
 
-  // if (userDetails && userDetails?.role === Roles.PATIENT) {
-  //   return <Navigate to={PatientPaths.PATIENT_DASHBOARD} replace />;
-  // }
+  if (userDetails && userDetails?.role === Roles.PATIENT) {
+    return <Navigate to={PatientPaths.PATIENT_DASHBOARD} replace />;
+  }
   return (
     <Routes>
-      <Route path="" element={<Navigate to="test" replace />} />
+      <Route path="" element={<Navigate to="home" replace />} />
       {paths.map(({ path, element: Element }) => (
         <Route key={path} path={path} element={<Element />} />
       ))}
