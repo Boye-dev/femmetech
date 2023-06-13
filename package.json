@@ -24,6 +24,7 @@
     "react-bootstrap": "^2.7.4",
     "react-carousel": "^4.3.0",
     "react-dom": "^18.2.0",
+    "react-error-boundary": "^4.0.10",
     "react-hook-form": "^7.43.9",
     "react-query": "^3.39.3",
     "react-responsive-carousel": "^3.2.23",
