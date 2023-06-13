@@ -16,7 +16,7 @@ root.render(
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
         {/* <CssBaseline /> */}
-        <BrowserRouter>
+        <BrowserRouter basename="/index.html">
           <App />
         </BrowserRouter>
       </ThemeProvider>
