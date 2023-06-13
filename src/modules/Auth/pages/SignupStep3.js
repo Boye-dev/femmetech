@@ -1,10 +1,8 @@
 // import { Controller } from 'react-hook-form';
-import { TextField, Checkbox, FormControlLabel, Grid, Box, Button, Typography } from '@mui/material';
+import { TextField, Checkbox, FormControlLabel, Grid, Box } from '@mui/material';
 // import * as yup from 'yup';
-import { useForm, Controller } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
-import { West } from '@mui/icons-material';
+import { Controller } from 'react-hook-form';
+import { useSignupContext } from '../../../context/SignupContext';
 
 
 const formStyles = {
@@ -52,47 +50,11 @@ const formStyles = {
 
 const SignupStep3 = () => {
     
-    
-    const schema = yup.object().shape({
-        phoneNumber: yup.string().required('Phone Number is required'),
-        address: yup.string().required('Address is required'),
-        emergencyContactFullName: yup.string().required('Emergency Contact Full Name is required'),
-        emergencyContactPhoneNumber: yup.string().required('Emergency Contact Phone Number is required'),
-        emergencyContactAddress: yup.string().required('Emergency Contact Address is required'),
-        agreeToTerms: yup.boolean().oneOf([true], 'You must agree to the Terms and Conditions'),
-    });
+    const { control, trigger, } = useSignupContext()
 
-    const { control, handleSubmit, formState: { errors }, setValue } = useForm({
-        resolver: yupResolver(schema),
-      });
-
-    const onSubmit = (data) => {
-        // Handle form submission
-        console.log(data);
-      };
-      const onBackClick = (data) => {
-        // Handle form submission
-        console.log(data);
-      };
     return (
         <Box>
-            <Typography
-              variant="h6"
-              color="inherit"
-              component="div"
-              sx={{
-                textAlign: "left",
-                marginBottom: "12px",
-                fontWeight: 700,
-                // marginTop: "10vh", 
-                fontSize: "28px !important",
-                display: "flex",
-                alignItems: "center",
-                color: "#252B33"
-              }}
-            >
-              <West onClick={onBackClick} fontSize='large' sx={{marginRight: "12px"}} /> Tell us more 
-            </Typography>
+            
             <form>
             <Grid container spacing={2}>
                 <Grid item xs={5}>
@@ -122,6 +84,9 @@ const SignupStep3 = () => {
                         inputRef={ref}
                         error={Boolean(error?.message)}
                         helperText={error?.message}
+                        onKeyUp={() => {
+                            trigger("phoneNumber");
+                        }}
                     />
                     )}
                 />
@@ -153,6 +118,9 @@ const SignupStep3 = () => {
                         inputRef={ref}
                         error={Boolean(error?.message)}
                         helperText={error?.message}
+                        onKeyUp={() => {
+                            trigger("address");
+                        }}
                     />
                     )}
                 />
@@ -184,6 +152,9 @@ const SignupStep3 = () => {
                         inputRef={ref}
                         error={Boolean(error?.message)}
                         helperText={error?.message}
+                        onKeyUp={() => {
+                            trigger("emergencyContactFullName");
+                        }}
                     />
                     )}
                 />
@@ -215,6 +186,9 @@ const SignupStep3 = () => {
                         inputRef={ref}
                         error={Boolean(error?.message)}
                         helperText={error?.message}
+                        onKeyUp={() => {
+                            trigger("emergencyContactPhoneNumber");
+                        }}
                     />
                     )}
                 />
@@ -246,6 +220,9 @@ const SignupStep3 = () => {
                         inputRef={ref}
                         error={Boolean(error?.message)}
                         helperText={error?.message}
+                        onKeyUp={() => {
+                            trigger("emergencyContactAddress");
+                        }}
                     />
                     )}
                 />
@@ -262,23 +239,9 @@ const SignupStep3 = () => {
                             {...fields}
                             inputRef={ref}
                             color="primary"
-                            error={Boolean(error?.message)}
-                            
-                            
+                            // error={Boolean(error?.message)}
                         />
-                        }
-                        InputProps={{
-                            style: {
-                                fontSize: '16px',
-                                color: "#000 !important",
-                            },
-                        }}
-                        InputLabelProps={{
-                            style: {
-                                color: "black !important",
-                            },
-                        }}
-                        
+                        }                        
                         // sx={formStyles}
                         label="I agree to the Terms and Conditions"
                     />
@@ -287,28 +250,7 @@ const SignupStep3 = () => {
                 </Grid>
             </Grid>
             </form>
-            <Button
-                fullWidth
-                size="small"
-                onClick={handleSubmit(onSubmit)}
-            //   endIcon={<SendIcon />}
-            //   loading={loading}
-                // loadingPosition="end"
-                variant="contained"
-                sx={{
-                    margin: "12px 0",
-                fontSize: "18px !important",
-                background: "#252B33",
-                padding: "6px",
-                marginBottom: "6px",
-                color: "#fff",
-                "&:hover": {
-                    backgroundColor: '#252B33'
-                },
-                }}
-            >
-                Finish
-            </Button>
+            
         </Box>
     );
 };

@@ -1,11 +1,11 @@
-import { Box, Button, IconButton, Typography } from "@mui/material";
-import { useForm, Controller } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
+import { Box, IconButton, Typography } from "@mui/material";
+import { Controller } from 'react-hook-form';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
-import { EastOutlined, Visibility, VisibilityOff } from "@mui/icons-material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useState } from "react";
+import { useSignupContext } from "../../../context/SignupContext";
+import logo from "../../../assets/svgs/logosmall.svg"
 
 const formStyles = {
     marginBottom: "20px",
@@ -46,35 +46,7 @@ const formStyles = {
     },
   };
 
-const SignupStep1 = () => {
-
-    const schema = yup.object().shape({
-        otherName: yup.string().required("Other names Is Required"),
-        lastName: yup.string().required("Last name Is Required"),
-        username: yup.string().required("Email Is Required"),
-        password: yup
-          .string()
-          .required("Password Is Required")
-          .matches(
-            /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)/,
-            "Password Must Contain An Uppercase, A Digit, and A Special Character"
-          )
-          .min(8, "Password Should Have At Least 8 Characters")
-          .max(32, "Password Should Have At Most 32 Characters"),
-        confirmPassword: yup
-          .string()
-          .required("Password Must Match")
-          .oneOf([yup.ref("password"), null]),
-      });
-
-    const { control, handleSubmit, formState: { errors }, trigger } = useForm({
-        resolver: yupResolver(schema),
-    });
-    
-    const onSubmit = (data) => {
-        // Handle form submission
-        console.log(data);
-    };
+const SignupStep1 = () => {   
 
     const handleClickShowPassword = () => {
         setValues({
@@ -90,23 +62,29 @@ const SignupStep1 = () => {
         showPassword: false,
     });
 
+    const { control, watch, trigger } = useSignupContext()
+
+    
+    const { otherName, lastName, username, password, confirmPassword, gender, dateOfBirth, relationshipStatus, existingMedicalConditions, allergies, profilePicture, phoneNumber, address, emergencyContactFullName, emergencyContactPhoneNumber, emergencyContactAddress, agreeToTerms,} = watch()
+
+    console.log( { otherName, lastName, username, password, confirmPassword, gender, dateOfBirth, relationshipStatus, existingMedicalConditions, allergies, profilePicture, phoneNumber, address, emergencyContactFullName, emergencyContactPhoneNumber, emergencyContactAddress, agreeToTerms,} , "Step 1");
+
     return (  
         <Box>
+            <img src={logo} alt="" />
             <Typography
               variant="h6"
               color="inherit"
               component="div"
               sx={{
-                textAlign: "left",
-                marginBottom: "12px",
+                marginBottom: "30px",
                 fontWeight: 700,
-                // marginTop: "10vh", 
                 fontSize: "28px !important",
               }}
             >
-              Sign in to <span style={{color: "#CE1E23"}}> NEXUS</span>
+              Sign up to <span style={{color: "#CE1E23"}}> NEXUS</span>
             </Typography>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form >
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
                     <Controller
@@ -301,27 +279,7 @@ const SignupStep1 = () => {
                     />
                     </Grid>
                 </Grid>
-                <Button
-                  fullWidth
-                  size="small"
-                  onClick={handleSubmit(onSubmit)}
-                //   endIcon={<SendIcon />}
-                //   loading={loading}
-                //   loadingPosition="end"
-                  variant="contained"
-                  sx={{
-                    fontSize: "18px !important",
-                    background: "#252B33",
-                    padding: "6px",
-                    marginBottom: "6px",
-                    color: "#fff",
-                    "&:hover": {
-                      backgroundColor: '#252B33'
-                    },
-                  }}
-                >
-                  Continue <EastOutlined sx={{marginLeft: "12px"}}/>
-                </Button>
+                
             </form>
         </Box>
 

@@ -3,6 +3,7 @@ import { useAuthenticatedUser } from "../../hooks/useAuthenticatedUser";
 import { lazy } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { PatientPaths } from "../../routes/paths";
+import { SignupContextProvider } from "../../context/SignupContext";
 
 const paths = [
   {
@@ -46,12 +47,14 @@ function Auth() {
     return <Navigate to={PatientPaths.PATIENT_DASHBOARD} replace />;
   }
   return (
-    <Routes>
-      <Route path="" element={<Navigate to="home" replace />} />
-      {paths.map(({ path, element: Element }) => (
-        <Route key={path} path={path} element={<Element />} />
-      ))}
-    </Routes>
+    <SignupContextProvider>
+      <Routes>
+        <Route path="" element={<Navigate to="home" replace />} />
+        {paths.map(({ path, element: Element }) => (
+          <Route key={path} path={path} element={<Element />} />
+        ))}
+      </Routes>
+    </SignupContextProvider>
   );
 }
 
