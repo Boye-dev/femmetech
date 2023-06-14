@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import PatientSidebar from "./Sidebars/PatientSidebar";
 import { useState } from "react";
 import { ArrowBack, ArrowForward } from "@mui/icons-material";
+import { Outlet } from "react-router-dom";
 
 export default function MainLayout({ children }) {
   const [collapse, setCollapse] = useState(false);
@@ -78,7 +79,9 @@ export default function MainLayout({ children }) {
             )}
           </Box>
         )}
-        <Box sx={{ mt: !mobile && "100px", width: "100%" }}>{children}</Box>
+        <Box sx={{ mt: !mobile && "100px", width: "100%" }}>
+          <Outlet />
+        </Box>
       </Box>
     </>
   );
