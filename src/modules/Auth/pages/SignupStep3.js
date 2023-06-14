@@ -1,6 +1,4 @@
-// import { Controller } from 'react-hook-form';
 import { TextField, Checkbox, FormControlLabel, Grid, Box } from '@mui/material';
-// import * as yup from 'yup';
 import { Controller } from 'react-hook-form';
 import { useSignupContext } from '../../../context/SignupContext';
 
@@ -239,10 +237,8 @@ const SignupStep3 = () => {
                             {...fields}
                             inputRef={ref}
                             color="primary"
-                            // error={Boolean(error?.message)}
                         />
                         }                        
-                        // sx={formStyles}
                         label="I agree to the Terms and Conditions"
                     />
                     )}

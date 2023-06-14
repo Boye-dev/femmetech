@@ -19,7 +19,7 @@ function Auth() {
       <Routes>
         <Route path="" element={<Navigate to="home" replace />} />
         <Route path="/home" exact element={<Home />} />
-        <Route path="/signin" exact element={<Signin />} />
+        <Route path="/signin" exact element={<Signin />} /> 
         <Route path="/signup" exact element={<Signup />} />
       </Routes>
     </SignupContextProvider>
