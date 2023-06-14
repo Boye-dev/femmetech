@@ -1,6 +1,6 @@
-import { AuthPaths, SuperPatientPaths, PatientPaths } from "../routes/paths";
+import { AuthPaths, PatientPaths } from "../routes/paths";
 import { logOut } from "../utils/auth";
-import { NavigateFunction } from "react-router-dom";
+
 import { Roles } from "./roles";
 import { CalendarMonth, Dashboard } from "@mui/icons-material";
 

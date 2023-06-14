@@ -1,12 +1,12 @@
 import { Box, Button, Typography } from "@mui/material";
 import React, { useState } from "react";
-import Calendar from "../components/Appointments/Calendar";
+// import Calendar from "../components/Appointments/Calendar";
 import Book from "../components/Appointments/Book";
 import { Add } from "@mui/icons-material";
 
 const Appointments = () => {
   const [book, setBook] = useState(false);
-  const [time, setTime] = useState(null);
+  // const [time, setTime] = useState(null);
 
   return (
     <Box
@@ -38,12 +38,10 @@ const Appointments = () => {
           </Button>
         </Box>
       </Box>
-      <Calendar setTime={setTime} setBook={setBook} />
+      {/* <Calendar /> */}
       <Book
         open={book}
-        time={time}
         onClose={() => {
-          setTime(null);
           setBook(false);
         }}
       />

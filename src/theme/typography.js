@@ -11,8 +11,6 @@
 
 // const remCalc = (size, base = 16) => `${size / base}rem`;
 
-import { TypographyOptions } from "@mui/material/styles/createTypography";
-import { Theme } from "@mui/material";
 import { pxToRem } from "../utils/formatFont";
 
 export function responsiveFontSizes({ xs, sm, md, lg, theme }) {

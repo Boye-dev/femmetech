@@ -3,11 +3,14 @@ import { Suspense, Fragment } from "react";
 import { Routes, Route } from "react-router-dom";
 import Loader from "../shared/components/Loader";
 import BaseRoutes from "./base";
-import Home from "../pages/Home";
 
+import { ErrorBoundary } from "react-error-boundary";
 const renderRoute = ({ component: Component, ...route }) => {
   const { Layout, useAuth } = route;
-
+  const logError = (error, info) => {
+    console.log(error, info);
+    // Do something with the error, e.g. log to an external API
+  };
   return (
     <Route
       key={route.path}
@@ -16,27 +19,37 @@ const renderRoute = ({ component: Component, ...route }) => {
         <>
           {Layout ? (
             <Layout>
-              <Suspense fallback={<Loader />}>
-                {useAuth ? (
-                  <AuthGuard>
+              <ErrorBoundary
+                fallback={<div>Something went wrong</div>}
+                onError={logError}
+              >
+                <Suspense fallback={<Loader />}>
+                  {useAuth ? (
+                    <AuthGuard>
+                      <Component />
+                    </AuthGuard>
+                  ) : (
                     <Component />
-                  </AuthGuard>
-                ) : (
-                  <Component />
-                )}
-              </Suspense>
+                  )}
+                </Suspense>
+              </ErrorBoundary>
             </Layout>
           ) : (
             <Fragment>
-              <Suspense fallback={<Loader />}>
-                {useAuth ? (
-                  <AuthGuard>
+              <ErrorBoundary
+                fallback={<div>Something went wrong</div>}
+                onError={logError}
+              >
+                <Suspense fallback={<Loader />}>
+                  {useAuth ? (
+                    <AuthGuard>
+                      <Component />
+                    </AuthGuard>
+                  ) : (
                     <Component />
-                  </AuthGuard>
-                ) : (
-                  <Component />
-                )}
-              </Suspense>
+                  )}
+                </Suspense>
+              </ErrorBoundary>
             </Fragment>
           )}
         </>
@@ -46,10 +59,5 @@ const renderRoute = ({ component: Component, ...route }) => {
 };
 
 export const RoutesWrapper = () => {
-  return (
-    <Routes>
-      {BaseRoutes.map((route) => renderRoute(route))}
-      <Route exact path="/home" element={<Home />} />
-    </Routes>
-  );
+  return <Routes>{BaseRoutes.map((route) => renderRoute(route))}</Routes>;
 };

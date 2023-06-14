@@ -45,17 +45,17 @@ export const logOut = (cb) => {
 };
 
 export const isAuthenticated = () => {
-  try {
-    // const decodedToken = getDecodedJwt();
-    return true;
-    // if (decodedToken) {
-    //   const { exp } = decodedToken;
-    //   const currentTime = Date.now() / 1000;
-    //   return exp > currentTime;
-    // } else {
-    //   return false;
-    // }
-  } catch (e) {
-    return false;
-  }
+  return true;
+  // try {
+  //   // const decodedToken = getDecodedJwt();
+  //   // if (decodedToken) {
+  //   //   const { exp } = decodedToken;
+  //   //   const currentTime = Date.now() / 1000;
+  //   //   return exp > currentTime;
+  //   // } else {
+  //   //   return false;
+  //   // }
+  // } catch (e) {
+  //   return false;
+  // }
 };

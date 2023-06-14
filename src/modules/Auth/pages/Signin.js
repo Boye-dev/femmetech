@@ -4,10 +4,10 @@ import * as yup from "yup";
 import { PatientPaths, BasePaths } from "../../../routes/paths";
 import { Roles } from "../../../constants/roles";
 import { Button,  TextField } from "@mui/material";
-import { useAlert } from "../../../context/NotificationProvider";
-// import { yupResolver } from "@hookform/resolvers/yup";
+// import { useAlert } from "../../../context/NotificationProvider";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { getDecodedJwt, setToken } from "../../../utils/auth";
-import handleApiError from "../../../utils/handleApiError";
+// import handleApiError from "../../../utils/handleApiError";
 import { useMutation } from "react-query";
 import { login } from "../services/authServices";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -16,12 +16,12 @@ import logo from "../../../assets/svgs/logosmall.svg"
 import { Grid, Typography, IconButton,  } from "@mui/material";
 import Box from "@mui/material/Box"
 import { useEffect, useState } from "react";
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import SendIcon from '@mui/icons-material/Send';
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import SendIcon from "@mui/icons-material/Send";
 import { Link } from "react-router-dom";
 import loginImg from "../../../assets/images/login.png";
-import { yupResolver } from "@hookform/resolvers/yup";
+// import { yupResolver } from "@hookform/resolvers/yup";
 
 const Signin = () => {
   const navigate = useNavigate();
@@ -37,9 +37,9 @@ const Signin = () => {
       return BasePaths.USER;
     }
   };
-  const { mutate, isLoading } = useMutation(login, {
+  const { mutate } = useMutation(login, {
     onError: (error) => {
-      showNotification?.(handleApiError(error), { type: "error" });
+      // showNotification?.(handleApiError(error), { type: "error" });
     },
     onSuccess: (data) => {
       setToken(data?.token);
@@ -64,10 +64,10 @@ const Signin = () => {
 
   const onSubmit = (data) => {
     mutate(data);
-    console.log(isLoading);
+    // console.log(isLoading);
   };
-
-  const { showNotification } = useAlert();
+  console.log(onSubmit);
+  // const { showNotification } = useAlert();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -75,10 +75,7 @@ const Signin = () => {
 
   const schema = yup.object().shape({
     username: yup.string().required("Email Is Required"),
-    password: yup
-    .string()
-    .required("Password Is Required")
-
+    password: yup.string().required("Password Is Required"),
   });
 
   const { handleSubmit, trigger, control } = useForm({
@@ -101,7 +98,7 @@ const Signin = () => {
   return (
     <Box
       sx={{
-          height: "100vh",
+        height: "100vh",
       }}
     >
       <Grid container >
@@ -116,13 +113,16 @@ const Signin = () => {
             background: `url(${loginImg})`,
             backgroundRepeat: "no-repeat",
             backgroundSize: "cover",
-            display: {xs: "none", md: "block"}
+            display: { xs: "none", md: "block" },
           }}
         />
-        <Box item md={7} xs={12}
+        <Box
+          item
+          md={7}
+          xs={12}
           sx={{
-            width: {xs: "100%", md: "60%"},
-            marginLeft: {xs: "0", md: "40%"},
+            width: { xs: "100%", md: "60%" },
+            marginLeft: { xs: "0", md: "40%" },
             textAlign: "center",
             background: {xs: `none`, md: "none"},
             backgroundRepeat: {xs: "no-repeat", md: "none"},
@@ -136,7 +136,7 @@ const Signin = () => {
           <Box
             sx={{
               margin: "auto",
-              width: {xs: "80%", md: "60%"},
+              width: { xs: "80%", md: "60%" },
             }}
           >
             <img src={logo} alt="" />
@@ -152,7 +152,7 @@ const Signin = () => {
                 fontSize: "28px !important",
               }}
             >
-              Sign in to <span style={{color: "#CE1E23"}}> NEXUS</span>
+              Sign in to <span style={{ color: "#CE1E23" }}> NEXUS</span>
             </Typography>
             {/* <Box width="100%" display="flex">
               <Button
@@ -216,169 +216,166 @@ const Signin = () => {
                 />
               </Box> */}
 
-              <form action="">
-                <Controller
-                  name="username"
-                  control={control}
-                  defaultValue=""
-                  render={({
-                    field: { ref, ...fields },
-                    fieldState: { error },
-                  }) => (
-                    <TextField
-                      variant="outlined"
-                      size="small"
-                      InputProps={{
-                        style: {
-                          fontSize: '16px',
-                          color: "#000 !important"
-                        },
-                      }}
-                      InputLabelProps={{
-                        style: {
-                          color: "black",
-                        },
-                      }}
-                      sx={{
-                        marginBottom: "30px", 
-                        color: "black !important", 
-                        background: "#F5F5F6",
+            <form action="">
+              <Controller
+                name="username"
+                control={control}
+                defaultValue=""
+                render={({
+                  field: { ref, ...fields },
+                  fieldState: { error },
+                }) => (
+                  <TextField
+                    variant="outlined"
+                    size="small"
+                    InputProps={{
+                      style: {
+                        fontSize: "16px",
+                        color: "#000 !important",
+                      },
+                    }}
+                    InputLabelProps={{
+                      style: {
+                        color: "black",
+                      },
+                    }}
+                    sx={{
+                      marginBottom: "30px",
+                      color: "black !important",
+                      background: "#F5F5F6",
+                      borderRadius: "5px",
+                      "& .MuiInputBase-input": {
+                        outline: "none",
+                        borderRadius: "3px",
+                        color: "#000",
+                      },
+                      "& .MuiInputBase-input:hover": {
+                        border: "0",
+                        outline: "none",
                         borderRadius: "5px",
-                        "& .MuiInputBase-input": {
-                          outline: "none",
-                          borderRadius: "3px",
-                          color: "#000",
+                        color: "#000",
+                      },
+                      "& .MuiFormHelperText-root": {
+                        color: "red !important",
+                        background: "#fff",
+                        width: "100%",
+                        margin: 0,
+                      },
+                      "& .Mui-active": {
+                        // border: errors.email
+                        //   ? "1px solid red"
+                        //   : "1px solid white",
+                        outline: "none",
+                        borderRadius: "5px",
+                      },
+                      "& .Mui-focused": {
+                        color: "#000",
+                      },
+                      "& .MuiOutlinedInput-root": {
+                        "&:hover fieldset": {
+                          borderColor: "#000", // Change the border color on hover
                         },
-                        "& .MuiInputBase-input:hover": {
-                          border: "0",
-                          outline: "none",
-                          borderRadius: "5px",
-                          color: "#000",
+                        "&.Mui-focused fieldset": {
+                          borderColor: "#000", // Change the border color when active/focused
                         },
-                        "& .MuiFormHelperText-root": {
-                          color: "red !important",
-                          background: "#fff",
-                          width: "100%",
-                          margin: 0,
+                      },
+                    }}
+                    label="Email"
+                    fullWidth
+                    {...fields}
+                    inputRef={ref}
+                    error={Boolean(error?.message)}
+                    helperText={error?.message}
+                    onKeyUp={() => {
+                      trigger("username");
+                    }}
+                  />
+                )}
+              />
+              <Controller
+                name="password"
+                control={control}
+                defaultValue=""
+                render={({
+                  field: { ref, ...fields },
+                  fieldState: { error },
+                }) => (
+                  <TextField
+                    variant="outlined"
+                    sx={{
+                      marginBottom: "30px",
+                      color: "black",
+                      background: "#F5F5F6",
+                      borderRadius: "5px",
+                      "& .MuiInputBase-input": {
+                        outline: "none",
+                        borderRadius: "3px",
+                        color: "#000",
+                      },
+                      "& .MuiInputBase-input:hover": {
+                        border: "0",
+                        outline: "none",
+                        borderRadius: "5px",
+                        color: "#000",
+                      },
+                      "& .MuiFormHelperText-root": {
+                        color: "red !important",
+                        background: "#fff",
+                        width: "100%",
+                        margin: 0,
+                      },
+                      "& .Mui-active": {
+                        // border: errors.email
+                        //   ? "1px solid red"
+                        //   : "1px solid white",
+                        outline: "none",
+                        borderRadius: "5px",
+                      },
+                      "& .Mui-focused": {
+                        color: "#000",
+                      },
+                      "& .MuiOutlinedInput-root": {
+                        "&:hover fieldset": {
+                          borderColor: "#000", // Change the border color on hover
                         },
-                        "& .Mui-active": {
-                          // border: errors.email
-                          //   ? "1px solid red"
-                          //   : "1px solid white",
-                          outline: "none",
-                          borderRadius: "5px",
+                        "&.Mui-focused fieldset": {
+                          borderColor: "#000", // Change the border color when active/focused
                         },
-                        "& .Mui-focused": {
-                          color: "#000",
-                        },
-                        "& .MuiOutlinedInput-root": {
-                          "&:hover fieldset": {
-                            borderColor: "#000", // Change the border color on hover
-                          },
-                          "&.Mui-focused fieldset": {
-                            borderColor: "#000", // Change the border color when active/focused
-                          },
-                        },
-                      }}
-                      label="Email"
-                      fullWidth
-                      {...fields}
-                      inputRef={ref}
-                      error={Boolean(error?.message)}
-                      helperText={error?.message}
-                      onKeyUp={() => {
-                          trigger("username");
-                      }}
-                    />
-                  )}
-                />
-                <Controller
-                  name="password"
-                  control={control}
-                  defaultValue=""
-                  render={({
-                      field: { ref, ...fields },
-                      fieldState: { error },
-                  }) => (
-                    <TextField
-                        variant="outlined"
-                        sx={{
-                          marginBottom: "30px", 
-                          color: "black", 
-                          background: "#F5F5F6",
-                          borderRadius: "5px",
-                          "& .MuiInputBase-input": {
-                            outline: "none",
-                            borderRadius: "3px",
-                            color: "#000",
-                          },
-                          "& .MuiInputBase-input:hover": {
-                            border: "0",
-                            outline: "none",
-                            borderRadius: "5px",
-                            color: "#000",
-                          },
-                          "& .MuiFormHelperText-root": {
-                            color: "red !important",
-                            background: "#fff",
-                            width: "100%",
-                            margin: 0,
-                          },
-                          "& .Mui-active": {
-                            // border: errors.email
-                            //   ? "1px solid red"
-                            //   : "1px solid white",
-                            outline: "none",
-                            borderRadius: "5px",
-                          },
-                          "& .Mui-focused": {
-                            color: "#000",
-                          },
-                          "& .MuiOutlinedInput-root": {
-                            "&:hover fieldset": {
-                              borderColor: "#000", // Change the border color on hover
-                            },
-                            "&.Mui-focused fieldset": {
-                              borderColor: "#000", // Change the border color when active/focused
-                            },
-                          },
-                        }}
-                        label="Password"
-                        fullWidth
-                        size="small"
-                        {...fields}
-                        type={values.showPassword ? "text" : "password"}
-                        
-                        InputLabelProps={{
-                          style: {
-                            color: "black",
-                          },
-                        }}
-                        InputProps={{
-                          endAdornment: (
-                          <IconButton onClick={handleClickShowPassword}>
-                            {values.showPassword === true ? 
-                            (
+                      },
+                    }}
+                    label="Password"
+                    fullWidth
+                    size="small"
+                    {...fields}
+                    type={values.showPassword ? "text" : "password"}
+                    InputLabelProps={{
+                      style: {
+                        color: "black",
+                      },
+                    }}
+                    InputProps={{
+                      endAdornment: (
+                        <IconButton onClick={handleClickShowPassword}>
+                          {values.showPassword === true ? (
                             <Visibility />
-                            ) : (
+                          ) : (
                             <VisibilityOff />
-                            )}
-                          </IconButton>
-                          ),
-                          style: {
-                            fontSize: '16px',
-                          },
-                        }}
-                        inputRef={ref}
-                        error={Boolean(error?.message)}
-                        helperText={error?.message}
-                        onKeyUp={() => {
-                          trigger("password");
-                        }}
-                    />
-                  )}
-                />
-
+                          )}
+                        </IconButton>
+                      ),
+                      style: {
+                        fontSize: "16px",
+                      },
+                    }}
+                    inputRef={ref}
+                    error={Boolean(error?.message)}
+                    helperText={error?.message}
+                    onKeyUp={() => {
+                      trigger("password");
+                    }}
+                  />
+                )}
+              />
 
                 <Button
                   fullWidth
@@ -401,24 +398,29 @@ const Signin = () => {
                   Login
                 </Button>
 
-                <Box
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              >
+                <Typography
                   sx={{
-                    display: "flex",
-                    justifyContent: "center"
+                    textAlign: "left",
+                    marginTop: "10px",
+                    color: "black",
                   }}
                 >
-                  <Typography 
-                    sx={{
-                      textAlign: "left", 
-                      marginTop: "10px", 
-                      color: "black", 
-                    }}
+                  Don't have an account?{" "}
+                  <Link
+                    style={{ decoration: "none", color: "#CE1E23" }}
+                    to={"/signup"}
                   >
-                    Don't have an account? <Link style={{decoration: "none", color: "#CE1E23"}} to={"/signup"}>Get Started</Link>
-                  </Typography>
-                </Box>
-              </form>
-
+                    Get Started
+                  </Link>
+                </Typography>
+              </Box>
+            </form>
           </Box>
         </Box>
       </Grid>

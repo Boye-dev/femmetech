@@ -1,11 +1,7 @@
-import {
-  PATIENT_NAV_ITEMS,
-  SUPER_PATIENT_NAV_ITEMS,
-} from "../constants/sidebarItems";
 import { lazy } from "react";
 import MainLayout from "../shared/layouts/Main";
 import { BasePaths } from "./paths";
-
+import { PATIENT_NAV_ITEMS } from "../constants/sidebarItems";
 const BaseRoutes = [
   {
     path: "/*",
@@ -20,7 +16,7 @@ const BaseRoutes = [
     component: lazy(() => import("../modules/Patient/PatientRouter")),
     Layout: MainLayout,
     useAuth: true,
-    // sidenavItems: PATIENT_NAV_ITEMS,
+    sidenavItems: PATIENT_NAV_ITEMS,
   },
 
   {
