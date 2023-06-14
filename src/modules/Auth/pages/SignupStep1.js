@@ -61,7 +61,7 @@ const SignupStep1 = () => {
     showPassword: false,
   });
 
-  const { control, watch, trigger } = useSignupContext();
+  const { control, trigger } = useSignupContext();
 
   return (
     <Box>

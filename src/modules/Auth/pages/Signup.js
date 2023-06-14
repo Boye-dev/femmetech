@@ -1,11 +1,4 @@
-// import { PatientPaths, BasePaths } from "../../../routes/paths";
-// import { Roles } from "../../../constants/roles";
-import { useAlert } from "../../../context/NotificationProvider";
-// import { getDecodedJwt, setToken } from "../../../utils/auth";
-// import handleApiError from "../../../utils/handleApiError";
-// import { useMutation } from "react-query";
-// import { login } from "../services/authServices";
-// import { useLocation, useNavigate } from "react-router-dom";
+
 import { Grid, Typography, Button } from "@mui/material";
 import Box from "@mui/material/Box";
 import { useEffect, useState } from "react";
@@ -18,11 +11,9 @@ import { EastOutlined, West } from "@mui/icons-material";
 
 const Signup = () => {
   const onSubmit = (data) => {
-    // mutate(data);
-    // console.log(isLoading);
+    return data
   };
 
-  // const { showNotification } = useAlert();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -38,7 +29,6 @@ const Signup = () => {
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    console.log(activeStep);
   };
 
   const handleSlide = (index) => {
@@ -101,7 +91,6 @@ const Signup = () => {
                   textAlign: "left",
                   marginBottom: "30px",
                   fontWeight: 700,
-                  // marginTop: "10vh",
                   fontSize: "28px !important",
                   display: "flex",
                   alignItems: "center",

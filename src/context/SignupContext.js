@@ -46,7 +46,7 @@ const SignupContextProvider = ({children}) => {
         password: "",
         confirmPassword: "",
         gender: "",
-        dateOfBirth: new Date(),
+        dateOfBirth: "",
         relationshipStatus: "",
         existingMedicalConditions: "",
         allergies: "",

@@ -5,7 +5,6 @@ import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
 import { Person } from '@mui/icons-material';
 import { Badge, } from '@mui/material';
-// import { Button, Chip, Typography } from '@mui/material';
 import { useState } from 'react';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import { useSignupContext} from '../../../context/SignupContext';
@@ -91,54 +90,9 @@ const SignupStep2 = () => {
         };
   };
 
-    //   const [inputValue, setInputValue] = useState('');
-    //   const [arrayValues, setArrayValues] = useState([]);
-
-    //   const handleInputChange = (event) => {
-    //     setInputValue(event.target.value);
-    //   };
-
-    //   const handleInputKeyPress = (event) => {
-    //     if (event.key === 'Enter' || event.key === ',') {
-    //       event.preventDefault();
-    //       addArrayValue();
-    //     }
-    //   };
-
-    //   const addArrayValue = () => {
-    //     const value = inputValue.trim();
-
-    //     if (value) {
-    //       setArrayValues((prevArray) => [...prevArray, value]);
-    //       setInputValue('');
-    //     }
-    //   };
-
-    //   const removeArrayValue = (index) => {
-    //     setArrayValues((prevArray) => prevArray.filter((_, i) => i !== index));
-    //   };
-
     return (
         <Box>
             <form >
-                
-                {/* <TextField
-                    label="Array Values"
-                    variant="outlined"
-                    value={inputValue}
-                    onChange={handleInputChange}
-                    onKeyPress={handleInputKeyPress}
-                />
-                <div>
-                    {arrayValues.map((value, index) => (
-                    <Chip
-                        key={index}
-                        label={value}
-                        onDelete={() => removeArrayValue(index)}
-                        style={{ margin: '4px' }}
-                    />
-                    ))}
-                </div> */}
                 <Box display="flex" justifyContent="center" mb={3}>
                     {/* Profile picture selection */}
                     <Box textAlign="center" mb={3}>
@@ -225,7 +179,6 @@ const SignupStep2 = () => {
                             onKeyUp={() => {
                                 trigger("gender");
                             }}
-                            // onChange={(e) => handleGenderChange(e.target.value)} 
                         >
                             {genderOptions.map((option) => (
                             <MenuItem key={option.value} value={option.value}>
@@ -259,7 +212,6 @@ const SignupStep2 = () => {
                                 },
                             }}
                             sx={formStyles}
-                            // label="Date of Birth"
                             type="date"
                             fullWidth
                             {...fields}
@@ -268,8 +220,7 @@ const SignupStep2 = () => {
                             helperText={error?.message}
                             onKeyUp={() => {
                                 trigger("dateOfBirth");
-                                }}
-                            // onChange={(e) => handleDOBChange(e.target.value)} 
+                            }}
                         />
                         )}
                     />
@@ -344,8 +295,7 @@ const SignupStep2 = () => {
                             helperText={error?.message}
                             onKeyUp={() => {
                                 trigger("existingMedicalConditions");
-                                }}
-                            // onChange={(e) => handleExistingMedRecordsChange(e.target.value)} 
+                            }}
                         />
                         )}
                     />
@@ -379,8 +329,7 @@ const SignupStep2 = () => {
                             helperText={error?.message}
                             onKeyUp={() => {
                                 trigger("allergies");
-                                }}
-                            // onChange={(e) => handleAllergiesChange(e.target.value)} 
+                            }}
                         />
                         )}
                     />
