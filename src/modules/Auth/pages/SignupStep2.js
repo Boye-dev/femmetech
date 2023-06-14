@@ -1,0 +1,395 @@
+
+import TextField from '@mui/material/TextField';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import MenuItem from '@mui/material/MenuItem';
+import { Person } from '@mui/icons-material';
+import { Badge, } from '@mui/material';
+// import { Button, Chip, Typography } from '@mui/material';
+import { useState } from 'react';
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+import { useSignupContext} from '../../../context/SignupContext';
+import { Controller } from 'react-hook-form';
+
+
+const formStyles = {
+    marginBottom: "20px",
+    color: "black !important",
+    background: "#F5F5F6",
+    borderRadius: "5px",
+    "& .MuiInputBase-input": {
+      outline: "none",
+      borderRadius: "3px",
+      color: "#000",
+      textAlign:"left"
+    },
+    "& .MuiInputBase-input:hover": {
+      border: "0",
+      outline: "none",
+      borderRadius: "5px",
+      color: "#000",
+    },
+    "& .MuiFormHelperText-root": {
+      color: "red !important",
+      background: "#fff",
+      width: "100%",
+      margin: 0,
+    },
+    "& .Mui-active": {
+      outline: "none",
+      borderRadius: "5px",
+    },
+    "& .Mui-focused": {
+      color: "#000",
+    },
+    "& .MuiOutlinedInput-root": {
+      "&:hover fieldset": {
+        borderColor: "#000",
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: "#000",
+      },
+    },
+  };
+
+
+const genderOptions = [
+    { value: "male", label: "Male" },
+    { value: "female", label: "Female" },
+    { value: "not-specified", label: "Prefer Not to Say" },
+];
+
+const relationshipStatusOptions = [
+    { value: "single", label: "Single" },
+    { value: "married", label: "Married" },
+    { value: "divorced", label: "Divorced" },
+    { value: "widowed", label: "Widowed" },
+];
+
+const SignupStep2 = () => {
+    
+    const { control, watch, trigger, setValue } = useSignupContext()
+
+    const { profilePicture, } = watch()
+
+    const [selectedPicture, setSelectedPicture] = useState(profilePicture);
+
+
+    const handlePictureClick = async () => {
+      
+        const inputElement = document.createElement('input');
+        inputElement.type = 'file';
+        inputElement.accept = 'image/*';
+            
+        await inputElement.click();
+        
+        inputElement.onchange = (event) => {
+            const file = event.target.files[0];
+            setSelectedPicture(file);
+            
+            setValue('profilePicture', file);
+        };
+  };
+
+    //   const [inputValue, setInputValue] = useState('');
+    //   const [arrayValues, setArrayValues] = useState([]);
+
+    //   const handleInputChange = (event) => {
+    //     setInputValue(event.target.value);
+    //   };
+
+    //   const handleInputKeyPress = (event) => {
+    //     if (event.key === 'Enter' || event.key === ',') {
+    //       event.preventDefault();
+    //       addArrayValue();
+    //     }
+    //   };
+
+    //   const addArrayValue = () => {
+    //     const value = inputValue.trim();
+
+    //     if (value) {
+    //       setArrayValues((prevArray) => [...prevArray, value]);
+    //       setInputValue('');
+    //     }
+    //   };
+
+    //   const removeArrayValue = (index) => {
+    //     setArrayValues((prevArray) => prevArray.filter((_, i) => i !== index));
+    //   };
+
+    return (
+        <Box>
+            <form >
+                
+                {/* <TextField
+                    label="Array Values"
+                    variant="outlined"
+                    value={inputValue}
+                    onChange={handleInputChange}
+                    onKeyPress={handleInputKeyPress}
+                />
+                <div>
+                    {arrayValues.map((value, index) => (
+                    <Chip
+                        key={index}
+                        label={value}
+                        onDelete={() => removeArrayValue(index)}
+                        style={{ margin: '4px' }}
+                    />
+                    ))}
+                </div> */}
+                <Box display="flex" justifyContent="center" mb={3}>
+                    {/* Profile picture selection */}
+                    <Box textAlign="center" mb={3}>
+                        <Box
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                            width={150}
+                            height={150}
+                            borderRadius="50%"
+                            bgcolor="#F5F5F6"
+                        >
+                            <Badge
+                                badgeContent={<AddPhotoAlternateIcon />}
+                                onClick={handlePictureClick}
+                                anchorOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'right',
+                                }}
+                                sx={{
+                                    position: 'relative',
+                                    '& .MuiBadge-badge': {
+                                    backgroundColor: '#fff',
+                                    color: '#000',
+                                    borderRadius: '50%',
+                                    width: '24px',
+                                    height: '24px',
+                                    padding: '2px',
+                                    boxShadow: '0 0 0 3px #fff',
+                                    cursor: 'pointer',
+                                    },
+                                }}
+                            >
+                                <Box
+                                    display="flex"
+                                    alignItems="center"
+                                    justifyContent="center"
+                                    width={120}
+                                    height={120}
+                                    borderRadius="50%"
+                                    bgcolor="#FFFFFF"
+                                >
+                                    {selectedPicture ? (
+                                        <img src={URL.createObjectURL(selectedPicture)} alt="Profile" style={{ width: '100%', height: '100%', borderRadius: "50%", objectFit: 'cover' }} />
+                                    ) : (
+                                        <Person bgcolor="#F5F5F6" style={{fontSize:'90px', background: "#F5F5F6", padding: "6px", boder: "10px solid #fff", borderRadius: "50%"}}/>
+                                    )}
+                                </Box>
+                            </Badge>
+                        </Box>
+                    </Box>
+                </Box>
+
+
+                <Grid container spacing={2}>
+                    <Grid item xs={3}>
+                    <Controller
+                        name="gender"
+                        control={control}
+                        defaultValue=""
+                        render={({ field: { ref, ...fields }, fieldState: { error } }) => (
+                        <TextField
+                            variant="outlined"
+                            size="small"
+                            InputProps={{
+                            style: {
+                                fontSize: '16px',
+                                color: "#000 !important",
+                            },
+                            }}
+                            InputLabelProps={{
+                            style: {
+                                color: "black",
+                            },
+                            }}
+                            sx={formStyles}
+                            label="Gender"
+                            select
+                            fullWidth
+                            {...fields}
+                            inputRef={ref}
+                            error={Boolean(error?.message)}
+                            helperText={error?.message}
+                            onKeyUp={() => {
+                                trigger("gender");
+                            }}
+                            // onChange={(e) => handleGenderChange(e.target.value)} 
+                        >
+                            {genderOptions.map((option) => (
+                            <MenuItem key={option.value} value={option.value}>
+                                {option.label}
+                            </MenuItem>
+                            ))}
+                        </TextField>
+                        )}
+                    />
+                    </Grid>
+                    <Grid item xs={9}>
+                    <Controller
+                        name="dateOfBirth"
+                        control={control}
+                        defaultValue={null}
+                        render={({ field: { ref, ...fields }, fieldState: { error } }) => (
+                        <TextField
+                            variant="outlined"
+                            size="small"
+                            InputProps={{
+                                style: {
+                                    fontSize: '16px',
+                                    color: "#000 !important",
+                                },
+                                placeholder: '',
+                            }}
+                            placeholder=''
+                            InputLabelProps={{
+                                style: {
+                                    color: "black",
+                                },
+                            }}
+                            sx={formStyles}
+                            // label="Date of Birth"
+                            type="date"
+                            fullWidth
+                            {...fields}
+                            inputRef={ref}
+                            error={Boolean(error?.message)}
+                            helperText={error?.message}
+                            onKeyUp={() => {
+                                trigger("dateOfBirth");
+                                }}
+                            // onChange={(e) => handleDOBChange(e.target.value)} 
+                        />
+                        )}
+                    />
+                    </Grid>
+                    <Grid item xs={6}>
+                    <Controller
+                        name="relationshipStatus"
+                        control={control}
+                        defaultValue=""
+                        render={({ field: { ref, ...fields }, fieldState: { error } }) => (
+                        <TextField
+                            variant="outlined"
+                            size="small"
+                            InputProps={{
+                                style: {
+                                    fontSize: '16px',
+                                    color: "#000 !important",
+                                },
+                            }}
+                            InputLabelProps={{
+                                style: {
+                                    color: "black",
+                                },
+                            }}
+                            sx={formStyles}
+                            label="Relationship Status"
+                            select
+                            fullWidth
+                            {...fields}
+                            inputRef={ref}
+                            error={Boolean(error?.message)}
+                            helperText={error?.message}
+                            onKeyUp={() => {
+                                trigger("relationshipStatus");
+                                }}
+                        >
+                            {relationshipStatusOptions.map((option) => (
+                                <MenuItem key={option.value} value={option.value}>
+                                    {option.label}
+                                </MenuItem>
+                            ))}
+                        </TextField>
+                        )}
+                    />
+                    </Grid>
+                    <Grid item xs={6}>
+                    <Controller
+                        name="existingMedicalConditions"
+                        control={control}
+                        defaultValue=""
+                        render={({ field: { ref, ...fields }, fieldState: { error } }) => (
+                        <TextField
+                            variant="outlined"
+                            size="small"
+                            InputProps={{
+                            style: {
+                                fontSize: '16px',
+                                color: "#000 !important",
+                            },
+                            }}
+                            InputLabelProps={{
+                            style: {
+                                color: "black",
+                            },
+                            }}
+                            sx={formStyles}
+                            label="Existing Medical Conditions"
+                            fullWidth
+                            {...fields}
+                            inputRef={ref}
+                            error={Boolean(error?.message)}
+                            helperText={error?.message}
+                            onKeyUp={() => {
+                                trigger("existingMedicalConditions");
+                                }}
+                            // onChange={(e) => handleExistingMedRecordsChange(e.target.value)} 
+                        />
+                        )}
+                    />
+                    </Grid>
+                    <Grid item xs={12}>
+                    <Controller
+                        name="allergies"
+                        control={control}
+                        defaultValue=""
+                        render={({ field: { ref, ...fields }, fieldState: { error } }) => (
+                        <TextField
+                            variant="outlined"
+                            size="small"
+                            InputProps={{
+                            style: {
+                                fontSize: '16px',
+                                color: "#000 !important",
+                            },
+                            }}
+                            InputLabelProps={{
+                            style: {
+                                color: "black",
+                            },
+                            }}
+                            sx={formStyles}
+                            label="Allergies"
+                            fullWidth
+                            {...fields}
+                            inputRef={ref}
+                            error={Boolean(error?.message)}
+                            helperText={error?.message}
+                            onKeyUp={() => {
+                                trigger("allergies");
+                                }}
+                            // onChange={(e) => handleAllergiesChange(e.target.value)} 
+                        />
+                        )}
+                    />
+                    </Grid>
+                </Grid>
+                
+            </form>
+        </Box>
+    );
+};
+
+export default SignupStep2;

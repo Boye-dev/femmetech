@@ -1,11 +1,16 @@
 import React from "react";
 import { Box, Button, Typography } from "@mui/material";
 import { ReactComponent as Logo } from "../../assets/svgs/logo.svg";
-import { KeyboardArrowRight, Person } from "@mui/icons-material";
-import { List, ListItemButton, Divider, SwipeableDrawer } from "@mui/material";
+import {
+  // KeyboardArrowLeft,
+  KeyboardArrowRight,
+  Person,
+} from "@mui/icons-material";
+import {  List, ListItemButton, Divider, SwipeableDrawer, } from "@mui/material";
 import { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
-import MenuIcon from "@mui/icons-material/Menu";
+import MenuIcon from '@mui/icons-material/Menu';
+// import LayersIcon from '@mui/icons-material/Layers';
 
 const Navbar = () => {
   const [state, setState] = useState({

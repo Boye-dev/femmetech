@@ -1,69 +1,70 @@
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import * as yup from "yup";
-// import { PatientPaths, BasePaths } from "../../../routes/paths";
-// import { Roles } from "../../../constants/roles";
-import { Button, TextField } from "@mui/material";
+import { PatientPaths, BasePaths } from "../../../routes/paths";
+import { Roles } from "../../../constants/roles";
+import { Button,  TextField } from "@mui/material";
 // import { useAlert } from "../../../context/NotificationProvider";
-// import { yupResolver } from "@hookform/resolvers/yup";
-// import { getDecodedJwt, setToken } from "../../../utils/auth";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { getDecodedJwt, setToken } from "../../../utils/auth";
 // import handleApiError from "../../../utils/handleApiError";
-// import { useMutation } from "react-query";
-// import { login } from "../services/authServices";
-// import { useLocation, useNavigate } from "react-router-dom";
+import { useMutation } from "react-query";
+import { login } from "../services/authServices";
+import { useLocation, useNavigate } from "react-router-dom";
 
-import { Grid, Typography, IconButton, Snackbar, Alert } from "@mui/material";
-import Box from "@mui/material/Box";
+import logo from "../../../assets/svgs/logosmall.svg"
+import { Grid, Typography, IconButton,  } from "@mui/material";
+import Box from "@mui/material/Box"
 import { useEffect, useState } from "react";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import SendIcon from "@mui/icons-material/Send";
 import { Link } from "react-router-dom";
 import loginImg from "../../../assets/images/login.png";
-
-import { yupResolver } from "@hookform/resolvers/yup";
+// import { yupResolver } from "@hookform/resolvers/yup";
 
 const Signin = () => {
-  // const navigate = useNavigate();
-  // const location = useLocation();
-  // const from = location.state?.from?.pathname;
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname;
 
-  // const setNavigationPath = (user) => {
-  //   if (user?.role?.includes(Roles.PATIENT)) {
-  //     return `${PatientPaths.MDA_DETAILS}/${user.mda}`;
-  //   } else if (user?.role?.includes(Roles.PATIENT)) {
-  //     return PatientPaths.MDAS;
-  //   } else {
-  //     return BasePaths.USER;
-  //   }
-  // };
-  // const { mutate } = useMutation(login, {
-  //   onError: (error) => {
-  //     showNotification?.(handleApiError(error), { type: "error" });
-  //   },
-  //   onSuccess: (data) => {
-  //     setToken(data?.token);
+  const setNavigationPath = (user) => {
+    if (user?.role?.includes(Roles.PATIENT)) {
+      return `${PatientPaths.MDA_DETAILS}/${user.mda}`;
+    } else if (user?.role?.includes(Roles.PATIENT)) {
+      return PatientPaths.MDAS;
+    } else {
+      return BasePaths.USER;
+    }
+  };
+  const { mutate } = useMutation(login, {
+    onError: (error) => {
+      // showNotification?.(handleApiError(error), { type: "error" });
+    },
+    onSuccess: (data) => {
+      setToken(data?.token);
 
-  //     const decodedUser = getDecodedJwt();
+      const decodedUser = getDecodedJwt();
 
-  //     if (
-  //       decodedUser?.role?.length &&
-  //       decodedUser?.role?.includes(Roles.PATIENT)
-  //     ) {
-  //       navigate(BasePaths.PATIENT, { replace: true });
-  //     } else {
-  //       const path =
-  //         from?.split("/")[0] === "super" && decodedUser?.role === Roles.PATIENT
-  //           ? from
-  //           : setNavigationPath(decodedUser);
+      if (
+        decodedUser?.role?.length &&
+        decodedUser?.role?.includes(Roles.PATIENT)
+      ) {
+        navigate(BasePaths.PATIENT, { replace: true });
+      } else {
+        const path =
+          from?.split("/")[0] === "super" && decodedUser?.role === Roles.PATIENT
+            ? from
+            : setNavigationPath(decodedUser);
 
-  //       navigate(path, { replace: true });
-  //     }
-  //   },
-  // });
+        navigate(path, { replace: true });
+      }
+    },
+  });
 
   const onSubmit = (data) => {
-    // mutate(data);
+    mutate(data);
+    // console.log(isLoading);
   };
   console.log(onSubmit);
   // const { showNotification } = useAlert();
@@ -86,44 +87,6 @@ const Signin = () => {
     open: false,
     showPassword: false,
   });
-  const [openSnackBar, setOpenSnackBar] = useState(false);
-  const [messageSnackBar, setMessageSnackBar] = useState("");
-
-  const handleSnackBar = () => {
-    setOpenSnackBar(true);
-  };
-
-  localStorage.setItem("loggedIn", false);
-
-  const [loading, setLoading] = useState(false);
-
-  const handleLoadClick = async (data) => {
-    console.log(data);
-    setLoading(true);
-    try {
-      const response = "";
-      if (response.data?.success === false) {
-        setMessageSnackBar("Error occured. Check internet and try again.");
-        handleSnackBar();
-        setLoading(false);
-      } else {
-        localStorage.setItem("loggedIn", JSON.stringify(true));
-        localStorage.setItem("user", JSON.stringify(response.data.user));
-        // navigate("/home/dashboard");
-      }
-    } catch (err) {
-      if (err.response) {
-        setLoading(false);
-        if (err.response.status === 401) {
-          setMessageSnackBar("Username or password incorrect!");
-          handleSnackBar();
-        } else {
-          setMessageSnackBar("Error occured. Check internet and try again.");
-          handleSnackBar();
-        }
-      }
-    }
-  };
 
   const handleClickShowPassword = () => {
     setValues({
@@ -138,25 +101,8 @@ const Signin = () => {
         height: "100vh",
       }}
     >
-      <Snackbar
-        color="primary"
-        open={openSnackBar}
-        autoHideDuration={6000}
-        onClose={() => setOpenSnackBar(false)}
-      >
-        <Alert
-          onClose={() => setOpenSnackBar(false)}
-          severity="warning"
-          sx={{ width: "100%", background: "gray" }}
-        >
-          {messageSnackBar}
-        </Alert>
-      </Snackbar>
-      <Grid container>
-        <Box
-          item
-          md={5}
-          xs={12}
+      <Grid container >
+        <Box item md={5} xs={12}
           sx={{
             position: "fixed",
             left: 0,
@@ -178,13 +124,13 @@ const Signin = () => {
             width: { xs: "100%", md: "60%" },
             marginLeft: { xs: "0", md: "40%" },
             textAlign: "center",
-            background: { xs: `url(${loginImg})`, md: "none" },
-            backgroundRepeat: { xs: "no-repeat", md: "none" },
-            backgroundSize: { xs: "cover", md: "none" },
+            background: {xs: `none`, md: "none"},
+            backgroundRepeat: {xs: "no-repeat", md: "none"},
+            backgroundSize: {xs: "cover", md: "none"},
             display: "flex",
             alignItems: "center",
-            height: { xs: "100vh", md: "100vh" },
-            paddingBottom: { xs: "100px", md: "0" },
+            height: {xs: "100vh", md: "100vh"},
+            // paddingBottom: {xs: "100px", md: "0"},
           }}
         >
           <Box
@@ -193,15 +139,16 @@ const Signin = () => {
               width: { xs: "80%", md: "60%" },
             }}
           >
+            <img src={logo} alt="" />
+            
             <Typography
               variant="h6"
               color="inherit"
               component="div"
               sx={{
-                textAlign: "left",
                 marginBottom: "12px",
                 fontWeight: 700,
-                marginTop: "10vh",
+                // marginTop: "10vh", 
                 fontSize: "28px !important",
               }}
             >
@@ -430,27 +377,26 @@ const Signin = () => {
                 )}
               />
 
-              <Button
-                fullWidth
-                size="small"
-                onClick={handleSubmit(handleLoadClick)}
-                endIcon={<SendIcon />}
-                loading={loading}
-                loadingPosition="end"
-                variant="contained"
-                sx={{
-                  fontSize: "18px !important",
-                  background: "#252B33",
-                  padding: "6px",
-                  marginBottom: "6px",
-                  color: "#fff",
-                  "&:hover": {
-                    backgroundColor: "#252B33",
-                  },
-                }}
-              >
-                Login
-              </Button>
+                <Button
+                  fullWidth
+                  size="small"
+                  onClick={handleSubmit(onSubmit)}
+                  endIcon={<SendIcon />}
+                  loadingPosition="end"
+                  variant="contained"
+                  sx={{
+                    fontSize: "18px !important",
+                    background: "#252B33",
+                    padding: "6px",
+                    marginBottom: "6px",
+                    color: "#fff",
+                    "&:hover": {
+                      backgroundColor: '#252B33'
+                    },
+                  }}
+                >
+                  Login
+                </Button>
 
               <Box
                 sx={{
