@@ -1,20 +1,20 @@
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import * as yup from "yup";
-import { PatientPaths, BasePaths } from "../../../routes/paths";
-import { Roles } from "../../../constants/roles";
-import { Button,  TextField } from "@mui/material";
+// import { PatientPaths, BasePaths } from "../../../routes/paths";
+// import { Roles } from "../../../constants/roles";
+import { Button, TextField } from "@mui/material";
 // import { useAlert } from "../../../context/NotificationProvider";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { getDecodedJwt, setToken } from "../../../utils/auth";
+// import { getDecodedJwt, setToken } from "../../../utils/auth";
 // import handleApiError from "../../../utils/handleApiError";
-import { useMutation } from "react-query";
-import { login } from "../services/authServices";
-import { useLocation, useNavigate } from "react-router-dom";
+// import { useMutation } from "react-query";
+// import { login } from "../services/authServices";
+// import { useLocation, useNavigate } from "react-router-dom";
 
-import logo from "../../../assets/svgs/logosmall.svg"
-import { Grid, Typography, IconButton,  } from "@mui/material";
-import Box from "@mui/material/Box"
+import logo from "../../../assets/svgs/logosmall.svg";
+import { Grid, Typography, IconButton } from "@mui/material";
+import Box from "@mui/material/Box";
 import { useEffect, useState } from "react";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -24,46 +24,22 @@ import loginImg from "../../../assets/images/login.png";
 // import { yupResolver } from "@hookform/resolvers/yup";
 
 const Signin = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const from = location.state?.from?.pathname;
+  // const navigate = useNavigate();
+  // const location = useLocation();
+  // const from = location.state?.from?.pathname;
 
-  const setNavigationPath = (user) => {
-    if (user?.role?.includes(Roles.PATIENT)) {
-      return `${PatientPaths.MDA_DETAILS}/${user.mda}`;
-    } else if (user?.role?.includes(Roles.PATIENT)) {
-      return PatientPaths.MDAS;
-    } else {
-      return BasePaths.USER;
-    }
-  };
-  const { mutate } = useMutation(login, {
-    onError: (error) => {
-      // showNotification?.(handleApiError(error), { type: "error" });
-    },
-    onSuccess: (data) => {
-      setToken(data?.token);
-
-      const decodedUser = getDecodedJwt();
-
-      if (
-        decodedUser?.role?.length &&
-        decodedUser?.role?.includes(Roles.PATIENT)
-      ) {
-        navigate(BasePaths.PATIENT, { replace: true });
-      } else {
-        const path =
-          from?.split("/")[0] === "super" && decodedUser?.role === Roles.PATIENT
-            ? from
-            : setNavigationPath(decodedUser);
-
-        navigate(path, { replace: true });
-      }
-    },
-  });
+  // const setNavigationPath = (user) => {
+  //   if (user?.role?.includes(Roles.PATIENT)) {
+  //     return `${PatientPaths.MDA_DETAILS}/${user.mda}`;
+  //   } else if (user?.role?.includes(Roles.PATIENT)) {
+  //     return PatientPaths.MDAS;
+  //   } else {
+  //     return BasePaths.USER;
+  //   }
+  // };
 
   const onSubmit = (data) => {
-    mutate(data);
+    // mutate(data);
     // console.log(isLoading);
   };
   console.log(onSubmit);
@@ -101,8 +77,11 @@ const Signin = () => {
         height: "100vh",
       }}
     >
-      <Grid container >
-        <Box item md={5} xs={12}
+      <Grid container>
+        <Box
+          item
+          md={5}
+          xs={12}
           sx={{
             position: "fixed",
             left: 0,
@@ -124,12 +103,12 @@ const Signin = () => {
             width: { xs: "100%", md: "60%" },
             marginLeft: { xs: "0", md: "40%" },
             textAlign: "center",
-            background: {xs: `none`, md: "none"},
-            backgroundRepeat: {xs: "no-repeat", md: "none"},
-            backgroundSize: {xs: "cover", md: "none"},
+            background: { xs: `none`, md: "none" },
+            backgroundRepeat: { xs: "no-repeat", md: "none" },
+            backgroundSize: { xs: "cover", md: "none" },
             display: "flex",
             alignItems: "center",
-            height: {xs: "100vh", md: "100vh"},
+            height: { xs: "100vh", md: "100vh" },
             // paddingBottom: {xs: "100px", md: "0"},
           }}
         >
@@ -140,7 +119,7 @@ const Signin = () => {
             }}
           >
             <img src={logo} alt="" />
-            
+
             <Typography
               variant="h6"
               color="inherit"
@@ -148,7 +127,7 @@ const Signin = () => {
               sx={{
                 marginBottom: "12px",
                 fontWeight: 700,
-                // marginTop: "10vh", 
+                // marginTop: "10vh",
                 fontSize: "28px !important",
               }}
             >
@@ -377,26 +356,26 @@ const Signin = () => {
                 )}
               />
 
-                <Button
-                  fullWidth
-                  size="small"
-                  onClick={handleSubmit(onSubmit)}
-                  endIcon={<SendIcon />}
-                  loadingPosition="end"
-                  variant="contained"
-                  sx={{
-                    fontSize: "18px !important",
-                    background: "#252B33",
-                    padding: "6px",
-                    marginBottom: "6px",
-                    color: "#fff",
-                    "&:hover": {
-                      backgroundColor: '#252B33'
-                    },
-                  }}
-                >
-                  Login
-                </Button>
+              <Button
+                fullWidth
+                size="small"
+                onClick={handleSubmit(onSubmit)}
+                endIcon={<SendIcon />}
+                loadingPosition="end"
+                variant="contained"
+                sx={{
+                  fontSize: "18px !important",
+                  background: "#252B33",
+                  padding: "6px",
+                  marginBottom: "6px",
+                  color: "#fff",
+                  "&:hover": {
+                    backgroundColor: "#252B33",
+                  },
+                }}
+              >
+                Login
+              </Button>
 
               <Box
                 sx={{
