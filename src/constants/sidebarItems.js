@@ -2,6 +2,7 @@ import { AuthPaths, PatientPaths } from "../routes/paths";
 import { logOut } from "../utils/auth";
 
 import { Roles } from "./roles";
+import CampaignIcon from '@mui/icons-material/Campaign';
 import { CalendarMonth, Dashboard } from "@mui/icons-material";
 
 export const PATIENT_NAV_ITEMS = [
@@ -16,6 +17,13 @@ export const PATIENT_NAV_ITEMS = [
     name: "Appointments",
     url: PatientPaths.PATIENT_APPOINTMENT,
     icon: <CalendarMonth />,
+    role: Roles.PATIENT,
+    bottom: false,
+  },
+  {
+    name: "Announcements",
+    url: PatientPaths.PATIENT_ANNOUNCEMENTS,
+    icon: <CampaignIcon />,
     role: Roles.PATIENT,
     bottom: false,
   },
