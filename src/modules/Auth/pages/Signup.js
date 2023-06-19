@@ -65,7 +65,7 @@ const Signup = () => {
             width: { xs: "100%", md: "60%" },
             marginLeft: { xs: "0", md: "40%" },
             textAlign: "center",
-            background: { xs: `url(${loginImg})`, md: "none" },
+            background: { xs: `none`, md: "none" },
             backgroundRepeat: { xs: "no-repeat", md: "none" },
             backgroundSize: { xs: "cover", md: "none" },
             display: "flex",

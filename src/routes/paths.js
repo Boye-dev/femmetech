@@ -11,4 +11,5 @@ export const AuthPaths = {
 export const PatientPaths = {
   PATIENT_DASHBOARD: "/patient/dashboard",
   PATIENT_APPOINTMENT: "/patient/appointments",
+  PATIENT_ANNOUNCEMENTS: "/patient/announcements",
 };
