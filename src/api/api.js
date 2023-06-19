@@ -12,7 +12,7 @@ import {
 let refreshed = false;
 
 export const baseUrl =
-  process.env.REACT_APP_API_BASE_URL || "http://localhost:4000/api/v1";
+  process.env.REACT_APP_API_BASE_URL || "http://localhost:4000/api/v2";
 
 // "https://backendtemplate-production.up.railway.app/api/v1";
 export const subscriber = new BehaviorSubject(0);
