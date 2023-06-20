@@ -3,15 +3,10 @@ import { useForm, Controller } from "react-hook-form";
 import * as yup from "yup";
 // import { PatientPaths, BasePaths } from "../../../routes/paths";
 // import { Roles } from "../../../constants/roles";
-import { Button, TextField } from "@mui/material";
-// import { useAlert } from "../../../context/NotificationProvider";
+import { Button, CircularProgress, TextField } from "@mui/material";
 import { yupResolver } from "@hookform/resolvers/yup";
-// import { getDecodedJwt, setToken } from "../../../utils/auth";
-// import handleApiError from "../../../utils/handleApiError";
-// import { useMutation } from "react-query";
-// import { login } from "../services/authServices";
-// import { useLocation, useNavigate } from "react-router-dom";
-
+import { useMutation } from "react-query";
+import { login } from "../services/authServices";
 import logo from "../../../assets/svgs/logosmall.svg";
 import { Grid, Typography, IconButton } from "@mui/material";
 import Box from "@mui/material/Box";
@@ -19,38 +14,40 @@ import { useEffect, useState } from "react";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import SendIcon from "@mui/icons-material/Send";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import loginImg from "../../../assets/images/login.png";
-// import { yupResolver } from "@hookform/resolvers/yup";
+import { useAlert } from "../../../context/NotificationProvider";
+import { getDecodedJwt, setToken } from "../../../utils/auth";
 
 const Signin = () => {
-  // const navigate = useNavigate();
-  // const location = useLocation();
-  // const from = location.state?.from?.pathname;
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname;
 
-  // const setNavigationPath = (user) => {
-  //   if (user?.role?.includes(Roles.PATIENT)) {
-  //     return `${PatientPaths.MDA_DETAILS}/${user.mda}`;
-  //   } else if (user?.role?.includes(Roles.PATIENT)) {
-  //     return PatientPaths.MDAS;
-  //   } else {
-  //     return BasePaths.USER;
-  //   }
-  // };
+  const { showNotification } = useAlert();
+  const { mutate, isLoading } = useMutation(login, {
+    onError: (error) => {
+      showNotification?.(error.response.data.errors[0], { type: "error" });
+    },
+    onSuccess: (data) => {
+      console.log(data);
+      setToken(data?.token);
 
-  const onSubmit = (data) => {
-    // mutate(data);
-    // console.log(isLoading);
+      // const decodedUser = getDecodedJwt();
+
+      navigate("/patient", { replace: true });
+    },
+  });
+  const onSubmit = (payload) => {
+    mutate(payload);
   };
-  console.log(onSubmit);
-  // const { showNotification } = useAlert();
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   const schema = yup.object().shape({
-    username: yup.string().required("Email Is Required"),
+    email: yup.string().required("Email Is Required"),
     password: yup.string().required("Password Is Required"),
   });
 
@@ -197,7 +194,7 @@ const Signin = () => {
 
             <form action="">
               <Controller
-                name="username"
+                name="email"
                 control={control}
                 defaultValue=""
                 render={({
@@ -266,7 +263,7 @@ const Signin = () => {
                     error={Boolean(error?.message)}
                     helperText={error?.message}
                     onKeyUp={() => {
-                      trigger("username");
+                      trigger("email");
                     }}
                   />
                 )}
@@ -359,8 +356,10 @@ const Signin = () => {
               <Button
                 fullWidth
                 size="small"
+                disabled={isLoading}
                 onClick={handleSubmit(onSubmit)}
                 endIcon={<SendIcon />}
+                startIcon={isLoading && <CircularProgress size={2} />}
                 loadingPosition="end"
                 variant="contained"
                 sx={{

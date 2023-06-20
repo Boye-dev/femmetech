@@ -3,11 +3,11 @@
 import jwtDecode from "jwt-decode";
 
 export const setToken = (token) => {
-  localStorage.setItem("accessToken", token);
+  localStorage.setItem("token", token);
 };
 
 export const getToken = () => {
-  return localStorage.getItem("accessToken");
+  return localStorage.getItem("token");
 };
 
 export const getDecodedJwt = (tokn = "") => {
@@ -35,8 +35,7 @@ export const removeDomainObj = () => {
 };
 
 export const removeToken = () => {
-  localStorage.removeItem("accessToken");
-  localStorage.removeItem("refreshToken");
+  localStorage.removeItem("token");
 };
 
 export const logOut = (cb) => {
@@ -45,17 +44,34 @@ export const logOut = (cb) => {
 };
 
 export const isAuthenticated = () => {
-  return true;
-  // try {
-  //   // const decodedToken = getDecodedJwt();
-  //   // if (decodedToken) {
-  //   //   const { exp } = decodedToken;
-  //   //   const currentTime = Date.now() / 1000;
-  //   //   return exp > currentTime;
-  //   // } else {
-  //   //   return false;
-  //   // }
-  // } catch (e) {
-  //   return false;
-  // }
+  try {
+    const decodedToken = getDecodedJwt();
+    if (decodedToken) {
+      const { exp } = decodedToken;
+      const currentTime = Date.now() / 1000;
+      return exp > currentTime;
+    } else {
+      return false;
+    }
+  } catch (e) {
+    return false;
+  }
+};
+
+export const isPatient = () => {
+  try {
+    const decodedToken = getDecodedJwt();
+    if (decodedToken) {
+      const { role } = decodedToken;
+      if (role === "PATIENT") {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  } catch (e) {
+    return false;
+  }
 };

@@ -1,56 +1,103 @@
-import {
-  LocationOn,
-  NavigateNext,
-  NotificationsNone,
-} from "@mui/icons-material";
-import { Box, Drawer, Typography } from "@mui/material";
-import React from "react";
+import { NavigateNext, NotificationsNone } from "@mui/icons-material";
+import { Box, CircularProgress, Drawer, Typography } from "@mui/material";
+import React, { useState } from "react";
+import { useAuthenticatedUser } from "../hooks/useAuthenticatedUser";
+import { useAlert } from "../context/NotificationProvider";
+import { useQuery } from "react-query";
+import { fetchAppointments } from "../modules/Patient/services/patientService";
+import PendingDrawer from "../modules/Patient/components/Dasboard/PendingDrawer";
 
 const ProfileSidebar = (props) => {
+  const { isLoading, userDetails } = useAuthenticatedUser();
+  const { showNotification } = useAlert();
+  const [open, setOpen] = useState(false);
+  const color = ["#0FC916", "#FCBA03", "#6E00FF", "#F30505"];
+
+  const { isLoading: isAppointmentLoading, data } = useQuery(
+    [
+      "appointments",
+      {
+        patientId: userDetails?.data._id,
+        limit: 4,
+        page: 1,
+        status: "PENDING",
+      },
+    ],
+    fetchAppointments,
+    {
+      enabled: isLoading === false,
+      onError: (error) => {
+        showNotification?.(error.response?.data.message, { type: "error" });
+      },
+    }
+  );
+
   return (
     <>
-      <Box>
+      <Box sx={{}}>
         <Drawer
           variant="permanent"
           anchor="right"
           sx={{
-            width: props.width,
+            display: { xs: "none", md: "block" },
+            width: { xs: "0", md: props.width },
           }}
         >
           <Box width={props.width}>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                pt: 20,
-              }}
-            >
+            {isLoading || isAppointmentLoading ? (
               <Box
                 sx={{
-                  width: "100px",
-                  height: "100px",
-                  borderRadius: "100%",
-                  border: "1px solid black",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: "100vh",
                 }}
-              ></Box>
-            </Box>
+              >
+                <CircularProgress />
+              </Box>
+            ) : (
+              <>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    pt: 10,
+                  }}
+                >
+                  <Box
+                    sx={{
+                      width: "100px",
+                      height: "100px",
+                      borderRadius: "100%",
+                    }}
+                  >
+                    <img
+                      src={userDetails.data.profilePicture}
+                      alt=""
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        borderRadius: "100%",
+                        objectFit: "cover",
+                      }}
+                    />
+                  </Box>
+                </Box>
 
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                mt: 1,
-              }}
-            >
-              <Typography variant="h6" color="black">
-                Oyelola Adeboye
-              </Typography>
-              <Typography variant="caption" color="#787878">
-                Patient Duration: 3 Months
-              </Typography>
-              <Box
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    mt: 1,
+                  }}
+                >
+                  <Typography variant="h6" color="black">
+                    {userDetails.data.lastName} {userDetails.data.firstName}
+                  </Typography>
+
+                  {/* <Box
                 sx={{
                   display: "flex",
                   justifyContent: "center",
@@ -58,126 +105,193 @@ const ProfileSidebar = (props) => {
                 }}
               >
                 <LocationOn />
-                <Typography variant="caption" color="#787878">
-                  Location: Lagos
-                </Typography>
-              </Box>
-            </Box>
-            <Box sx={{ p: 4 }}>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  mt: 1,
-                  mb: 3,
-                }}
-              >
-                <Typography variant="h6" color="black">
-                  Personal
-                </Typography>
-                <Box
-                  sx={{
-                    width: "25px",
-                    height: "25px",
-                    backgroundColor: (theme) => theme.palette.primary.main,
-                    borderRadius: "5px",
-                  }}
-                >
-                  <NavigateNext color="success" />
+              </Box> */}
                 </Box>
-              </Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  mt: 1,
-                  mb: 1,
-                }}
-              >
-                <Typography variant="h6" color="black">
-                  DOB:
-                </Typography>
-                <Typography variant="caption" color="#787878">
-                  25/04/2004
-                </Typography>
-              </Box>
+                <Box sx={{ p: 4 }}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      mt: 1,
+                      mb: 3,
+                    }}
+                  >
+                    <Typography variant="h6" color="black">
+                      Personal
+                    </Typography>
+                    <Box
+                      sx={{
+                        width: "25px",
+                        height: "25px",
+                        backgroundColor: (theme) => theme.palette.primary.main,
+                        borderRadius: "5px",
+                      }}
+                    >
+                      <NavigateNext color="success" />
+                    </Box>
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      mt: 1,
+                      mb: 1,
+                    }}
+                  >
+                    <Typography variant="h6" color="black">
+                      DOB:
+                    </Typography>
+                    <Typography variant="caption" color="#787878">
+                      {new Date(
+                        userDetails.data.dateOfBirth
+                      ).toLocaleDateString("en-US")}
+                    </Typography>
+                  </Box>
 
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  mt: 1,
-                  mb: 1,
-                }}
-              >
-                <Typography variant="h6" color="black">
-                  Phone:
-                </Typography>
-                <Typography variant="caption" color="#787878">
-                  +2348154332992
-                </Typography>
-              </Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  mt: 1,
-                  mb: 1,
-                }}
-              >
-                <Typography variant="h6" color="black">
-                  Address:
-                </Typography>
-                <Typography variant="caption" color="#787878">
-                  Number 2, off...
-                </Typography>
-              </Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  mt: 1,
-                  mb: 1,
-                }}
-              >
-                <Typography variant="h6" color="black">
-                  Email:
-                </Typography>
-                <Typography variant="caption" color="#787878">
-                  example@gmail.com
-                </Typography>
-              </Box>
-            </Box>
-
-            <Box sx={{ pt: 10, pl: 4, pr: 4 }}>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  mt: 1,
-                  mb: 1,
-                }}
-              >
-                <Box
-                  sx={{
-                    display: "flex",
-
-                    alignItems: "center",
-                  }}
-                >
-                  <NotificationsNone sx={{ color: "black" }} />
-                  <Typography variant="h6" color="black">
-                    Notifications
-                  </Typography>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      mt: 1,
+                      mb: 1,
+                    }}
+                  >
+                    <Typography variant="h6" color="black">
+                      Phone:
+                    </Typography>
+                    <Typography variant="caption" color="#787878">
+                      {userDetails.data.phoneNumber}
+                    </Typography>
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      mt: 1,
+                      mb: 1,
+                    }}
+                  >
+                    <Typography variant="h6" color="black">
+                      Address:
+                    </Typography>
+                    <Typography variant="caption" color="#787878">
+                      {userDetails.data.address.slice(0, 13)}
+                      {userDetails.data.address.length > 8 && "..."}
+                    </Typography>
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      mt: 1,
+                      mb: 1,
+                    }}
+                  >
+                    <Typography variant="h6" color="black">
+                      Email:
+                    </Typography>
+                    <Typography variant="caption" color="#787878">
+                      {userDetails.data.email}
+                    </Typography>
+                  </Box>
                 </Box>
-                <Typography
-                  variant="caption"
-                  sx={{ textDecoration: "underline", cursor: "pointer" }}
-                >
-                  Show All
-                </Typography>
-              </Box>
-            </Box>
+
+                <Box sx={{ pl: 4, pr: 4 }}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      mt: 1,
+                      mb: 1,
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        display: "flex",
+
+                        alignItems: "center",
+                      }}
+                    >
+                      <NotificationsNone sx={{ color: "text.secondary" }} />
+                      <Typography
+                        variant="caption"
+                        color="text.secondary"
+                        sx={{ fontSize: "10px !important " }}
+                      >
+                        Pending Appointments
+                      </Typography>
+                    </Box>
+                    <Typography
+                      onClick={() => setOpen(true)}
+                      variant="caption"
+                      sx={{ textDecoration: "underline", cursor: "pointer" }}
+                    >
+                      Show All
+                    </Typography>
+                  </Box>
+                  {data.data?.appointments.length > 0 ? (
+                    data.data?.appointments.slice(0, 4).map((item, index) => {
+                      return (
+                        <>
+                          <Box
+                            key={item._id}
+                            sx={{
+                              width: "100%",
+                              minHeight: "30px",
+                              backgroundColor: "#F4F4F4",
+                              borderTopRightRadius: "5px",
+                              borderBottomRightRadius: "5px",
+                              display: "flex",
+
+                              mt: 3,
+                              mb: 2,
+                              justifyContent: "space-between",
+                            }}
+                          >
+                            <Box display="flex" sx={{ width: "75%" }}>
+                              <Box
+                                sx={{
+                                  width: "1.99px",
+                                  height: "100%",
+                                  borderRadius: "5px",
+                                  backgroundColor: color[index],
+                                }}
+                              />
+                              <Box
+                                ml={5}
+                                display="flex"
+                                flexDirection="column"
+                                justifyContent="center"
+                                p={1}
+                              >
+                                <Typography color="black" variant="h6">
+                                  {item.additionalInformation}
+                                </Typography>
+                                <Typography
+                                  color="text.secondary"
+                                  variant="caption"
+                                >
+                                  Doctor : Dr {item.doctorId.lastName}
+                                </Typography>
+                              </Box>
+                            </Box>
+                          </Box>
+                        </>
+                      );
+                    })
+                  ) : (
+                    <Typography variant="h6" mt={4} color="text.secondary">
+                      No Pending Appointments
+                    </Typography>
+                  )}
+                </Box>
+                <PendingDrawer
+                  open={open}
+                  onClose={() => setOpen(false)}
+                  data={data}
+                />
+              </>
+            )}
           </Box>
         </Drawer>
       </Box>

@@ -1,20 +1,25 @@
-// import { getDecodedJwt, isAuthenticated } from "../utils/auth";
-// // import { useQuery } from "react-query";
-// import { useAlert } from "../context/NotificationProvider";
-// import handleApiError from "../utils/handleApiError";
-// import { fetchUser } from "../services/authService";
+import { useQuery } from "react-query";
+import { useAlert } from "../context/NotificationProvider";
+import { getDecodedJwt, isAuthenticated } from "../utils/auth";
+import { fetchUser } from "../services/authService";
 
 export const useAuthenticatedUser = () => {
-  // const decodedUser = getDecodedJwt();
-  // const { showNotification } = useAlert();
-  // const userId = decodedUser.id;
+  const decodedUser = getDecodedJwt();
+  const { showNotification } = useAlert();
 
-  // const { isLoading, data } = useQuery(["user_by_id", { userId }], fetchUser, {
-  //   enabled: isAuthenticated() && userId !== null && userId !== undefined,
-  //   onError: (error) => {
-  //     showNotification?.(handleApiError(error), { type: "error" });
-  //   },
-  // });
+  const patientId = decodedUser.id;
 
-  return {};
+  const { isLoading, data } = useQuery(
+    ["patient_by_id", { patientId }],
+    fetchUser,
+    {
+      enabled:
+        isAuthenticated() && patientId !== null && patientId !== undefined,
+      onError: (error) => {
+        showNotification?.(error.response.data.message, { type: "error" });
+      },
+    }
+  );
+
+  return { isLoading, userDetails: data };
 };

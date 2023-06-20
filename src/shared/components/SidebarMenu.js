@@ -7,7 +7,10 @@ const SidebarMenu = (props) => {
   return (
     <>
       <Box
-        onClick={() => navigate(props?.item.url)}
+        onClick={() => {
+          props.onClose();
+          navigate(props?.item.url);
+        }}
         sx={{
           width: "100%",
           display: "flex",

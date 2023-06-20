@@ -1,13 +1,7 @@
 import axios from "axios";
 import { BehaviorSubject } from "rxjs";
 import { toast } from "react-toastify";
-import {
-  getRefreshToken,
-  getToken,
-  isAuthenticated,
-  removeToken,
-  setToken,
-} from "../utils/auth";
+import { getToken, isAuthenticated, removeToken } from "../utils/auth";
 
 let refreshed = false;
 
@@ -25,7 +19,7 @@ const Api = axios.create({
 Api.interceptors.request.use(
   async (config) => {
     config.headers = {
-      Authorization: isAuthenticated() ? `Bearer ${getToken()}` : "",
+      Authorization: isAuthenticated() ? `${getToken()}` : "",
     };
     return config;
   },
@@ -35,25 +29,13 @@ Api.interceptors.request.use(
       err?.response?.data?.detail === "Incorrect authentication credentials." &&
       !refreshed
     ) {
-      refreshed = true;
-      Api.post("/auth/token/refresh/", {
-        refresh: getRefreshToken(),
-      })
-        .then((res) => {
-          setToken(res.data.access);
-          Api(err.config);
-        })
-        .catch((error) => {
-          toast.error(error?.message || "Session expired", {
-            position: "top-center",
-          });
-          setTimeout(() => {
-            removeToken();
-            window.history.pushState({}, "User Login", "/login");
-          }, 4000);
-          return error;
-        });
-      return;
+      toast.error("Session expired", {
+        position: "top-center",
+      });
+      setTimeout(() => {
+        removeToken();
+        window.history.pushState({}, "User Login", "/home");
+      }, 4000);
     }
     refreshed = false;
     // Promise.reject(err);
@@ -82,26 +64,5 @@ Api.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
-// function refreshToken(token: string) {
-//   return Api.post("/auth/token/refresh/", {
-//     refresh: token,
-//   });
-// }
-
-export const Post = async (url, data, config, newUrl) => {
-  try {
-    return await axios.post(`${newUrl ? newUrl : baseUrl}${url}`, data, {
-      responseType: "blob",
-      headers: {
-        Authorization: isAuthenticated() ? `Bearer ${getToken()}` : "",
-        ...config,
-      },
-    });
-  } catch (error) {
-    subscriber.next(error.response);
-    throw error.response;
-  }
-};
 
 export default Api;

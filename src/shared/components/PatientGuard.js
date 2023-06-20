@@ -1,12 +1,12 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { AuthPaths } from "../../routes/paths";
 import React from "react";
-import { isAuthenticated } from "../../utils/auth";
+import { isPatient } from "../../utils/auth";
 
-const AuthGuard = ({ children }) => {
+const PatientGuard = ({ children }) => {
   const location = useLocation();
 
-  if (isAuthenticated()) {
+  if (isPatient()) {
     return (
       <>
         <Outlet />
@@ -19,4 +19,4 @@ const AuthGuard = ({ children }) => {
   }
 };
 
-export default AuthGuard;
+export default PatientGuard;
