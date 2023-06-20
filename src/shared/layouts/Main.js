@@ -1,9 +1,11 @@
-import { Box, useMediaQuery, useTheme } from "@mui/material";
+import { Box, Button, useMediaQuery, useTheme } from "@mui/material";
 import React, { useEffect } from "react";
 import PatientSidebar from "./Sidebars/PatientSidebar";
 import { useState } from "react";
 import { ArrowBack, ArrowForward } from "@mui/icons-material";
 import { Outlet } from "react-router-dom";
+import MenuIcon from "@mui/icons-material/Menu";
+import { ReactComponent as Logo } from "../../assets/svgs/logo.svg";
 
 export default function MainLayout({ children }) {
   const [collapse, setCollapse] = useState(false);
@@ -31,17 +33,45 @@ export default function MainLayout({ children }) {
       <Box sx={{ display: "flex" }}>
         <Box
           sx={{
-            display: { xs: "block", md: "none" },
+            display: { xs: "flex", md: "none" },
+            justifyContent: "space-between",
+            alignItems: "center",
             width: "100%",
-            height: "100px",
+            height: "80px",
             backgroundColor: "white",
             position: "fixed",
             zIndex: "1200",
             top: 0,
+            pl: 4,
+            pr: 4,
           }}
-          onClick={() => setOpen(!open)}
         >
-          hel
+          <Box
+            sx={{
+              display: { xs: "flex" },
+              justifyContent: "space-between",
+              alignItems: "center",
+              width: "100%",
+
+              pl: 8,
+              pr: 8,
+            }}
+          >
+            <Logo />
+            <Button
+              sx={{ display: { xs: "block", md: "none" } }}
+              onClick={() => setOpen(!open)}
+            >
+              <MenuIcon
+                sx={{
+                  color: "black",
+                  padding: "3px",
+                  borderRadius: "10px",
+                  border: "2px solid black",
+                }}
+              />
+            </Button>
+          </Box>
         </Box>
 
         <PatientSidebar
@@ -79,7 +109,7 @@ export default function MainLayout({ children }) {
             )}
           </Box>
         )}
-        <Box sx={{ mt: !mobile && "100px", width: "100%" }}>
+        <Box sx={{ mt: !mobile && "80px", width: "100%" }}>
           <Outlet />
         </Box>
       </Box>

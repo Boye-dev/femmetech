@@ -1,24 +1,42 @@
 import React from "react";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
-// import { QueryClient, QueryClientProvider } from "react-query";
-// import { ReactQueryDevtools } from "react-query/devtools";
 import "./styles/global.css";
 import theme from "./theme";
 import { StyledEngineProvider, ThemeProvider } from "@mui/material";
 import { createRoot } from "react-dom/client";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { NotificationProvider } from "./context/NotificationProvider";
+import { SignupContextProvider } from "./context/SignupContext";
 
 const container = document.getElementById("root");
 const root = createRoot(container);
-
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: 0,
+      cacheTime: 600000,
+    },
+    mutations: {
+      useErrorBoundary: false,
+    },
+  },
+});
 root.render(
   <React.StrictMode>
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
         {/* <CssBaseline /> */}
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
+        <QueryClientProvider client={queryClient}>
+          <NotificationProvider>
+            <SignupContextProvider>
+              <BrowserRouter>
+                <App />
+              </BrowserRouter>
+            </SignupContextProvider>
+          </NotificationProvider>
+        </QueryClientProvider>
       </ThemeProvider>
     </StyledEngineProvider>
   </React.StrictMode>

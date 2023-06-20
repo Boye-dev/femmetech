@@ -1,7 +1,7 @@
 import Api from "../../../api/api";
 
 export const login = async (payload) => {
-  return Api.post("login/", payload).then((res) => res.data);
+  return Api.post("/patient/login/", payload).then((res) => res.data);
 };
 
 export const setPassword = async (payload) => {

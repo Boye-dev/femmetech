@@ -40,6 +40,7 @@ const PatientSidebar = (props) => {
                     key={item.name}
                     width={props.width}
                     isMobile={props.isMobile}
+                    onClose={() => props.setOpen(false)}
                     isActive={location.pathname.includes(item.url)}
                   />
                 );
