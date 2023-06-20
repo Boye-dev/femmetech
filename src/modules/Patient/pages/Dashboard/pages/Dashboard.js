@@ -105,15 +105,15 @@ const Dashboard = () => {
                 {[
                   {
                     name: "Total Appointments",
-                    value: data.data.totalAppointments || "--",
+                    value: data?.data.totalAppointments || "--",
                   },
                   {
-                    value: data.data.upcomingAppointments || "--",
+                    value: data?.data.upcomingAppointments || "--",
                     name: "Upcoming Appointments",
                   },
                   {
                     name: "Cancelled Appointments",
-                    value: data.data.cancelledAppointments || "--",
+                    value: data?.data.cancelledAppointments || "--",
                   },
                 ].map((item, index) => {
                   return (
@@ -174,8 +174,8 @@ const Dashboard = () => {
                         Show All
                       </Typography>
                     </Box>
-                    {upcoming.data.length > 0 ? (
-                      upcoming.data?.slice(0, 4).map((item, index) => {
+                    {upcoming?.data.length > 0 ? (
+                      upcoming?.data?.slice(0, 4).map((item, index) => {
                         const dateTime = new Date(item.datetime);
                         const startDate = dateTime.toLocaleDateString("en-US");
 
@@ -296,8 +296,8 @@ const Dashboard = () => {
                         Show All
                       </Typography>
                     </Box>
-                    {pendingApp.data.appointments.length > 0 ? (
-                      pendingApp.data.appointments
+                    {pendingApp?.data.appointments.length > 0 ? (
+                      pendingApp?.data.appointments
                         .slice(0, 5)
                         .map((item, index) => {
                           return (
@@ -365,7 +365,7 @@ const Dashboard = () => {
                     <PendingDrawer
                       open={open}
                       onClose={() => setOpen(false)}
-                      data={pendingApp}
+                      data={data ? pendingApp : []}
                     />
                   </Box>
                 </Grid>
