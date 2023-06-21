@@ -13,6 +13,7 @@ import { useAlert } from "../../../../../context/NotificationProvider";
 import { getDecodedJwt } from "../../../../../utils/auth";
 import { useNavigate } from "react-router";
 import PendingDrawer from "../../../components/Dasboard/PendingDrawer";
+import { formatDate } from "@fullcalendar/core";
 
 const Dashboard = () => {
   const { isMobile } = useWidth();
@@ -35,7 +36,7 @@ const Dashboard = () => {
     {
       enabled: patientId !== null || patientId !== undefined,
       onError: (error) => {
-        showNotification?.(error.response?.data.message, { type: "error" });
+        showNotification?.(error.response?.data?.message, { type: "error" });
       },
     }
   );
@@ -46,7 +47,7 @@ const Dashboard = () => {
       enabled: patientId !== null || patientId !== undefined,
 
       onError: (error) => {
-        showNotification?.(error.response.data.message, { type: "error" });
+        showNotification?.(error.response.data?.message, { type: "error" });
       },
     }
   );
@@ -57,7 +58,7 @@ const Dashboard = () => {
       enabled: patientId !== null || patientId !== undefined,
 
       onError: (error) => {
-        showNotification?.(error.response.data.message, { type: "error" });
+        showNotification?.(error.response.data?.message, { type: "error" });
       },
     }
   );
@@ -70,7 +71,7 @@ const Dashboard = () => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            height: "100vh",
+            height: { xs: "auto", md: "100vh" },
           }}
         >
           <CircularProgress />
@@ -105,15 +106,15 @@ const Dashboard = () => {
                 {[
                   {
                     name: "Total Appointments",
-                    value: data.data.totalAppointments || "--",
+                    value: data?.data.totalAppointments || "--",
                   },
                   {
-                    value: data.data.upcomingAppointments || "--",
+                    value: data?.data.upcomingAppointments || "--",
                     name: "Upcoming Appointments",
                   },
                   {
                     name: "Cancelled Appointments",
-                    value: data.data.cancelledAppointments || "--",
+                    value: data?.data.cancelledAppointments || "--",
                   },
                 ].map((item, index) => {
                   return (
@@ -174,11 +175,8 @@ const Dashboard = () => {
                         Show All
                       </Typography>
                     </Box>
-                    {upcoming.data.length > 0 ? (
-                      upcoming.data?.slice(0, 4).map((item, index) => {
-                        const dateTime = new Date(item.datetime);
-                        const startDate = dateTime.toLocaleDateString("en-US");
-
+                    {upcoming?.data.length > 0 ? (
+                      upcoming?.data?.slice(0, 4).map((item, index) => {
                         return (
                           <>
                             <Box
@@ -213,7 +211,7 @@ const Dashboard = () => {
                                   p={1}
                                 >
                                   <Typography color="black" variant="h5">
-                                    {item.additionalInformation}
+                                    {item.title}
                                   </Typography>
                                   <Typography
                                     color="text.secondary"
@@ -226,7 +224,7 @@ const Dashboard = () => {
                                     variant="caption"
                                     sx={{ fontSize: "10px !important" }}
                                   >
-                                    Date : {startDate}
+                                    Date : {formatDate(item.startDateTime)}
                                   </Typography>
                                 </Box>
                               </Box>
@@ -238,13 +236,13 @@ const Dashboard = () => {
                                 mr={5}
                                 sx={{ width: "25%" }}
                               >
-                                <Button
+                                {/* <Button
                                   variant="contained"
                                   disableElevation
                                   sx={{ borderRadius: "10px ", width: "29px" }}
                                 >
                                   View
-                                </Button>
+                                </Button> */}
                               </Box>
                             </Box>
                           </>
@@ -296,9 +294,9 @@ const Dashboard = () => {
                         Show All
                       </Typography>
                     </Box>
-                    {pendingApp.data.appointments.length > 0 ? (
-                      pendingApp.data.appointments
-                        .slice(0, 5)
+                    {pendingApp?.data.appointments.length > 0 ? (
+                      pendingApp?.data.appointments
+                        .slice(0, 4)
                         .map((item, index) => {
                           return (
                             <>
@@ -365,7 +363,7 @@ const Dashboard = () => {
                     <PendingDrawer
                       open={open}
                       onClose={() => setOpen(false)}
-                      data={pendingApp}
+                      data={data ? pendingApp : []}
                     />
                   </Box>
                 </Grid>

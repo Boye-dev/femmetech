@@ -28,6 +28,31 @@ themeInstance = createTheme({
         },
       },
     },
+    MuiAutocomplete: {
+      styleOverrides: {
+        paper: {
+          backgroundColor: "white", // Set the desired background color
+        },
+        option: {
+          '&[aria-selected="true"]': {
+            backgroundColor: "grey", // Set the desired background color
+          },
+          color: "black",
+        },
+      },
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          color: "black", // Set the label text color
+        },
+        outlined: {
+          "&.Mui-focused": {
+            color: "black", // Set the label text color when focused
+          },
+        },
+      },
+    },
   },
 
   palette,

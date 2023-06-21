@@ -16,3 +16,7 @@ export const fetchAppointments = async ({ queryKey }) => {
     }`
   ).then((res) => res.data);
 };
+
+export const book = async (payload) => {
+  return Api.post("/appointment/book/", payload).then((res) => res.data);
+};
