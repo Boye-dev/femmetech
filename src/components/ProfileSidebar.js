@@ -27,7 +27,7 @@ const ProfileSidebar = (props) => {
     {
       enabled: isLoading === false,
       onError: (error) => {
-        showNotification?.(error.response?.data.message, { type: "error" });
+        showNotification?.(error.response?.data?.message, { type: "error" });
       },
     }
   );
@@ -265,7 +265,7 @@ const ProfileSidebar = (props) => {
                                 p={1}
                               >
                                 <Typography color="black" variant="h6">
-                                  {item.additionalInformation}
+                                  {item.title}
                                 </Typography>
                                 <Typography
                                   color="text.secondary"

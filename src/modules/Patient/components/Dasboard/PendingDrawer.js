@@ -11,7 +11,7 @@ const PendingDrawer = (props) => {
       anchor="right"
       onClose={props.onClose}
       sx={{
-        "& .css-1dcpouh-MuiPaper-root-MuiDrawer-paper": {
+        "& .MuiDrawer-paper": {
           width: { xs: "100%", md: "400px" },
         },
       }}
@@ -70,7 +70,7 @@ const PendingDrawer = (props) => {
                       p={1}
                     >
                       <Typography color="black" variant="h6">
-                        {item.additionalInformation}
+                        {item.title}
                       </Typography>
                       <Typography color="text.secondary" variant="caption">
                         Doctor : Dr {item.doctorId.lastName}

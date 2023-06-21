@@ -18,6 +18,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import loginImg from "../../../assets/images/login.png";
 import { useAlert } from "../../../context/NotificationProvider";
 import { getDecodedJwt, setToken } from "../../../utils/auth";
+import { LoadingButton } from "@mui/lab";
 
 const Signin = () => {
   const navigate = useNavigate();
@@ -353,13 +354,12 @@ const Signin = () => {
                 )}
               />
 
-              <Button
+              <LoadingButton
                 fullWidth
                 size="small"
-                disabled={isLoading}
+                loading={isLoading}
                 onClick={handleSubmit(onSubmit)}
                 endIcon={<SendIcon />}
-                startIcon={isLoading && <CircularProgress size={2} />}
                 loadingPosition="end"
                 variant="contained"
                 sx={{
@@ -374,7 +374,7 @@ const Signin = () => {
                 }}
               >
                 Login
-              </Button>
+              </LoadingButton>
 
               <Box
                 sx={{

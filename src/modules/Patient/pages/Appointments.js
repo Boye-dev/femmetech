@@ -6,7 +6,6 @@ import { Add } from "@mui/icons-material";
 
 const Appointments = () => {
   const [book, setBook] = useState(false);
-  // const [time, setTime] = useState(null);
 
   return (
     <Box
@@ -30,11 +29,13 @@ const Appointments = () => {
             Appointments
           </Typography>
           <Button
+            disableElevation
             variant="contained"
             startIcon={<Add />}
+            sx={{ borderRadius: "14px" }}
             onClick={() => setBook(true)}
           >
-            New
+            New Appointment
           </Button>
         </Box>
       </Box>
