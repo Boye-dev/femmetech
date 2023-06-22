@@ -1,8 +1,8 @@
-import { AuthPaths, PatientPaths } from "../routes/paths";
+import { AuthPaths, DoctorPaths, PatientPaths } from "../routes/paths";
 import { logOut } from "../utils/auth";
 
 import { Roles } from "./roles";
-import CampaignIcon from '@mui/icons-material/Campaign';
+import CampaignIcon from "@mui/icons-material/Campaign";
 import { CalendarMonth, Dashboard } from "@mui/icons-material";
 
 export const PATIENT_NAV_ITEMS = [
@@ -28,7 +28,29 @@ export const PATIENT_NAV_ITEMS = [
     bottom: false,
   },
 ];
-
+export const DOCTOR_NAV_ITEMS = [
+  {
+    name: "Dashboard",
+    url: DoctorPaths.DOCTOR_DASHBOARD,
+    icon: <Dashboard />,
+    role: Roles.DOCTOR,
+    bottom: false,
+  },
+  {
+    name: "Appointments",
+    url: DoctorPaths.DOCTOR_APPOINTMENT,
+    icon: <CalendarMonth />,
+    role: Roles.DOCTOR,
+    bottom: false,
+  },
+  {
+    name: "Announcements",
+    url: DoctorPaths.DOCTOR_ANNOUNCEMENTS,
+    icon: <CampaignIcon />,
+    role: Roles.DOCTOR,
+    bottom: false,
+  },
+];
 export const LOGOUT_NAV = {
   name: "Logout",
   url: "",

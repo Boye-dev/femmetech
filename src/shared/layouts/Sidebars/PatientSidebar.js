@@ -3,12 +3,18 @@ import React from "react";
 import { ReactComponent as Logo } from "../../../assets/svgs/logo.svg";
 import { ReactComponent as LogoSmall } from "../../../assets/svgs/logosmall.svg";
 import SidebarMenu from "../../components/SidebarMenu";
-import { PATIENT_NAV_ITEMS } from "../../../constants/sidebarItems";
+import {
+  DOCTOR_NAV_ITEMS,
+  PATIENT_NAV_ITEMS,
+} from "../../../constants/sidebarItems";
 import { useLocation } from "react-router-dom";
+import { getDecodedJwt } from "../../../utils/auth";
 
 const PatientSidebar = (props) => {
   const location = useLocation();
-
+  const decodedUser = getDecodedJwt();
+  const navItems =
+    decodedUser.role === "PATIENT" ? PATIENT_NAV_ITEMS : DOCTOR_NAV_ITEMS;
   return (
     <>
       <Box>
@@ -32,7 +38,7 @@ const PatientSidebar = (props) => {
             </Box>
 
             <Box sx={{ width: "100%" }}>
-              {PATIENT_NAV_ITEMS.map((item, index) => {
+              {navItems.map((item, index) => {
                 return (
                   <SidebarMenu
                     collapse={props.collapse}

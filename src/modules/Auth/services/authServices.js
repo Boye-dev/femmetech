@@ -3,7 +3,9 @@ import Api from "../../../api/api";
 export const login = async (payload) => {
   return Api.post("/patient/login/", payload).then((res) => res.data);
 };
-
+export const doctorLogin = async (payload) => {
+  return Api.post("/doctor/login/", payload).then((res) => res.data);
+};
 export const setPassword = async (payload) => {
   return Api.post("/personnels/create-password/", payload).then(
     (res) => res.data
