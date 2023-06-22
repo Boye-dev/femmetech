@@ -1,0 +1,336 @@
+import React from "react";
+import interactionPlugin from "@fullcalendar/interaction";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import Fullcalendar from "@fullcalendar/react";
+import "../../../../styles/calendar.css";
+import { useState } from "react";
+import EventDrawer from "./EventDrawer";
+import { useQuery } from "react-query";
+import { fetchUpcoming } from "../../services/doctorService";
+import { getDecodedJwt } from "../../../../utils/auth";
+import { useAlert } from "../../../../context/NotificationProvider";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Divider,
+  Grid,
+  Popover,
+  Typography,
+} from "@mui/material";
+import { useRef } from "react";
+import { useEffect } from "react";
+import {
+  AccessTime,
+  CalendarMonth,
+  HourglassBottom,
+  LocalHospital,
+  LockClockOutlined,
+} from "@mui/icons-material";
+import {
+  formatDate,
+  getDuration,
+  getFormattedTime,
+} from "../../../../utils/formatDate";
+function Calendar(props) {
+  const [event, setEvent] = useState(false);
+  const { showNotification } = useAlert();
+  const decodedUser = getDecodedJwt();
+  const doctorId = decodedUser.id;
+  const { isLoading: upcomingLoading, data: upcoming } = useQuery(
+    ["upcoming_app", { doctorId: doctorId }],
+    fetchUpcoming,
+    {
+      enabled: doctorId !== null || doctorId !== undefined,
+
+      onError: (error) => {
+        showNotification?.(error.response.data?.message, { type: "error" });
+      },
+    }
+  );
+  const convertedData =
+    upcomingLoading ||
+    upcoming?.data.map((data) => {
+      return {
+        title: data.title,
+        status: data.status,
+        patientId: data.patientId,
+        specialty: data.specialty,
+        start: data.startDateTime,
+        end: data.endDateTime,
+        additionalInformation: data.additionalInformation,
+      };
+    });
+
+  const [popoverAnchorEl, setPopoverAnchorEl] = useState(null);
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  console.log(selectedEvent);
+  const handleEventClick = (clickInfo) => {
+    const { clientX, clientY } = clickInfo.jsEvent;
+    console.log(clientX, clientY);
+    setPopoverAnchorEl({ left: clientX, top: clientY });
+    console.log(popoverAnchorEl);
+    setSelectedEvent(clickInfo.event);
+  };
+
+  const closePopover = () => {
+    setPopoverAnchorEl(null);
+    setSelectedEvent(null);
+  };
+  return (
+    <div>
+      {upcomingLoading ? (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      ) : (
+        <>
+          <div style={{ position: "relative" }}>
+            <Fullcalendar
+              events={convertedData}
+              dayMaxEvents={true}
+              nowIndicator={true}
+              eventClick={handleEventClick}
+              plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+              initialView={"timeGridWeek"}
+              headerToolbar={{
+                start: "today prev,next", // will normally be on the left. if RTL, will be on the right
+                center: "title",
+                end: "dayGridMonth,timeGridWeek,timeGridDay", // will normally be on the right. if RTL, will be on the left
+              }}
+              height={"90vh"}
+            />
+            <Popover
+              open={Boolean(popoverAnchorEl)}
+              onClose={closePopover}
+              anchorReference="anchorPosition"
+              anchorPosition={popoverAnchorEl}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "left",
+              }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "left",
+              }}
+            >
+              {selectedEvent && (
+                <div
+                  style={{
+                    width: "350px",
+                    height: "500px",
+                  }}
+                >
+                  <Box sx={{ padding: "30px 20px" }}>
+                    <Typography color="black" variant="h5" pb={1}>
+                      {selectedEvent.title}
+                    </Typography>
+                    <Box display="flex">
+                      <img
+                        src={
+                          selectedEvent.extendedProps?.patientId?.profilePicture
+                        }
+                        alt=""
+                        style={{
+                          width: "19px",
+                          height: "19px",
+                          borderRadius: "100%",
+                          marginRight: "5px",
+                        }}
+                      />
+                      <Typography color="black" variant="body2" pb={5}>
+                        {selectedEvent.extendedProps?.patientId.lastName}{" "}
+                        {selectedEvent.extendedProps?.patientId.firstName}
+                      </Typography>
+                    </Box>
+                    <Divider />
+                    <Grid container mt={5}>
+                      <Grid item xs={6} height="70px">
+                        <Box
+                          sx={{
+                            display: "flex",
+
+                            alignItems: "center",
+                          }}
+                        >
+                          <CalendarMonth />
+                          <Box ml={5}>
+                            <Typography color="text.secondary" variant="body2">
+                              Date
+                            </Typography>
+                            <Typography color="black" variant="h6">
+                              {formatDate(selectedEvent._instance?.range.start)}
+                            </Typography>
+                          </Box>
+                        </Box>
+                      </Grid>
+                      <Grid item xs={6} height="70px">
+                        <Box
+                          sx={{
+                            display: "flex",
+
+                            alignItems: "center",
+                          }}
+                        >
+                          <AccessTime />
+                          <Box ml={5}>
+                            <Typography color="text.secondary" variant="body2">
+                              Time
+                            </Typography>
+                            <Typography color="black" variant="h6">
+                              {getFormattedTime(
+                                selectedEvent._instance.range?.start
+                              )}{" "}
+                              -{" "}
+                              {getFormattedTime(
+                                selectedEvent._instance?.range.end
+                              )}
+                            </Typography>
+                          </Box>
+                        </Box>
+                      </Grid>
+                      <Grid item xs={6} height="70px">
+                        <Box
+                          sx={{
+                            display: "flex",
+
+                            alignItems: "center",
+                          }}
+                        >
+                          <LocalHospital />
+                          <Box ml={5}>
+                            <Typography color="text.secondary" variant="body2">
+                              Specialty
+                            </Typography>
+                            <Typography color="black" variant="h6">
+                              {selectedEvent.extendedProps?.specialty}
+                            </Typography>
+                          </Box>
+                        </Box>
+                      </Grid>
+                      <Grid item xs={6} height="70px">
+                        <Box
+                          sx={{
+                            display: "flex",
+
+                            alignItems: "center",
+                          }}
+                        >
+                          <HourglassBottom />
+                          <Box ml={5}>
+                            <Typography color="text.secondary" variant="body2">
+                              Duration
+                            </Typography>
+                            <Typography color="black" variant="h6">
+                              {
+                                getDuration(
+                                  selectedEvent._instance.range.start,
+                                  selectedEvent._instance.range.end
+                                ).hours
+                              }{" "}
+                              {`hour${
+                                getDuration(
+                                  selectedEvent._instance.range.start,
+                                  selectedEvent._instance.range.end
+                                ).hours > 1
+                                  ? "s"
+                                  : ""
+                              }`}{" "}
+                              {getDuration(
+                                selectedEvent._instance.range.start,
+                                selectedEvent._instance.range.end
+                              ).minutes > 0 &&
+                                `${
+                                  getDuration(
+                                    selectedEvent._instance.range.start,
+                                    selectedEvent._instance.range.end
+                                  ).minutes
+                                }minute${
+                                  getDuration(
+                                    selectedEvent._instance.range.start,
+                                    selectedEvent._instance.range.end
+                                  ).minutes > 1
+                                    ? "s"
+                                    : ""
+                                }`}
+                            </Typography>
+                          </Box>
+                        </Box>
+                      </Grid>
+                    </Grid>
+                    <Divider sx={{ height: "5px" }} />
+                    <Box
+                      sx={{
+                        mt: 4,
+                        height: "130px",
+                        backgroundColor: "#D9D9D9",
+                        borderTopLeftRadius: "8px",
+                        borderTopRightRadius: "8px",
+                        borderBottom: "1px solid black",
+                        overflowY: "auto",
+                      }}
+                    >
+                      <Box p={2}>
+                        <Typography color="black" variant="body2">
+                          {selectedEvent.extendedProps?.additionalInformation}
+                        </Typography>
+                      </Box>
+                    </Box>
+                    <Box display="flex" justifyContent="space-between" mt={2}>
+                      <Button
+                        variant="text"
+                        sx={{
+                          height: "50px",
+                          width: "48%",
+                          backgroundColor: "#EDEEF4",
+                        }}
+                      >
+                        <Typography
+                          variant="subtitle2"
+                          color="text.secondary"
+                          sx={{ fontSize: "10px !important" }}
+                        >
+                          Reschedule Appontment
+                        </Typography>
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        color="error"
+                        sx={{
+                          height: "50px",
+                          width: "48%",
+                        }}
+                      >
+                        <Typography
+                          variant="subtitle2"
+                          sx={{ fontSize: "10px !important" }}
+                        >
+                          Cancel Appontment
+                        </Typography>
+                      </Button>
+                    </Box>
+                  </Box>
+                </div>
+              )}
+            </Popover>
+            <EventDrawer
+              open={!!event}
+              event={event}
+              onClose={() => setEvent(null)}
+            />
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
+export default Calendar;

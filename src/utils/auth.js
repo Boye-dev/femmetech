@@ -12,7 +12,13 @@ export const getToken = () => {
 
 export const getDecodedJwt = (tokn = "") => {
   try {
+    const now = new Date();
+
     const token = getToken();
+    if (now.getSeconds() > 259200) {
+      localStorage.removeItem(token);
+      return null;
+    }
     const t = token || tokn;
 
     const decoded = jwtDecode(t);
@@ -64,6 +70,23 @@ export const isPatient = () => {
     if (decodedToken) {
       const { role } = decodedToken;
       if (role === "PATIENT") {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  } catch (e) {
+    return false;
+  }
+};
+export const isDoctor = () => {
+  try {
+    const decodedToken = getDecodedJwt();
+    if (decodedToken) {
+      const { role } = decodedToken;
+      if (role === "DOCTOR") {
         return true;
       } else {
         return false;

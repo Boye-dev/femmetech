@@ -4,16 +4,17 @@ import ProfileSidebar from "../../../../../components/ProfileSidebar";
 import { useWidth } from "../../../../../hooks/useWidth";
 import { useQuery } from "react-query";
 import {
-  fetchAppointments,
+  fetchAppointmentsDoctor,
   fetchInfo,
   fetchUpcoming,
-} from "../../../services/patientService";
+} from "../../../services/doctorService";
 import { useAlert } from "../../../../../context/NotificationProvider";
 
 import { getDecodedJwt } from "../../../../../utils/auth";
 import { useNavigate } from "react-router";
 import PendingDrawer from "../../../components/Dasboard/PendingDrawer";
 import { formatDate } from "@fullcalendar/core";
+import DoctorProfileSidebar from "../../../../../components/DoctorProfileSidebar";
 
 const Dashboard = () => {
   const { isMobile } = useWidth();
@@ -21,30 +22,30 @@ const Dashboard = () => {
   const { showNotification } = useAlert();
   const decodedUser = getDecodedJwt();
   const color = ["#0FC916", "#FCBA03", "#6E00FF", "#F30505"];
-  const patientId = decodedUser.id;
+  const doctorId = decodedUser.id;
   const [open, setOpen] = useState(false);
 
   const { isLoading: isAppointmentLoading, data: pendingApp } = useQuery(
     [
       "appointments",
       {
-        patientId,
+        doctorId,
         status: "PENDING",
       },
     ],
-    fetchAppointments,
+    fetchAppointmentsDoctor,
     {
-      enabled: patientId !== null || patientId !== undefined,
+      enabled: doctorId !== null || doctorId !== undefined,
       onError: (error) => {
         showNotification?.(error.response?.data?.message, { type: "error" });
       },
     }
   );
   const { isLoading, data } = useQuery(
-    ["info", { patientId: patientId }],
+    ["info", { doctorId: doctorId }],
     fetchInfo,
     {
-      enabled: patientId !== null || patientId !== undefined,
+      enabled: doctorId !== null || doctorId !== undefined,
 
       onError: (error) => {
         showNotification?.(error.response.data?.message, { type: "error" });
@@ -52,10 +53,10 @@ const Dashboard = () => {
     }
   );
   const { isLoading: upcomingLoading, data: upcoming } = useQuery(
-    ["upcoming_app", { patientId: patientId }],
+    ["upcoming_app", { doctorId: doctorId }],
     fetchUpcoming,
     {
-      enabled: patientId !== null || patientId !== undefined,
+      enabled: doctorId !== null || doctorId !== undefined,
 
       onError: (error) => {
         showNotification?.(error.response.data?.message, { type: "error" });
@@ -167,7 +168,7 @@ const Dashboard = () => {
                         Upcoming Appointments
                       </Typography>
                       <Typography
-                        onClick={() => navigate("/patient/appointments")}
+                        onClick={() => navigate("/doctor/appointments")}
                         color="primary"
                         variant="subtitle2"
                         sx={{ textDecoration: "underline", cursor: "pointer" }}
@@ -283,7 +284,7 @@ const Dashboard = () => {
                   >
                     <Box display="flex" justifyContent="space-between">
                       <Typography color="text.secondary" variant="h5">
-                        Pending Appointments
+                        Waitlist
                       </Typography>
                       <Typography
                         onClick={() => setOpen(true)}
@@ -338,7 +339,8 @@ const Dashboard = () => {
                                       color="text.secondary"
                                       variant="caption"
                                     >
-                                      Doctor : Dr {item.doctorId.lastName}
+                                      {item.patientId.firstName}{" "}
+                                      {item.patientId.lastName}
                                     </Typography>
                                   </Box>
                                 </Box>
@@ -356,7 +358,7 @@ const Dashboard = () => {
                         }}
                       >
                         <Typography variant="h6" mt={4} color="text.secondary">
-                          No Upcoming Appointment
+                          No Waitlist Appointment
                         </Typography>
                       </Box>
                     )}
@@ -375,7 +377,7 @@ const Dashboard = () => {
               display: { xs: "none", md: "block" },
             }}
           >
-            <ProfileSidebar width="250px" />
+            <DoctorProfileSidebar width="250px" />
           </Box>
         </>
       )}

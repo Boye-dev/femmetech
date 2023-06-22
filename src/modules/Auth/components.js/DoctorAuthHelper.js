@@ -1,14 +1,15 @@
 import { Navigate, Outlet } from "react-router-dom";
 import React from "react";
+
 import { Roles } from "../../../constants/roles";
-import { PatientPaths } from "../../../routes/paths";
+import { DoctorPaths } from "../../../routes/paths";
 import { getDecodedJwt } from "../../../utils/auth";
 
-const AuthHelper = () => {
+const DoctorAuthHelper = () => {
   const decodedUser = getDecodedJwt();
   console.log(decodedUser);
-  if (decodedUser.role === Roles.PATIENT) {
-    return <Navigate to={PatientPaths.PATIENT_DASHBOARD} replace />;
+  if (decodedUser.role === Roles.DOCTOR) {
+    return <Navigate to={DoctorPaths.DOCTOR_DASHBOARD} replace />;
   } else {
     return (
       <>
@@ -18,4 +19,4 @@ const AuthHelper = () => {
   }
 };
 
-export default AuthHelper;
+export default DoctorAuthHelper;

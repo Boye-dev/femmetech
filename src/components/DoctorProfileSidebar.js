@@ -1,14 +1,14 @@
 import { NavigateNext, NotificationsNone } from "@mui/icons-material";
 import { Box, CircularProgress, Drawer, Typography } from "@mui/material";
 import React, { useState } from "react";
-import { useAuthenticatedUser } from "../hooks/useAuthenticatedUser";
 import { useAlert } from "../context/NotificationProvider";
 import { useQuery } from "react-query";
-import { fetchAppointments } from "../modules/Patient/services/patientService";
-import PendingDrawer from "../modules/Patient/components/Dasboard/PendingDrawer";
+import PendingDrawer from "../modules/Doctor/components/Dasboard/PendingDrawer";
+import { useAuthenticatedUserDoctor } from "../hooks/useAuthenticatedUserDoctor";
+import { fetchAppointmentsDoctor } from "../modules/Doctor/services/doctorService";
 
-const ProfileSidebar = (props) => {
-  const { isLoading, userDetails } = useAuthenticatedUser();
+const DoctorProfileSidebar = (props) => {
+  const { isLoading, userDetails } = useAuthenticatedUserDoctor();
   const { showNotification } = useAlert();
   const [open, setOpen] = useState(false);
   const color = ["#0FC916", "#FCBA03", "#6E00FF", "#F30505"];
@@ -17,11 +17,12 @@ const ProfileSidebar = (props) => {
     [
       "appointments",
       {
-        patientId: userDetails?.data._id,
+        doctorId: userDetails?.data._id,
+
         status: "PENDING",
       },
     ],
-    fetchAppointments,
+    fetchAppointmentsDoctor,
     {
       enabled: isLoading === false,
       onError: (error) => {
@@ -128,23 +129,6 @@ const ProfileSidebar = (props) => {
                       <NavigateNext color="success" />
                     </Box>
                   </Box>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      mt: 1,
-                      mb: 1,
-                    }}
-                  >
-                    <Typography variant="h6" color="black">
-                      DOB:
-                    </Typography>
-                    <Typography variant="caption" color="#787878">
-                      {new Date(
-                        userDetails.data.dateOfBirth
-                      ).toLocaleDateString("en-US")}
-                    </Typography>
-                  </Box>
 
                   <Box
                     sx={{
@@ -216,7 +200,7 @@ const ProfileSidebar = (props) => {
                         color="text.secondary"
                         sx={{ fontSize: "10px !important " }}
                       >
-                        Pending Appointments
+                        Waitlist
                       </Typography>
                     </Box>
                     <Typography
@@ -269,7 +253,8 @@ const ProfileSidebar = (props) => {
                                   color="text.secondary"
                                   variant="caption"
                                 >
-                                  Doctor : Dr {item.doctorId.lastName}
+                                  {item.patientId.firstName}{" "}
+                                  {item.patientId.lastName}
                                 </Typography>
                               </Box>
                             </Box>
@@ -279,7 +264,7 @@ const ProfileSidebar = (props) => {
                     })
                   ) : (
                     <Typography variant="h6" mt={4} color="text.secondary">
-                      No Pending Appointments
+                      No Waitlist
                     </Typography>
                   )}
                 </Box>
@@ -297,4 +282,4 @@ const ProfileSidebar = (props) => {
   );
 };
 
-export default ProfileSidebar;
+export default DoctorProfileSidebar;
