@@ -8,6 +8,7 @@ import { createRoot } from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { NotificationProvider } from "./context/NotificationProvider";
 import { SignupContextProvider } from "./context/SignupContext";
+import { NexusContextProvider } from "./context/NexusContext";
 
 const container = document.getElementById("root");
 const root = createRoot(container);
@@ -31,9 +32,11 @@ root.render(
         <QueryClientProvider client={queryClient}>
           <NotificationProvider>
             <SignupContextProvider>
-              <BrowserRouter>
-                <App />
-              </BrowserRouter>
+              <NexusContextProvider>
+                <BrowserRouter>
+                  <App />
+                </BrowserRouter>
+              </NexusContextProvider>
             </SignupContextProvider>
           </NotificationProvider>
         </QueryClientProvider>

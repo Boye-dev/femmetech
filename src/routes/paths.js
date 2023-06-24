@@ -14,10 +14,16 @@ export const PatientPaths = {
   PATIENT_DASHBOARD: "/patient/dashboard",
   PATIENT_APPOINTMENT: "/patient/appointments",
   PATIENT_ANNOUNCEMENTS: "/patient/announcements",
+  PATIENT_MESSAGES: "/patient/messages",
+  PATIENT_NOTIFICATIONS: "/patient/notifications",
+  PATIENT_FAQ: "/patient/faq",
 };
 
 export const DoctorPaths = {
   DOCTOR_DASHBOARD: "/doctor/dashboard",
   DOCTOR_APPOINTMENT: "/doctor/appointments",
+  DOCTOR_MESSAGES: "/doctor/messages",
   DOCTOR_ANNOUNCEMENTS: "/doctor/announcements",
+  DOCTOR_NOTIFICATIONS: "/doctor/notifications",
+  DOCTOR_FAQ: "/doctor/faq",
 };
