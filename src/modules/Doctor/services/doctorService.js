@@ -24,3 +24,17 @@ export const fetchAppointmentsDoctor = async ({ queryKey }) => {
 export const book = async (payload) => {
   return Api.post("/appointment/book/", payload).then((res) => res.data);
 };
+
+export const fetchChats = async ({ queryKey }) => {
+  const [, { userId }] = queryKey;
+  return Api.get(`/chats/${userId}`).then((res) => res.data);
+};
+export const fetchMessages = async ({ queryKey }) => {
+  const [, { chatId }] = queryKey;
+  return Api.get(`/messages/${chatId}`).then((res) => res.data);
+};
+export const postMessages = async (payload) => {
+  return Api.post(`/message/${payload.userId}`, payload).then(
+    (res) => res.data
+  );
+};

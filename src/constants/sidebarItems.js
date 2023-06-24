@@ -3,7 +3,13 @@ import { logOut } from "../utils/auth";
 
 import { Roles } from "./roles";
 import CampaignIcon from "@mui/icons-material/Campaign";
-import { CalendarMonth, Dashboard } from "@mui/icons-material";
+import {
+  CalendarMonth,
+  Dashboard,
+  Help,
+  Message,
+  Notifications,
+} from "@mui/icons-material";
 
 export const PATIENT_NAV_ITEMS = [
   {
@@ -27,6 +33,27 @@ export const PATIENT_NAV_ITEMS = [
     role: Roles.PATIENT,
     bottom: false,
   },
+  {
+    name: "Messages",
+    url: PatientPaths.PATIENT_MESSAGES,
+    icon: <Message />,
+    role: Roles.PATIENT,
+    bottom: false,
+  },
+  {
+    name: "Notifications",
+    url: PatientPaths.PATIENT_NOTIFICATIONS,
+    icon: <Notifications />,
+    role: Roles.PATIENT,
+    bottom: true,
+  },
+  {
+    name: "Faq",
+    url: PatientPaths.PATIENT_FAQ,
+    icon: <Help />,
+    role: Roles.PATIENT,
+    bottom: true,
+  },
 ];
 export const DOCTOR_NAV_ITEMS = [
   {
@@ -49,6 +76,28 @@ export const DOCTOR_NAV_ITEMS = [
     icon: <CampaignIcon />,
     role: Roles.DOCTOR,
     bottom: false,
+  },
+  {
+    name: "Messages",
+    url: DoctorPaths.DOCTOR_MESSAGES,
+    icon: <Message />,
+    role: Roles.DOCTOR,
+    bottom: false,
+  },
+  {
+    name: "Notifications",
+    url: DoctorPaths.DOCTOR_NOTIFICATIONS,
+    icon: <Notifications />,
+
+    role: Roles.DOCTOR,
+    bottom: true,
+  },
+  {
+    name: "Faq",
+    url: DoctorPaths.DOCTOR_FAQ,
+    icon: <Help />,
+    role: Roles.DOCTOR,
+    bottom: true,
   },
 ];
 export const LOGOUT_NAV = {
