@@ -24,7 +24,13 @@ const SidebarMenu = (props) => {
           alignItems: "center",
         }}
       >
-        <Box sx={{ pl: 10, display: "flex", alignItems: "center" }}>
+        <Box
+          sx={{
+            pl: props.width === 220 ? 10 : 7,
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
           <Box sx={{ color: props.isActive ? "#ED2228" : "#787878" }}>
             {props.item?.icon}
           </Box>

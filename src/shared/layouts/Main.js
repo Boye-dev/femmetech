@@ -90,7 +90,7 @@ export default function MainLayout({ children }) {
               justifyContent: "center",
               zIndex: "1200",
               position: "fixed",
-              top: 20,
+              top: 10,
               left: drawerWidth - 10,
               backgroundColor: "white",
               width: "25px",
