@@ -8,9 +8,9 @@ const SignupContext = createContext({});
 
 const SignupContextProvider = ({children}) => {
     const schema = yup.object().shape({
-        otherName: yup.string().required("Other names Is Required"),
+        firstName: yup.string().required("First name Is Required"),
         lastName: yup.string().required("Last name Is Required"),
-        username: yup.string().required("Email Is Required"),
+        email: yup.string().required("Email Is Required"),
         password: yup
           .string()
           .required("Password Is Required")
@@ -33,16 +33,41 @@ const SignupContextProvider = ({children}) => {
         profilePicture: yup.mixed().nullable().required("Profile picture is required"),
         phoneNumber: yup.string().required('Phone Number is required'),
         address: yup.string().required('Address is required'),
-        emergencyContactFullName: yup.string().required('Emergency Contact Full Name is required'),
-        emergencyContactPhoneNumber: yup.string().required('Emergency Contact Phone Number is required'),
+        emergencyContactName: yup.string().required('Emergency Contact Full Name is required'),
+        emergencyContactNumber: yup.string().required('Emergency Contact Phone Number is required'),
         emergencyContactAddress: yup.string().required('Emergency Contact Address is required'),
+        agreeToTerms: yup.boolean().oneOf([true], 'You must agree to the Terms and Conditions'),
+    });
+    const doctorSchema = yup.object().shape({
+        firstName: yup.string().required("First name Is Required"),
+        lastName: yup.string().required("Last name Is Required"),
+        email: yup.string().required("Email Is Required"),
+        password: yup
+          .string()
+          .required("Password Is Required")
+          .matches(
+            /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)/,
+            "Password Must Contain An Uppercase, A Digit, and A Special Character"
+          )
+          .min(8, "Password Should Have At Least 8 Characters")
+          .max(32, "Password Should Have At Most 32 Characters"),
+        confirmPassword: yup
+          .string()
+          .required("Password Must Match")
+          .oneOf([yup.ref("password"), null]),
+        
+        gender: yup.string().required("Gender is required"),
+        specialty: yup.string().required("Specialty is required"),
+        profilePicture: yup.mixed().nullable().required("Profile picture is required"),
+        phoneNumber: yup.string().required('Phone Number is required'),
+        address: yup.string().required('Address is required'),
         agreeToTerms: yup.boolean().oneOf([true], 'You must agree to the Terms and Conditions'),
     });
     
     const defaultValues = {
-        otherName: "",
+        firstName: "",
         lastName: "",
-        username: "",
+        email: "",
         password: "",
         confirmPassword: "",
         gender: "",
@@ -53,18 +78,36 @@ const SignupContextProvider = ({children}) => {
         profilePicture: "",
         phoneNumber: "",
         address: "",
-        emergencyContactFullName: "",
-        emergencyContactPhoneNumber: "",
+        emergencyContactName: "",
+        emergencyContactNumber: "",
         emergencyContactAddress: "",
-        agreeToTerms: "",
+        agreeToTerms: false,
+    }
+    
+    const doctorDefaultValues = {
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        gender: "",
+        specialty: "",
+        profilePicture: "",
+        phoneNumber: "",
+        address: "",
+        agreeToTerms: false,
     }
     const { control, handleSubmit, formState: { errors }, trigger, watch, reset, setValue, getValues, unregister } = useForm({
         resolver: yupResolver(schema),
         defaultValues: defaultValues,
     });
+    const { control: doctorControl, handleSubmit: doctorHandleSubmit, formState: { errors: doctorErrors }, trigger: doctorTrigger, watch: doctorWatch, reset: doctorReset, setValue: doctorSetValue, getValues: doctorGetValues, unregister: doctorUnregister } = useForm({
+        resolver: yupResolver(doctorSchema),
+        defaultValues: doctorDefaultValues,
+    });
 
     return (
-        <SignupContext.Provider value={{control, handleSubmit, errors, trigger, watch, reset, setValue, getValues, unregister}}>
+        <SignupContext.Provider value={{control, handleSubmit, errors, trigger, watch, reset, setValue, getValues, unregister, doctorControl, doctorHandleSubmit, doctorErrors, doctorTrigger, doctorWatch, doctorReset, doctorSetValue, doctorGetValues, doctorUnregister}}>
             {children}
         </SignupContext.Provider>
     )

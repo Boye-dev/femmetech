@@ -172,7 +172,19 @@ const DoctorProfileSidebar = (props) => {
                     <Typography variant="h6" color="black">
                       Email:
                     </Typography>
-                    <Typography variant="caption" color="#787878">
+                    <Typography variant="caption" color="#787878" 
+                      sx={{
+                        wordWrap: "break-word",
+                        textOverflow: "ellipsis",
+                        overflow: "hidden",
+                        hyphens: "auto",
+                        wordBreak: "break-all",
+                        width: "70%",
+                        display: "-webkit-box",
+                        WebkitLineClamp: 1,
+                        WebkitBoxOrient: "vertical",
+                      }}
+                    >
                       {userDetails.data.email}
                     </Typography>
                   </Box>

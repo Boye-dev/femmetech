@@ -3,21 +3,21 @@ import { Grid, Typography, Button } from "@mui/material";
 import Box from "@mui/material/Box";
 import { useEffect, useState } from "react";
 import loginImg from "../../../assets/images/login.png";
-import SignupStep1 from "./SignupStep1";
-import SignupStep2 from "./SignupStep2";
-import SignupStep3 from "./SignupStep3";
 import { useSignupContext } from "../../../context/SignupContext";
 import { useNavigate } from "react-router-dom";
 import { EastOutlined, West } from "@mui/icons-material";
 import { useAlert } from "../../../context/NotificationProvider";
 import { useMutation } from "react-query";
-import { signup } from "../services/authServices";
+import { doctorSignup } from "../services/authServices";
+import DoctorSignupStep1 from "./DoctorSignupStep1";
+import DoctorSignupStep2 from "./DoctorSignupStep2";
+import { LoadingButton } from "@mui/lab";
 
-const Signup = () => {
+const DoctorSignup = () => {
 
   const navigate = useNavigate();
   const { showNotification } = useAlert();
-  const { mutate, isLoading } = useMutation(signup, {
+  const { mutate, isLoading } = useMutation(doctorSignup, {
     onError: (error) => {
       showNotification?.(error.response.data.errors[0], { type: "error" });
     },
@@ -33,19 +33,12 @@ const Signup = () => {
     formData.append('lastName', payload.lastName);
     formData.append('firstName', payload.firstName);
     formData.append('email', payload.email);
-    formData.append('dateOfBirth', payload.dateOfBirth);
-    formData.append('relationshipStatus', payload.relationshipStatus);
-    formData.append('emergencyContactName', payload.emergencyContactName);
-    formData.append('emergencyContactNumber', payload.emergencyContactNumber);
-    formData.append('emergencyContactAddress', payload.emergencyContactAddress);
+    formData.append('specialty', payload.specialty);
     formData.append('password', payload.password);
     formData.append('phoneNumber', payload.phoneNumber);
     formData.append('address', payload.address);
     formData.append('gender', payload.gender);
-    formData.append('existingMedicalConditions', payload.existingMedicalConditions);
-    formData.append('existingMedicalConditions', payload.existingMedicalConditions);
     formData.append('confirmPassword', payload.confirmPassword);
-    formData.append('allergies', payload.allergies);
     mutate(formData);
   };
 
@@ -55,7 +48,7 @@ const Signup = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  const { handleSubmit, } = useSignupContext();
+  const { doctorHandleSubmit, } = useSignupContext();
 
   const [activeStep, setActiveStep] = useState(0);
 
@@ -142,14 +135,15 @@ const Signup = () => {
               </Typography>
             )}
 
-            {activeStep === 0 ? <SignupStep1 /> : ""}
-            {activeStep === 1 ? <SignupStep2 /> : ""}
-            {activeStep === 2 ? <SignupStep3 /> : ""}
+            {activeStep === 0 ? <DoctorSignupStep1 /> : ""}
+            {activeStep === 1 ? <DoctorSignupStep2 /> : ""}
+            {/* {activeStep === 2 ? <DoctorSignupStep3 /> : ""} */}
 
-            <Button
+            <LoadingButton
               fullWidth
               size="small"
-              onClick={activeStep === 2 ? handleSubmit(onSubmit) : handleNext}
+              loading={isLoading}
+              onClick={activeStep === 1 ? doctorHandleSubmit(onSubmit) : handleNext}
               variant="contained"
               endIcon={<EastOutlined sx={{ marginLeft: "12px" }} />}
               sx={{
@@ -164,8 +158,8 @@ const Signup = () => {
                 },
               }}
             >
-              {activeStep < 2 ? `Continue` : "Finish"}
-            </Button>
+              {activeStep < 1 ? `Continue` : "Finish"}
+            </LoadingButton>
 
             <Box
               sx={{
@@ -174,7 +168,7 @@ const Signup = () => {
                 marginBottom: "10px",
               }}
             >
-              {[1, 2, 3].map((testimonial, index) => (
+              {[1, 2].map((testimonial, index) => (
                 <Box
                   key={testimonial}
                   sx={{
@@ -199,4 +193,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default DoctorSignup;
