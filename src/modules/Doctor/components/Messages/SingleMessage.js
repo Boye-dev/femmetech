@@ -77,12 +77,22 @@ const SingleMessage = ({ chat, showDrop, onClose }) => {
       {isLoading ? (
         <Box
           sx={{
+            width: { xs: "100%" },
             display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
+            height: "100vh",
           }}
         >
-          <CircularProgress />
+          <Box
+            sx={{
+              display: "flex",
+              width: "100%",
+              height: "100%",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <CircularProgress />
+          </Box>
         </Box>
       ) : (
         <>

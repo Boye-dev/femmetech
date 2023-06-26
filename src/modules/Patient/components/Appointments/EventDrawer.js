@@ -6,7 +6,7 @@ const EventDrawer = (props) => {
     <>
       <Drawer open={props.open} anchor="right" onClose={props.onClose}>
         <Box>
-          <p>{props.event?.title}</p>
+          <p>{props.event?.title || "--"}</p>
         </Box>
       </Drawer>
     </>

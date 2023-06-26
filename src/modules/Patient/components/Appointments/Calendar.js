@@ -19,14 +19,11 @@ import {
   Popover,
   Typography,
 } from "@mui/material";
-import { useRef } from "react";
-import { useEffect } from "react";
 import {
   AccessTime,
   CalendarMonth,
   HourglassBottom,
   LocalHospital,
-  LockClockOutlined,
 } from "@mui/icons-material";
 import {
   formatDate,
@@ -95,7 +92,7 @@ function Calendar(props) {
         <>
           <div style={{ position: "relative" }}>
             <Fullcalendar
-              events={convertedData}
+              events={convertedData || []}
               dayMaxEvents={true}
               nowIndicator={true}
               eventClick={handleEventClick}
@@ -131,7 +128,7 @@ function Calendar(props) {
                 >
                   <Box sx={{ padding: "30px 20px" }}>
                     <Typography color="black" variant="h5" pb={1}>
-                      {selectedEvent.title}
+                      {selectedEvent?.title || "--"}
                     </Typography>
                     <Box display="flex">
                       <img
@@ -147,8 +144,11 @@ function Calendar(props) {
                         }}
                       />
                       <Typography color="black" variant="body2" pb={5}>
-                        Dr {selectedEvent.extendedProps?.doctorId.lastName}{" "}
-                        {selectedEvent.extendedProps?.doctorId.firstName}
+                        Dr{" "}
+                        {selectedEvent.extendedProps?.doctorId?.lastName ||
+                          "--"}{" "}
+                        {selectedEvent.extendedProps?.doctorId?.firstName ||
+                          "--"}
                       </Typography>
                     </Box>
                     <Divider />
@@ -167,7 +167,9 @@ function Calendar(props) {
                               Date
                             </Typography>
                             <Typography color="black" variant="h6">
-                              {formatDate(selectedEvent._instance?.range.start)}
+                              {formatDate(
+                                selectedEvent._instance?.range.start
+                              ) || "--"}
                             </Typography>
                           </Box>
                         </Box>
@@ -188,11 +190,11 @@ function Calendar(props) {
                             <Typography color="black" variant="h6">
                               {getFormattedTime(
                                 selectedEvent._instance.range?.start
-                              )}{" "}
+                              ) || "--"}{" "}
                               -{" "}
                               {getFormattedTime(
                                 selectedEvent._instance?.range.end
-                              )}
+                              ) || "--"}
                             </Typography>
                           </Box>
                         </Box>
@@ -211,7 +213,7 @@ function Calendar(props) {
                               Specialty
                             </Typography>
                             <Typography color="black" variant="h6">
-                              {selectedEvent.extendedProps?.specialty}
+                              {selectedEvent.extendedProps?.specialty || "--"}
                             </Typography>
                           </Box>
                         </Box>
@@ -230,12 +232,10 @@ function Calendar(props) {
                               Duration
                             </Typography>
                             <Typography color="black" variant="h6">
-                              {
-                                getDuration(
-                                  selectedEvent._instance.range.start,
-                                  selectedEvent._instance.range.end
-                                ).hours
-                              }{" "}
+                              {getDuration(
+                                selectedEvent._instance.range.start,
+                                selectedEvent._instance.range.end
+                              ).hours || "--"}{" "}
                               {`hour${
                                 getDuration(
                                   selectedEvent._instance.range.start,
@@ -252,7 +252,7 @@ function Calendar(props) {
                                   getDuration(
                                     selectedEvent._instance.range.start,
                                     selectedEvent._instance.range.end
-                                  ).minutes
+                                  ).minutes || "--"
                                 }minute${
                                   getDuration(
                                     selectedEvent._instance.range.start,
@@ -280,12 +280,13 @@ function Calendar(props) {
                     >
                       <Box p={2}>
                         <Typography color="black" variant="body2">
-                          {selectedEvent.extendedProps?.additionalInformation}
+                          {selectedEvent.extendedProps?.additionalInformation ||
+                            "--"}
                         </Typography>
                       </Box>
                     </Box>
                     <Box display="flex" justifyContent="space-between" mt={2}>
-                      <Button
+                      {/* <Button
                         variant="text"
                         sx={{
                           height: "50px",
@@ -300,7 +301,7 @@ function Calendar(props) {
                         >
                           Reschedule Appontment
                         </Typography>
-                      </Button>
+                      </Button> */}
                       <Button
                         variant="outlined"
                         color="error"
