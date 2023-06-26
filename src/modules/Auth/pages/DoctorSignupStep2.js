@@ -4,7 +4,7 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
 import { Person } from '@mui/icons-material';
-import { Badge, } from '@mui/material';
+import { Badge, Checkbox, FormControlLabel, } from '@mui/material';
 import { useState } from 'react';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import { useSignupContext} from '../../../context/SignupContext';
@@ -58,18 +58,18 @@ const genderOptions = [
     { value: "not-specified", label: "Prefer Not to Say" },
 ];
 
-const relationshipStatusOptions = [
-    { value: "single", label: "Single" },
-    { value: "married", label: "Married" },
-    { value: "divorced", label: "Divorced" },
-    { value: "widowed", label: "Widowed" },
+const specialtyOptions = [
+    { value: "Dentist", label: "Dentist" },
+    // { value: "married", label: "Married" },
+    // { value: "divorced", label: "Divorced" },
+    // { value: "widowed", label: "Widowed" },
 ];
 
-const SignupStep2 = () => {
+const DoctorSignupStep2 = () => {
     
-    const { control, watch, trigger, setValue } = useSignupContext()
+    const { doctorControl, doctorTrigger, doctorWatch, doctorSetValue } = useSignupContext();
 
-    const { profilePicture, } = watch()
+    const { profilePicture, } = doctorWatch()
 
     const [selectedPicture, setSelectedPicture] = useState(profilePicture);
 
@@ -87,11 +87,11 @@ const SignupStep2 = () => {
             console.log(file);
             setSelectedPicture(file);
             
-            setValue('profilePicture', file);
+            doctorSetValue('profilePicture', file);
         };
     };
 
-    console.log(watch("profilePicture"));
+    console.log(doctorWatch("profilePicture"));
 
     return (
         <Box>
@@ -151,10 +151,10 @@ const SignupStep2 = () => {
 
 
                 <Grid container spacing={2}>
-                    <Grid item xs={3}>
+                    <Grid item xs={6}>
                     <Controller
                         name="gender"
-                        control={control}
+                        control={doctorControl}
                         defaultValue=""
                         render={({ field: { ref, ...fields }, fieldState: { error } }) => (
                         <TextField
@@ -180,7 +180,7 @@ const SignupStep2 = () => {
                             error={Boolean(error?.message)}
                             helperText={error?.message}
                             onKeyUp={() => {
-                                trigger("gender");
+                                doctorTrigger("gender");
                             }}
                         >
                             {genderOptions.map((option) => (
@@ -192,121 +192,85 @@ const SignupStep2 = () => {
                         )}
                     />
                     </Grid>
-                    <Grid item xs={9}>
-                    <Controller
-                        name="dateOfBirth"
-                        control={control}
-                        defaultValue={null}
-                        render={({ field: { ref, ...fields }, fieldState: { error } }) => (
-                        <TextField
-                            variant="outlined"
-                            size="small"
-                            InputProps={{
-                                style: {
-                                    fontSize: '16px',
-                                    color: "#000 !important",
-                                },
-                                placeholder: '',
-                            }}
-                            placeholder=''
-                            InputLabelProps={{
-                                style: {
-                                    color: "black",
-                                },
-                            }}
-                            sx={formStyles}
-                            type="date"
-                            fullWidth
-                            {...fields}
-                            inputRef={ref}
-                            error={Boolean(error?.message)}
-                            helperText={error?.message}
-                            onKeyUp={() => {
-                                trigger("dateOfBirth");
-                            }}
-                        />
-                        )}
-                    />
-                    </Grid>
                     <Grid item xs={6}>
-                    <Controller
-                        name="relationshipStatus"
-                        control={control}
-                        defaultValue=""
-                        render={({ field: { ref, ...fields }, fieldState: { error } }) => (
-                        <TextField
-                            variant="outlined"
-                            size="small"
-                            InputProps={{
-                                style: {
-                                    fontSize: '16px',
-                                    color: "#000 !important",
-                                },
-                            }}
-                            InputLabelProps={{
-                                style: {
-                                    color: "black",
-                                },
-                            }}
-                            sx={formStyles}
-                            label="Relationship Status"
-                            select
-                            fullWidth
-                            {...fields}
-                            inputRef={ref}
-                            error={Boolean(error?.message)}
-                            helperText={error?.message}
-                            onKeyUp={() => {
-                                trigger("relationshipStatus");
+                        <Controller
+                            name="specialty"
+                            control={doctorControl}
+                            defaultValue=""
+                            render={({ field: { ref, ...fields }, fieldState: { error } }) => (
+                            <TextField
+                                variant="outlined"
+                                size="small"
+                                InputProps={{
+                                    style: {
+                                        fontSize: '16px',
+                                        color: "#000 !important",
+                                    },
                                 }}
-                        >
-                            {relationshipStatusOptions.map((option) => (
-                                <MenuItem key={option.value} value={option.value}>
-                                    {option.label}
-                                </MenuItem>
-                            ))}
-                        </TextField>
-                        )}
-                    />
-                    </Grid>
-                    <Grid item xs={6}>
-                    <Controller
-                        name="existingMedicalConditions"
-                        control={control}
-                        defaultValue=""
-                        render={({ field: { ref, ...fields }, fieldState: { error } }) => (
-                        <TextField
-                            variant="outlined"
-                            size="small"
-                            InputProps={{
-                            style: {
-                                fontSize: '16px',
-                                color: "#000 !important",
-                            },
-                            }}
-                            InputLabelProps={{
-                            style: {
-                                color: "black",
-                            },
-                            }}
-                            sx={formStyles}
-                            label="Existing Medical Conditions"
-                            fullWidth
-                            {...fields}
-                            inputRef={ref}
-                            error={Boolean(error?.message)}
-                            helperText={error?.message}
-                            onKeyUp={() => {
-                                trigger("existingMedicalConditions");
-                            }}
+                                InputLabelProps={{
+                                    style: {
+                                        color: "black",
+                                    },
+                                }}
+                                sx={formStyles}
+                                label="Specialty"
+                                select
+                                fullWidth
+                                {...fields}
+                                inputRef={ref}
+                                error={Boolean(error?.message)}
+                                helperText={error?.message}
+                                onKeyUp={() => {
+                                    doctorTrigger("specialty");
+                                    }}
+                            >
+                                {specialtyOptions.map((option) => (
+                                    <MenuItem key={option.value} value={option.value}>
+                                        {option.label}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+                            )}
                         />
-                        )}
-                    />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Controller
+                            name="phoneNumber"
+                            control={doctorControl}
+                            defaultValue=""
+                            render={({ field: { ref, ...fields }, fieldState: { error } }) => (
+                            <TextField
+                                variant="outlined"
+                                size="small"
+                                sx={formStyles}
+                                InputProps={{
+                                style: {
+                                    fontSize: '16px',
+                                    color: "#000 !important",
+                                },
+                                }}
+                                InputLabelProps={{
+                                style: {
+                                    color: "black",
+                                },
+                                }}
+                                label="Phone Number"
+                                fullWidth
+                                {...fields}
+                                inputRef={ref}
+                                error={Boolean(error?.message)}
+                                helperText={error?.message}
+                                onKeyUp={() => {
+                                    doctorTrigger("phoneNumber");
+                                }}
+                            />
+                            )}
+                        />
                     </Grid>
                     <Grid item xs={12}>
                     <Controller
-                        name="allergies"
-                        control={control}
+                        name="address"
+                        control={doctorControl}
                         defaultValue=""
                         render={({ field: { ref, ...fields }, fieldState: { error } }) => (
                         <TextField
@@ -324,24 +288,42 @@ const SignupStep2 = () => {
                             },
                             }}
                             sx={formStyles}
-                            label="Allergies"
+                            label="Address"
                             fullWidth
                             {...fields}
                             inputRef={ref}
                             error={Boolean(error?.message)}
                             helperText={error?.message}
                             onKeyUp={() => {
-                                trigger("allergies");
+                                doctorTrigger("address");
                             }}
                         />
                         )}
                     />
                     </Grid>
                 </Grid>
-                
+                <Grid item xs={12}>
+                <Controller
+                    name="agreeToTerms"
+                    control={doctorControl}
+                    defaultValue={false}
+                    render={({ field: { ref, ...fields }, fieldState: { error } }) => (
+                    <FormControlLabel
+                        control={
+                        <Checkbox
+                            {...fields}
+                            inputRef={ref}
+                            color="primary"
+                        />
+                        }                        
+                        label="I agree to the Terms and Conditions"
+                    />
+                    )}
+                />
+                </Grid>
             </form>
         </Box>
     );
 };
 
-export default SignupStep2;
+export default DoctorSignupStep2;

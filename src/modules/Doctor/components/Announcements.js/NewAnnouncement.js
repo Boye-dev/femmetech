@@ -1,6 +1,5 @@
 import { Close } from "@mui/icons-material";
 import {
-  Autocomplete,
   Box,
   Button,
   Divider,
@@ -13,33 +12,68 @@ import Timeline from "@mui/lab/Timeline";
 import TimelineSeparator from "@mui/lab/TimelineSeparator";
 import TimelineConnector from "@mui/lab/TimelineConnector";
 import TimelineContent from "@mui/lab/TimelineContent";
-// import TimelineDot from "@mui/lab/TimelineDot";
 import TimelineItem, { timelineItemClasses } from "@mui/lab/TimelineItem";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "react-query";
 import { useAlert } from "../../../../context/NotificationProvider";
-import { book } from "../../services/patientService";
-import { getDecodedJwt } from "../../../../utils/auth";
+import { postAnnouncement } from "../../services/doctorService";
 import { LoadingButton } from "@mui/lab";
 
-const Book = (props) => {
-  const { showNotification } = useAlert();
-  const decodedUser = getDecodedJwt();
+const textFieldStyle ={
+    
+    "& .MuiInputBase-input": {
+        outline: "none",
+        borderRadius: "3px",
+        color: "#000",
+      },
+      "& .MuiInputBase-input:hover": {
+        border: "0",
+        outline: "none",
+        borderRadius: "5px",
+        color: "#000",
+      },
+      "& .MuiFormHelperText-root": {
+        color: "red !important",
+        background: "#fff",
+        width: "100%",
+        margin: 0,
+      },
+      "& .Mui-active": {
+        // border: errors.email
+        //   ? "1px solid red"
+        //   : "1px solid white",
+        outline: "none",
+        borderRadius: "5px",
+      },
+      "& .Mui-focused": {
+        color: "#000",
+      },
+      "& .MuiOutlinedInput-root": {
+        "&:hover fieldset": {
+          borderColor: "#000", // Change the border color on hover
+        },
+        "&.Mui-focused fieldset": {
+          borderColor: "#000", // Change the border color when active/focused
+        },
+      },
+}
 
-  const patientId = decodedUser.id;
+const NewAnnouncement = (props) => {
+  const { showNotification } = useAlert();
+
   const schema = yup.object().shape({
-    specialty: yup.string().required("Specialty Is Required"),
+    name: yup.string().required("Name Is Required"),
     title: yup.string().required("Title Is Required"),
-    additionalInformation: yup.string(),
+    text: yup.string().required("Details Is Required"),
   });
 
   const { handleSubmit, trigger, control, watch, reset } = useForm({
     resolver: yupResolver(schema),
   });
-  const { specialty, title } = watch();
-  const { mutate, isLoading } = useMutation(book, {
+  const { name, title, text } = watch();
+  const { mutate, isLoading } = useMutation(postAnnouncement, {
     onError: (error) => {
       showNotification?.(error.response.data.errors[0], { type: "error" });
     },
@@ -50,7 +84,6 @@ const Book = (props) => {
     },
   });
   const onSubmit = (payload) => {
-    payload.patientId = patientId;
     mutate(payload);
   };
 
@@ -87,7 +120,7 @@ const Book = (props) => {
               }}
             >
               <Typography color="black" variant="h5">
-                Add New Appointment
+                Add New Announcement
               </Typography>
               <Close
                 sx={{ color: "black", cursor: "pointer" }}
@@ -96,8 +129,7 @@ const Book = (props) => {
             </Box>
             <Divider />
             <Typography color="black" variant="body2" mt={5}>
-              *Note: Please fill out the necessary information for you to book
-              an appointment.{" "}
+              *Note: Please fill out the necessary information.{" "}
             </Typography>
           </Box>
           <Box>
@@ -113,7 +145,7 @@ const Book = (props) => {
                 <TimelineSeparator>
                   <Box
                     sx={{
-                      backgroundColor: specialty ? "#ED2228" : "#F3F5F9",
+                      backgroundColor: name ? "#ED2228" : "#F3F5F9",
                       width: "50px",
                       height: "50px",
                       borderRadius: "100%",
@@ -122,7 +154,7 @@ const Book = (props) => {
                       alignItems: "center",
                     }}
                   >
-                    <Typography color={specialty ? "white" : "black"}>
+                    <Typography color={name ? "white" : "black"}>
                       1
                     </Typography>
                   </Box>
@@ -132,7 +164,7 @@ const Book = (props) => {
                   <Box
                     sx={{
                       width: "100%",
-                      height: "130px",
+                    //   height: "80px",
 
                       borderRadius: "8px",
                       boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
@@ -144,92 +176,40 @@ const Book = (props) => {
                         variant="h6"
                         sx={{ fontSize: "10px !important" }}
                       >
-                        Please Select the speciality you need service from
+                        Enter your name
                       </Typography>
                       <Controller
-                        name="specialty"
+                        name="name"
                         control={control}
+                        defaultValue=""
                         render={({
-                          field: { ref, onChange, ...fields },
+                          field: { ref, ...fields },
                           fieldState: { error },
                         }) => (
-                          <Autocomplete
-                            disablePortal
-                            id="combo-box-demo"
-                            options={["Dentistry", "Opthamology"]}
-                            onChange={(event, newValue) => {
-                              onChange(newValue);
+                          <TextField
+                            variant="outlined"
+                            size="small"
+                            InputProps={{
+                              style: {
+                                fontSize: "16px",
+                                color: "#000 !important",
+                              },
                             }}
-                            getOptionLabel={(option) => option}
+                            InputLabelProps={{
+                              style: {
+                                color: "black",
+                              },
+                            }}
+                            sx={textFieldStyle}
+                            // label="Name"
+                            fullWidth
                             {...fields}
-                            ref={ref}
-                            renderOption={(props, option) => {
-                              return (
-                                <Typography {...props} width="100%">
-                                  {option && option}
-                                </Typography>
-                              );
+                            inputRef={ref}
+                            error={Boolean(error?.message)}
+                            helperText={error?.message}
+                            onKeyUp={() => {
+                              trigger("name");
                             }}
-                            renderInput={(params) => (
-                              <TextField
-                                InputProps={{
-                                  style: {
-                                    fontSize: "12px !important",
-
-                                    color: "#000 !important",
-                                  },
-                                }}
-                                InputLabelProps={{
-                                  style: {
-                                    fontSize: "12px !important",
-                                    color: "#000 !important",
-                                  },
-                                }}
-                                sx={{
-                                  "& .MuiInputBase-input": {
-                                    outline: "none",
-                                    borderRadius: "3px",
-                                    color: "#000",
-                                  },
-                                  "& .MuiInputBase-input:hover": {
-                                    border: "0",
-                                    outline: "none",
-                                    borderRadius: "5px",
-                                    color: "#000",
-                                  },
-                                  "& .MuiFormHelperText-root": {
-                                    color: "red !important",
-                                    background: "#fff",
-                                    width: "100%",
-                                    margin: 0,
-                                  },
-                                  "& .Mui-active": {
-                                    // border: errors.email
-                                    //   ? "1px solid red"
-                                    //   : "1px solid white",
-                                    outline: "none",
-                                    borderRadius: "5px",
-                                  },
-                                  "& .Mui-focused": {
-                                    color: "#000",
-                                  },
-                                  "& .MuiOutlinedInput-root": {
-                                    "&:hover fieldset": {
-                                      borderColor: "#000", // Change the border color on hover
-                                    },
-                                    "&.Mui-focused fieldset": {
-                                      borderColor: "#000", // Change the border color when active/focused
-                                    },
-                                  },
-                                }}
-                                variant="outlined"
-                                inputRef={ref}
-                                label="Select Specialty"
-                                {...params}
-                                error={Boolean(error?.message)}
-                                helperText={error?.message}
-                              />
-                            )}
                           />
                         )}
                       />
@@ -259,7 +239,7 @@ const Book = (props) => {
                   <Box
                     sx={{
                       width: "100%",
-                      height: "130px",
+                    //   height: "80px",
 
                       borderRadius: "8px",
                       boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
@@ -271,7 +251,7 @@ const Book = (props) => {
                         variant="h6"
                         sx={{ fontSize: "10px !important" }}
                       >
-                        Please enter a title
+                        Please enter a title for the Announcement
                       </Typography>
                       <Controller
                         name="title"
@@ -283,6 +263,7 @@ const Book = (props) => {
                         }) => (
                           <TextField
                             variant="outlined"
+                            size="small"
                             InputProps={{
                               style: {
                                 fontSize: "16px",
@@ -294,45 +275,8 @@ const Book = (props) => {
                                 color: "black",
                               },
                             }}
-                            sx={{
-                              mt: 2,
-                              "& .MuiInputBase-input": {
-                                outline: "none",
-                                borderRadius: "3px",
-                                color: "#000",
-                              },
-                              "& .MuiInputBase-input:hover": {
-                                border: "0",
-                                outline: "none",
-                                borderRadius: "5px",
-                                color: "#000",
-                              },
-                              "& .MuiFormHelperText-root": {
-                                color: "red !important",
-                                background: "#fff",
-                                width: "100%",
-                                margin: 0,
-                              },
-                              "& .Mui-active": {
-                                // border: errors.email
-                                //   ? "1px solid red"
-                                //   : "1px solid white",
-                                outline: "none",
-                                borderRadius: "5px",
-                              },
-                              "& .Mui-focused": {
-                                color: "#000",
-                              },
-                              "& .MuiOutlinedInput-root": {
-                                "&:hover fieldset": {
-                                  borderColor: "#000", // Change the border color on hover
-                                },
-                                "&.Mui-focused fieldset": {
-                                  borderColor: "#000", // Change the border color when active/focused
-                                },
-                              },
-                            }}
-                            label="Title"
+                            sx={textFieldStyle}
+                            // label="Title"
                             fullWidth
                             {...fields}
                             inputRef={ref}
@@ -352,7 +296,7 @@ const Book = (props) => {
                 <TimelineSeparator>
                   <Box
                     sx={{
-                      backgroundColor: "#ED2228",
+                        backgroundColor: text ? "#ED2228" : "#F3F5F9",
                       width: "50px",
                       height: "50px",
                       borderRadius: "100%",
@@ -361,7 +305,7 @@ const Book = (props) => {
                       alignItems: "center",
                     }}
                   >
-                    <Typography color="white">3</Typography>
+                    <Typography color={text ? "white" : "black"}>3</Typography>
                   </Box>
                 </TimelineSeparator>
                 <TimelineContent>
@@ -380,10 +324,10 @@ const Book = (props) => {
                         variant="h6"
                         sx={{ fontSize: "10px !important" }}
                       >
-                        Please enter additional information
+                        Please enter your announcement
                       </Typography>
                       <Controller
-                        name="additionalInformation"
+                        name="text"
                         control={control}
                         defaultValue=""
                         render={({
@@ -392,6 +336,7 @@ const Book = (props) => {
                         }) => (
                           <TextField
                             variant="outlined"
+                            size="small"
                             InputProps={{
                               style: {
                                 fontSize: "12px !important",
@@ -405,54 +350,17 @@ const Book = (props) => {
                                 color: "black",
                               },
                             }}
-                            sx={{
-                              mt: 2,
-                              "& .MuiInputBase-input": {
-                                outline: "none",
-                                borderRadius: "3px",
-                                color: "#000",
-                              },
-                              "& .MuiInputBase-input:hover": {
-                                border: "0",
-                                outline: "none",
-                                borderRadius: "5px",
-                                color: "#000",
-                              },
-                              "& .MuiFormHelperText-root": {
-                                color: "red !important",
-                                background: "#fff",
-                                width: "100%",
-                                margin: 0,
-                              },
-                              "& .Mui-active": {
-                                // border: errors.email
-                                //   ? "1px solid red"
-                                //   : "1px solid white",
-                                outline: "none",
-                                borderRadius: "5px",
-                              },
-                              "& .Mui-focused": {
-                                color: "#000",
-                              },
-                              "& .MuiOutlinedInput-root": {
-                                "&:hover fieldset": {
-                                  borderColor: "#000", // Change the border color on hover
-                                },
-                                "&.Mui-focused fieldset": {
-                                  borderColor: "#000", // Change the border color when active/focused
-                                },
-                              },
-                            }}
+                            sx={textFieldStyle}
                             multiline
                             rows={5}
-                            label="Additional Information"
+                            // label="Announcement"
                             fullWidth
                             {...fields}
                             inputRef={ref}
                             error={Boolean(error?.message)}
                             helperText={error?.message}
                             onKeyUp={() => {
-                              trigger("additionalInformation");
+                              trigger("text");
                             }}
                           />
                         )}
@@ -510,4 +418,4 @@ const Book = (props) => {
   );
 };
 
-export default Book;
+export default NewAnnouncement;

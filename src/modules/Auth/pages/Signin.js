@@ -3,7 +3,7 @@ import { useForm, Controller } from "react-hook-form";
 import * as yup from "yup";
 // import { PatientPaths, BasePaths } from "../../../routes/paths";
 // import { Roles } from "../../../constants/roles";
-import { Button, CircularProgress, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "react-query";
 import { login } from "../services/authServices";
@@ -14,16 +14,16 @@ import { useEffect, useState } from "react";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import SendIcon from "@mui/icons-material/Send";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import loginImg from "../../../assets/images/login.png";
 import { useAlert } from "../../../context/NotificationProvider";
-import { getDecodedJwt, setToken } from "../../../utils/auth";
+import { setToken } from "../../../utils/auth";
 import { LoadingButton } from "@mui/lab";
 
 const Signin = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const from = location.state?.from?.pathname;
+  // const location = useLocation();
+  // const from = location.state?.from?.pathname;
 
   const { showNotification } = useAlert();
   const { mutate, isLoading } = useMutation(login, {
