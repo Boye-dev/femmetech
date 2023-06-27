@@ -6,6 +6,8 @@ import { SignupContextProvider } from "../../context/SignupContext";
 import AuthHelper from "./components.js/AuthHelper";
 import DoctorSignin from "./pages/DoctorSignin";
 import DoctorAuthHelper from "./components.js/DoctorAuthHelper";
+import VerifyPage from "./pages/VerifyPage";
+import DoctorSignup from "./pages/DoctorSignup";
 
 function Auth() {
   return (
@@ -13,6 +15,7 @@ function Auth() {
       <Routes>
         <Route path="" element={<Navigate to="home" replace />} />
         <Route path="/home" exact element={<Home />} />
+        <Route path="/verify" exact element={<VerifyPage />} />
         <Route element={<AuthHelper />}>
           <Route path="/signin" exact element={<Signin />} />
         </Route>
@@ -20,6 +23,7 @@ function Auth() {
           <Route path="/signin-doctor" exact element={<DoctorSignin />} />
         </Route>
         <Route path="/signup" exact element={<Signup />} />
+        <Route path="/doctor-signup" exact element={<DoctorSignup />} />
       </Routes>
     </SignupContextProvider>
   );

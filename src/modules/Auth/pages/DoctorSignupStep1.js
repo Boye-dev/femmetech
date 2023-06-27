@@ -46,7 +46,7 @@ const formStyles = {
   },
 };
 
-const SignupStep1 = () => {
+const DoctorSignupStep1 = () => {
   const handleClickShowPassword = () => {
     setValues({
       ...values,
@@ -61,7 +61,7 @@ const SignupStep1 = () => {
     showPassword: false,
   });
 
-  const { control, trigger } = useSignupContext();
+  const { doctorControl, doctorTrigger } = useSignupContext();
 
   return (
     <Box>
@@ -76,14 +76,14 @@ const SignupStep1 = () => {
           fontSize: "28px !important",
         }}
       >
-        Sign up to <span style={{ color: "#CE1E23" }}> NEXUS</span>
+        Sign up to <span style={{ color: "#CE1E23" }}> NEXUS</span> as Doctor
       </Typography>
       <form>
         <Grid container spacing={2}>
-          <Grid item xs={6}>
+          <Grid item xs={12} md={6}>
             <Controller
               name="firstName"
-              control={control}
+              control={doctorControl}
               defaultValue=""
               render={({
                 field: { ref, ...fields },
@@ -111,16 +111,16 @@ const SignupStep1 = () => {
                   error={Boolean(error?.message)}
                   helperText={error?.message}
                   onKeyUp={() => {
-                    trigger("firstName");
+                    doctorTrigger("firstName");
                   }}
                 />
               )}
             />
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={12} md={6}>
             <Controller
               name="lastName"
-              control={control}
+              control={doctorControl}
               defaultValue=""
               render={({
                 field: { ref, ...fields },
@@ -148,7 +148,7 @@ const SignupStep1 = () => {
                   error={Boolean(error?.message)}
                   helperText={error?.message}
                   onKeyUp={() => {
-                    trigger("lastName");
+                    doctorTrigger("lastName");
                   }}
                 />
               )}
@@ -157,7 +157,7 @@ const SignupStep1 = () => {
           <Grid item xs={12}>
             <Controller
               name="email"
-              control={control}
+              control={doctorControl}
               defaultValue=""
               render={({
                 field: { ref, ...fields },
@@ -185,7 +185,7 @@ const SignupStep1 = () => {
                   error={Boolean(error?.message)}
                   helperText={error?.message}
                   onKeyUp={() => {
-                    trigger("email");
+                    doctorTrigger("email");
                   }}
                 />
               )}
@@ -194,7 +194,7 @@ const SignupStep1 = () => {
           <Grid item xs={12}>
             <Controller
               name="password"
-              control={control}
+              control={doctorControl}
               defaultValue=""
               render={({
                 field: { ref, ...fields },
@@ -232,7 +232,7 @@ const SignupStep1 = () => {
                   error={Boolean(error?.message)}
                   helperText={error?.message}
                   onKeyUp={() => {
-                    trigger("password");
+                    doctorTrigger("password");
                   }}
                 />
               )}
@@ -241,7 +241,7 @@ const SignupStep1 = () => {
           <Grid item xs={12}>
             <Controller
               name="confirmPassword"
-              control={control}
+              control={doctorControl}
               defaultValue=""
               render={({
                 field: { ref, ...fields },
@@ -279,7 +279,7 @@ const SignupStep1 = () => {
                   error={Boolean(error?.message)}
                   helperText={error?.message}
                   onKeyUp={() => {
-                    trigger("confirmPassword");
+                    doctorTrigger("confirmPassword");
                   }}
                 />
               )}
@@ -291,4 +291,4 @@ const SignupStep1 = () => {
   );
 };
 
-export default SignupStep1;
+export default DoctorSignupStep1;
