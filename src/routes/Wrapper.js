@@ -14,8 +14,8 @@ export const RoutesWrapper = () => {
     <Routes>
       <Route exact path="/*" element={<Auth />} />
       
-      <Route path="/patient/verify-account/:patientId/:uniqueString" exact element={<VerifyPatientSuccess />} />
-      <Route path="/doctor/verify-account/:doctorId/:uniqueString" exact element={<VerifyDoctorSuccess />} />
+      <Route path="/verify-patient/:patientId/:uniqueString" exact element={<VerifyPatientSuccess />} />
+      <Route path="/verify-doctor/:doctorId/:uniqueString" exact element={<VerifyDoctorSuccess />} />
       <Route element={<PatientGuard />}>
         <Route element={<MainLayout />}>
           <Route exact path="/patient/*" element={<PatientRouter />} />
