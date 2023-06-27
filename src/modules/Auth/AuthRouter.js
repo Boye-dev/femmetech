@@ -17,7 +17,7 @@ function Auth() {
           <Route path="/signin" exact element={<Signin />} />
         </Route>
         <Route element={<DoctorAuthHelper />}>
-          <Route path="/doctorsignin" exact element={<DoctorSignin />} />
+          <Route path="/signin-doctor" exact element={<DoctorSignin />} />
         </Route>
         <Route path="/signup" exact element={<Signup />} />
       </Routes>

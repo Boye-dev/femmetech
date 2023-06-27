@@ -62,7 +62,6 @@ function Calendar(props) {
 
   const [popoverAnchorEl, setPopoverAnchorEl] = useState(null);
   const [selectedEvent, setSelectedEvent] = useState(null);
-  console.log(selectedEvent);
   const handleEventClick = (clickInfo) => {
     const { clientX, clientY } = clickInfo.jsEvent;
     console.log(clientX, clientY);
