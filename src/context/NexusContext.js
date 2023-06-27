@@ -6,7 +6,7 @@ import { useRef } from "react";
 import socketIOClient from "socket.io-client";
 import { Box, Typography } from "@mui/material";
 
-const ENDPOINT = "http://localhost:4000";
+const ENDPOINT = "https://nexus-backend-mhoe.onrender.com";
 const NexusContext = createContext({});
 
 const NexusContextProvider = ({ children }) => {
