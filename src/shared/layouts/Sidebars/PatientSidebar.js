@@ -1,4 +1,11 @@
-import { Box, Divider, Drawer, Typography } from "@mui/material";
+import {
+  Box,
+  Divider,
+  Drawer,
+  Menu,
+  MenuItem,
+  Typography,
+} from "@mui/material";
 import React from "react";
 import { ReactComponent as Logo } from "../../../assets/svgs/logo.svg";
 import { ReactComponent as LogoSmall } from "../../../assets/svgs/logosmall.svg";
@@ -8,18 +15,19 @@ import {
   PATIENT_NAV_ITEMS,
 } from "../../../constants/sidebarItems";
 import { useLocation } from "react-router-dom";
-import { getDecodedJwt, isAuthenticated } from "../../../utils/auth";
+import { getDecodedJwt, isAuthenticated, logOut } from "../../../utils/auth";
 import { useAuthenticatedUser } from "../../../hooks/useAuthenticatedUser";
 import { useAuthenticatedUserDoctor } from "../../../hooks/useAuthenticatedUserDoctor";
 import { fetchUser, fetchUserDoctor } from "../../../services/authService";
 import { useQuery } from "react-query";
 import { useAlert } from "../../../context/NotificationProvider";
+import { useNavigate } from "react-router-dom/dist";
 
 const PatientSidebar = (props) => {
   const location = useLocation();
   const decodedUser = getDecodedJwt();
   const { showNotification } = useAlert();
-
+  const navigate = useNavigate();
   const navItems =
     decodedUser.role === "PATIENT" ? PATIENT_NAV_ITEMS : DOCTOR_NAV_ITEMS;
   const { isLoading, data } = useQuery(
@@ -50,6 +58,14 @@ const PatientSidebar = (props) => {
       },
     }
   );
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   return (
     <>
       <Box>
@@ -116,38 +132,74 @@ const PatientSidebar = (props) => {
               </Box>
               <Divider mt={3} />
               {isLoadingDoctor || isLoading || (
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    cursor: "pointer",
-                    width: "100%",
-                    pt: 3,
-                    pb: 3,
-                  }}
-                >
+                <>
                   <Box
-                    sx={{ width: "50px", height: "50px", borderRadius: "100%" }}
+                    onClick={handleClick}
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      cursor: "pointer",
+                      width: "100%",
+                      pt: 3,
+                      pb: 3,
+                    }}
                   >
-                    <img
-                      src={
-                        data?.data?.profilePicture ||
-                        doctorDat?.data?.profilePicture
-                      }
-                      alt=""
-                      width="100%"
-                      height="100%"
-                      style={{ borderRadius: "100%" }}
-                    />
+                    <Box
+                      sx={{
+                        width: "50px",
+                        height: "50px",
+                        borderRadius: "100%",
+                      }}
+                    >
+                      <img
+                        src={
+                          data?.data?.profilePicture ||
+                          doctorDat?.data?.profilePicture
+                        }
+                        alt=""
+                        width="100%"
+                        height="100%"
+                        style={{ borderRadius: "100%" }}
+                      />
+                    </Box>
+                    {props.width === 220 && (
+                      <Typography color="black" variant="h6" ml={2}>
+                        {data?.data?.lastName || doctorDat?.data?.lastName}{" "}
+                        {data?.data?.firstName || doctorDat?.data?.firstName}
+                      </Typography>
+                    )}
                   </Box>
-                  {props.width === 220 && (
-                    <Typography color="black" variant="h6" ml={2}>
-                      {data?.data?.lastName || doctorDat?.data?.lastName}{" "}
-                      {data?.data?.firstName || doctorDat?.data?.firstName}
-                    </Typography>
-                  )}
-                </Box>
+                  <Menu
+                    id="basic-menu"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    MenuListProps={{
+                      "aria-labelledby": "basic-button",
+                    }}
+                  >
+                    <MenuItem color="black" onClick={handleClose}>
+                      <Typography color="black" variant="h6">
+                        Profile
+                      </Typography>
+                    </MenuItem>
+                    <MenuItem
+                      color="black"
+                      onClick={() => {
+                        logOut();
+                        handleClose();
+                        decodedUser.role === "PATIENT"
+                          ? navigate("/signin")
+                          : navigate("/signin-doctor");
+                      }}
+                    >
+                      <Typography color="black" variant="h6">
+                        Logout
+                      </Typography>
+                    </MenuItem>
+                  </Menu>
+                </>
               )}
             </Box>
           </Box>
