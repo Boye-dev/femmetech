@@ -20,11 +20,11 @@ export const fetchAppointments = async ({ queryKey }) => {
 };
 export const fetchAnnouncements = async ({ queryKey }) => {
   const [, { patientId }] = queryKey;
-  return Api.get(`/announcements/${patientId}`).then((res) => res.data);
+  return Api.get(`/announcements/patient/${patientId}`).then((res) => res.data);
 };
 export const updateStatusToRead = async ({ queryKey }) => {
   const [, { patientId, announcementId }] = queryKey;
-  return Api.put(`/announcements/${announcementId}/${patientId}`).then((res) => res.data);
+  return Api.put(`/announcements/patient/${announcementId}/${patientId}`).then((res) => res.data);
 };
 
 export const book = async (payload) => {

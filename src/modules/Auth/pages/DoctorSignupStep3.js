@@ -46,7 +46,7 @@ const formStyles = {
 
 
 
-const SignupStep3 = () => {
+const DoctorSignupStep3 = () => {
     
     const { control, trigger, } = useSignupContext()
 
@@ -252,4 +252,4 @@ const SignupStep3 = () => {
 };
 
 
-export default SignupStep3;
+export default DoctorSignupStep3;
