@@ -51,3 +51,9 @@ export const postMessages = async (payload) => {
     (res) => res.data
   );
 };
+export const readMessages = async (payload) => {
+  return Api.put(
+    `/chat/read/${payload.chatId}/${payload.userId}`,
+    payload
+  ).then((res) => res.data);
+};

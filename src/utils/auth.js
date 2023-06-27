@@ -44,9 +44,8 @@ export const removeToken = () => {
   localStorage.removeItem("token");
 };
 
-export const logOut = (cb) => {
+export const logOut = () => {
   removeToken();
-  cb();
 };
 
 export const isAuthenticated = () => {

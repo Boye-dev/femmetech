@@ -2,7 +2,6 @@ import { Routes, Route } from "react-router-dom";
 import Auth from "../modules/Auth/AuthRouter";
 import PatientRouter from "../modules/Patient/PatientRouter";
 import MainLayout from "../shared/layouts/Main";
-import AuthGuard from "../shared/components/AuthGuard";
 import PatientGuard from "../shared/components/PatientGuard";
 import DoctorRouter from "../modules/Doctor/DoctorRouter";
 import DoctorGuard from "../shared/components/DoctorGuard";
