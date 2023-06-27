@@ -3,6 +3,7 @@ import Dashboard from "./pages/Dashboard/pages/Dashboard";
 import Appointments from "./pages/Appointments";
 import Announcements from "./pages/Announcements";
 import Messages from "../Doctor/pages/Messages";
+import Settings from "./pages/Settings";
 
 function PatientRouter() {
   return (
@@ -12,6 +13,7 @@ function PatientRouter() {
       <Route exact path="appointments" element={<Appointments />} />
       <Route exact path="announcements" element={<Announcements />} />
       <Route exact path="messages" element={<Messages />} />
+      <Route exact path="settings" element={<Settings />} />
     </Routes>
   );
 }
