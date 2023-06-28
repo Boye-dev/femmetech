@@ -4,10 +4,13 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import { Button } from '@mui/material';
+import {  SettingsOutlined } from '@mui/icons-material';
+import MyProfile from '../components/Settings/MyProfile';
+import YourComponent from '../components/Settings/Password';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
-
   return (
     <div
       role="tabpanel"
@@ -17,7 +20,7 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 3 }}>
+        <Box >
           <Typography>{children}</Typography>
         </Box>
       )}
@@ -39,30 +42,53 @@ function a11yProps(index) {
 }
 
 export default function Settings() {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = React.useState(1);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box
+      sx={{
+        backgroundColor: "#F1F3F9",
+        width: "100%",
+        // height: "100vh",
+      }}
+    >
+      <Box sx={{ width: "100%", backgroundColor: "#F1F3F9", pb: 4, }}>
+        <Box
+          sx={{
+            pt: 10,
+            pl: 10,
+            pr: 10,
+            pb: 10,
+            display: "flex",
+            alignItems: "center",
+            border: "1px solid lightgray",
+          }}
+        >
+          <SettingsOutlined fontSize='large' color="primary" />
+          <Typography variant="h3" sx={{ color: "black", ml: "10px" }}>
+             Settings
+          </Typography>
+        </Box>
+      </Box>
+    <Box sx={{ width: '90%', margin: "auto" }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-          <Tab label="Item One" {...a11yProps(0)} />
-          <Tab label="Item Two" {...a11yProps(1)} />
-          <Tab label="Item Three" {...a11yProps(2)} />
+          <Tab label={<Typography variant="h6" sx={{fontFamily: "18px", fontWeight: 500}}>My Profile</Typography>} {...a11yProps(0)} />
+          <Tab label={<Typography variant="h6" sx={{fontFamily: "18px", fontWeight: 500}}>Password</Typography>} {...a11yProps(1)} />
+          {/* <Tab label="Password" {...a11yProps(1)} /> */}
         </Tabs>
       </Box>
-      <TabPanel value={value} index={0}>
-        Item One
+      <TabPanel value={value} index={0} >
+        <MyProfile />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Item Two
+        <YourComponent />
       </TabPanel>
-      <TabPanel value={value} index={2}>
-        Item Three
-      </TabPanel>
+    </Box>
     </Box>
   );
 }

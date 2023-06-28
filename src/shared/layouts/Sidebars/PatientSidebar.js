@@ -7,7 +7,7 @@ import {
   DOCTOR_NAV_ITEMS,
   PATIENT_NAV_ITEMS,
 } from "../../../constants/sidebarItems";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getDecodedJwt, isAuthenticated } from "../../../utils/auth";
 import { useAuthenticatedUser } from "../../../hooks/useAuthenticatedUser";
 import { useAuthenticatedUserDoctor } from "../../../hooks/useAuthenticatedUserDoctor";
@@ -19,6 +19,7 @@ const PatientSidebar = (props) => {
   const location = useLocation();
   const decodedUser = getDecodedJwt();
   const { showNotification } = useAlert();
+  const navigate = useNavigate();
 
   const navItems =
     decodedUser.role === "PATIENT" ? PATIENT_NAV_ITEMS : DOCTOR_NAV_ITEMS;
@@ -117,6 +118,7 @@ const PatientSidebar = (props) => {
               <Divider mt={3} />
               {isLoadingDoctor || isLoading || (
                 <Box
+                  onClick={data?.data ? () => navigate("/patient/settings") : () => navigate("/doctor/settings")}
                   sx={{
                     display: "flex",
                     alignItems: "center",
