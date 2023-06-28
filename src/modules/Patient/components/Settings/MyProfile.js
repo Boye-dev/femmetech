@@ -4,8 +4,6 @@ import { Box, Button, CircularProgress, Divider, Grid, Typography } from "@mui/m
 import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import * as yup from "yup";
-// import { PatientPaths, BasePaths } from "../../../routes/paths";
-// import { Roles } from "../../../constants/roles";
 import { TextField } from "@mui/material";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "react-query";
@@ -109,7 +107,7 @@ const MyProfile = () => {
         }
         
         window.scrollTo(0, 0);
-    }, [userDetails]);
+    }, [setValue, userDetails]);
 
     const { mutate, isLoading: submitLoading } = useMutation(profileUpdate, {
         onError: (error) => {
@@ -557,7 +555,7 @@ const MyProfile = () => {
                                                     },
                                                 }}
                                                 sx={formStyles}
-                                                label="EPhone Number"
+                                                label="Phone Number"
                                                 fullWidth
                                                 {...fields}
                                                 inputRef={ref}

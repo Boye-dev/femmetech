@@ -1,4 +1,10 @@
-import { Box, CircularProgress, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  Divider,
+  TextField,
+  Typography,
+} from "@mui/material";
 import React from "react";
 import MainMessage from "./MainMessage";
 import { Close, Send } from "@mui/icons-material";
@@ -11,6 +17,11 @@ import { useEffect } from "react";
 import { useContext } from "react";
 import { NexusContext } from "../../../../context/NexusContext";
 import { useRef } from "react";
+import backdrop from "../../../../assets/images/whatsapp.jpg";
+import {
+  formatDateTime,
+  formatDateTimeMessages,
+} from "../../../../utils/formatDate";
 
 const SingleMessage = ({ chat, showDrop, onClose }) => {
   const { showNotification } = useAlert();
@@ -19,8 +30,8 @@ const SingleMessage = ({ chat, showDrop, onClose }) => {
   const chatData = chat?.users.filter(
     (item) => item.userDetails._id !== decodedUser.id
   );
-  const { socketRef, arrivalMessage } = useContext(NexusContext);
-
+  const { socketRef, arrivalMessage, users, typing } = useContext(NexusContext);
+  const [isTyping, setIsTyping] = useState(false);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const { isLoading } = useQuery(
@@ -48,15 +59,22 @@ const SingleMessage = ({ chat, showDrop, onClose }) => {
     const found = chat?.users.some(
       (item) => item._id === arrivalMessage?.sender._id
     );
-    console.log("Found", found);
+
     arrivalMessage && found && setMessages((prev) => [...prev, arrivalMessage]);
   }, [arrivalMessage, chat]);
   const { mutate, isLoading: isPosting } = useMutation(postMessages, {
     onError: (error) => {
+      console.log(error);
       showNotification?.(error.response.data.errors[0], { type: "error" });
     },
     onSuccess: (data) => {
       socketRef.current.emit("sendMessage", data.data);
+      if (chat) {
+        socketRef.current.emit("getNotification", {
+          chat,
+          userId: decodedUser.id,
+        });
+      }
       setMessage("");
 
       setMessages([...messages, data.data]);
@@ -71,18 +89,44 @@ const SingleMessage = ({ chat, showDrop, onClose }) => {
       };
       mutate(payload);
     }
+    console.log(isTyping);
   };
+
+  const messageGroups = messages.reduce((groups, message) => {
+    const date = formatDateTimeMessages(message.createdAt);
+    if (!groups[date]) {
+      groups[date] = [];
+    }
+    groups[date].push(message);
+    return groups;
+  }, {});
+
+  // Sort the groups in descending order
+  const sortedGroups = Object.entries(messageGroups).sort(
+    ([dateA], [dateB]) => new Date(dateB) - new Date(dateA)
+  );
+  const today = formatDateTime(new Date());
   return (
     <>
       {isLoading ? (
         <Box
           sx={{
+            width: { xs: "100%" },
             display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
+            height: "100vh",
           }}
         >
-          <CircularProgress />
+          <Box
+            sx={{
+              display: "flex",
+              width: "100%",
+              height: "100%",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <CircularProgress />
+          </Box>
         </Box>
       ) : (
         <>
@@ -123,9 +167,36 @@ const SingleMessage = ({ chat, showDrop, onClose }) => {
                     {chatData[0].userDetails.lastName}{" "}
                     {chatData[0].userDetails.firstName}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    Active
-                  </Typography>
+
+                  {typing.typing &&
+                  typing.sender[0].userId === chatData[0].userId ? (
+                    <Typography sx={{ color: "#13D71B" }} variant="caption">
+                      typing...
+                    </Typography>
+                  ) : (
+                    <Box sx={{ display: "flex", alignItems: "center" }}>
+                      <Box
+                        sx={{
+                          width: "10px",
+                          height: "10px",
+                          backgroundColor:
+                            users.filter(
+                              (item) => item.userId === chatData[0].userId
+                            ).length > 0
+                              ? "#13D71B"
+                              : "#F5F5F6",
+                          borderRadius: "100%",
+                        }}
+                      />
+                      <Typography variant="body2" color="text.secondary" ml={2}>
+                        {users.filter(
+                          (item) => item.userId === chatData[0].userId
+                        ).length > 0
+                          ? "Active"
+                          : "Offline"}
+                      </Typography>
+                    </Box>
+                  )}
                 </Box>
               </Box>
               <Close
@@ -140,15 +211,53 @@ const SingleMessage = ({ chat, showDrop, onClose }) => {
             </Box>
             <Box
               sx={{
+                backgroundImage: "url(" + backdrop + ")",
                 overflow: "auto",
-                maxHeight: { xs: "65.5vh", md: "77.5vh" },
+                backgroundSize: "cover",
+
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
+                height: { xs: "65.5vh", md: "77.5vh" },
               }}
             >
-              {messages.map((item) => {
+              {sortedGroups.map(([date, messages]) => {
                 return (
-                  <Box ref={scrollRef}>
-                    <MainMessage message={item} />
-                  </Box>
+                  <div key={date}>
+                    {date === today ? (
+                      <Typography>Today</Typography>
+                    ) : (
+                      <Box
+                        sx={{
+                          display: "flex",
+                          width: "90%",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                          mt: 5,
+                          mb: 5,
+                        }}
+                      >
+                        <Divider sx={{ width: "90%" }} />
+                        <Box
+                          sx={{
+                            padding: "6px 8px",
+                            backgroundColor: "#E6E6E6",
+                            borderRadius: "10px",
+                          }}
+                        >
+                          <Typography color="black" variant="h6">
+                            {date}
+                          </Typography>
+                        </Box>
+                      </Box>
+                    )}
+                    {messages.map((item) => {
+                      return (
+                        <Box ref={scrollRef}>
+                          <MainMessage message={item} />
+                        </Box>
+                      );
+                    })}
+                  </div>
                 );
               })}
             </Box>
@@ -180,7 +289,26 @@ const SingleMessage = ({ chat, showDrop, onClose }) => {
                   <TextField
                     size="small"
                     value={message}
-                    onChange={(e) => setMessage(e.target.value)}
+                    onChange={(e) => {
+                      setIsTyping(true);
+                      setMessage(e.target.value);
+                      socketRef.current.emit("typing", {
+                        chat,
+                        userId: decodedUser.id,
+                      });
+                      let lastTypingTime = new Date().getTime();
+                      var timerLength = 3000;
+                      setTimeout(() => {
+                        var timeNow = new Date().getTime();
+                        var timeDiff = timeNow - lastTypingTime;
+                        if (timeDiff >= timerLength) {
+                          socketRef.current.emit("stopTyping", {
+                            chat,
+                            userId: decodedUser.id,
+                          });
+                        }
+                      }, timerLength);
+                    }}
                     multiline
                     placeholder="Type Your Message"
                     fullWidth

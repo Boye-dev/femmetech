@@ -1,14 +1,33 @@
 import { Box, Divider, Typography } from "@mui/material";
 import React from "react";
 import { getDecodedJwt } from "../../../../utils/auth";
-import { getFormattedTime } from "../../../../utils/formatDate";
+import {
+  formatDateTime,
+  // formatDuration,
+  // getFormattedTime,
+} from "../../../../utils/formatDate";
 import { NexusContext } from "../../../../context/NexusContext";
 import { useContext } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
-const Chat = ({ chat, onClick }) => {
-  const { latestMessage } = useContext(NexusContext);
+const Chat = ({ chat, onClick, cleared }) => {
+  const { latestMessage, typing, notification } = useContext(NexusContext);
+  const decodedUser = getDecodedJwt();
   const [lastMessage, setLastMessage] = useState(chat?.latestMessage || "");
+  const unread = chat.unreadMessages.filter(
+    (item) => item.userId.userDetails._id === decodedUser.id
+  );
+  const [unreadCount, setUnreadCount] = useState(unread[0]?.unread);
+
+  useEffect(() => {
+    if (notification[0]?.sender[0]?.userId === chatData[0].userId) {
+      if (notification.length > 0) {
+        setUnreadCount(notification[0]?.unread);
+      }
+    } else {
+      setUnreadCount(0);
+    }
+  }, [notification, cleared]);
 
   useEffect(() => {
     if (latestMessage) {
@@ -17,24 +36,18 @@ const Chat = ({ chat, onClick }) => {
       const latestMessageArray = latestMessage.chat.users.map(
         (item) => item.userId
       );
-      console.log("Entered", JSON.stringify(mainChatUserArray));
-      console.log("from received", JSON.stringify(latestMessageArray));
-      console.log(
-        "Is it the same",
-        JSON.stringify(mainChatUserArray) === JSON.stringify(latestMessageArray)
-      );
+
       if (
         JSON.stringify(mainChatUserArray) === JSON.stringify(latestMessageArray)
       ) {
-        console.log("It is the same");
         setLastMessage(latestMessage);
       }
     }
   }, [latestMessage]);
-  const decodedUser = getDecodedJwt();
   const chatData = chat.users.filter(
     (item) => item.userDetails._id !== decodedUser.id
   );
+
   return (
     <Box sx={{ cursor: "pointer" }} onClick={onClick}>
       <Box
@@ -57,34 +70,49 @@ const Chat = ({ chat, onClick }) => {
               {chatData[0].userDetails.lastName}{" "}
               {chatData[0].userDetails.firstName}
             </Typography>
-            <Typography variant="h6" color="black">
-              {lastMessage?.content}
+            <Typography
+              sx={{
+                color:
+                  typing.typing &&
+                  typing.sender[0].userId === chatData[0].userId
+                    ? "#13D71B"
+                    : "black",
+              }}
+              variant="caption"
+            >
+              {typing.typing && typing.sender[0].userId === chatData[0].userId
+                ? "typing"
+                : `${lastMessage?.content.substring(0, 15)}${
+                    lastMessage?.content.length > 15 ? "..." : ""
+                  }`}
             </Typography>
           </Box>
         </Box>
         <Box alignItems="flex-end" display="flex" flexDirection="column">
-          <Typography variant="h6" color="text.secondary">
-            {getFormattedTime(lastMessage.updatedAt)}
+          <Typography variant="caption" sx={{}} color="text.secondary">
+            {formatDateTime(lastMessage.updatedAt)}
           </Typography>
-          <Box
-            sx={{
-              width: "15px",
-              height: "15px",
-              borderRadius: "100%",
-              backgroundColor: "#F30505",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Typography
-              variant="h6"
-              color="white"
-              sx={{ fontSize: "10px !important" }}
+          {unreadCount > 0 && (
+            <Box
+              sx={{
+                width: "15px",
+                height: "15px",
+                borderRadius: "100%",
+                backgroundColor: "#F30505",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
             >
-              2
-            </Typography>
-          </Box>
+              <Typography
+                variant="h6"
+                color="white"
+                sx={{ fontSize: "10px !important" }}
+              >
+                {unreadCount}
+              </Typography>
+            </Box>
+          )}
         </Box>
       </Box>
       <Divider sx={{ margin: "10px 0" }} />

@@ -16,7 +16,8 @@ export const PatientPaths = {
   PATIENT_ANNOUNCEMENTS: "/patient/announcements",
   PATIENT_MESSAGES: "/patient/messages",
   PATIENT_NOTIFICATIONS: "/patient/notifications",
-  PATIENT_FAQ: "/patient/faq",
+  PATIENT_HISTORY: "/patient/history",
+  // PATIENT_FAQ: "/patient/faq",
 };
 
 export const DoctorPaths = {
@@ -25,5 +26,7 @@ export const DoctorPaths = {
   DOCTOR_MESSAGES: "/doctor/messages",
   DOCTOR_ANNOUNCEMENTS: "/doctor/announcements",
   DOCTOR_NOTIFICATIONS: "/doctor/notifications",
-  DOCTOR_FAQ: "/doctor/faq",
+  DOCTOR_HISTORY: "/doctor/history",
+
+  // DOCTOR_FAQ: "/doctor/faq",
 };
