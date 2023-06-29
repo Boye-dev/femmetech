@@ -8,6 +8,8 @@ import DoctorSignin from "./pages/DoctorSignin";
 import DoctorAuthHelper from "./components.js/DoctorAuthHelper";
 import VerifyPage from "./pages/VerifyPage";
 import DoctorSignup from "./pages/DoctorSignup";
+import ForgotPasswordPatient from "./pages/ForgotPasswordPatient";
+import ForgotPasswordDoctor from "./pages/ForgotPasswordDoctor";
 
 function Auth() {
   return (
@@ -16,6 +18,8 @@ function Auth() {
         <Route path="" element={<Navigate to="home" replace />} />
         <Route path="/home" exact element={<Home />} />
         <Route path="/verify" exact element={<VerifyPage />} />
+        <Route path="/forgot-password-patient" exact element={<ForgotPasswordPatient />} />
+        <Route path="/forgot-password-doctor" exact element={<ForgotPasswordDoctor />} />
         <Route element={<AuthHelper />}>
           <Route path="/signin" exact element={<Signin />} />
         </Route>
