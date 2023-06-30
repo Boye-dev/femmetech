@@ -9,7 +9,6 @@ import { useQuery, useMutation } from "react-query";
 import { fetchChats, readMessages } from "../services/doctorService";
 import { useState } from "react";
 import { ReactComponent as Blob } from "../../../assets/svgs/blob.svg";
-import { useEffect } from "react";
 import { useContext } from "react";
 import { NexusContext } from "../../../context/NexusContext";
 
@@ -19,7 +18,7 @@ const Messages = () => {
   const decodedUser = getDecodedJwt();
   const [showDrop, setShowdrop] = useState(true);
   const [search, setSearch] = useState("");
-  const { socketRef, notification, setNotification } = useContext(NexusContext);
+  const { socketRef, setNotification } = useContext(NexusContext);
   const [cleared, setCleared] = useState(false);
   const { isLoading, data } = useQuery(
     ["chats", { userId: decodedUser.id }],
@@ -42,6 +41,7 @@ const Messages = () => {
       setCleared(!cleared);
     },
   });
+  console.log(isPosting);
   return (
     <>
       {isLoading ? (

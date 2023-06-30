@@ -1,5 +1,5 @@
 
-import { Grid, Typography, Button } from "@mui/material";
+import { Grid, Typography, } from "@mui/material";
 import Box from "@mui/material/Box";
 import { useEffect, useState } from "react";
 import loginImg from "../../../assets/images/login.png";
@@ -12,6 +12,7 @@ import { EastOutlined, West } from "@mui/icons-material";
 import { useAlert } from "../../../context/NotificationProvider";
 import { useMutation } from "react-query";
 import { signup } from "../services/authServices";
+import { LoadingButton } from "@mui/lab";
 
 const Signup = () => {
 
@@ -146,9 +147,11 @@ const Signup = () => {
             {activeStep === 1 ? <SignupStep2 /> : ""}
             {activeStep === 2 ? <SignupStep3 /> : ""}
 
-            <Button
+            
+            <LoadingButton
               fullWidth
               size="small"
+              loading={isLoading}
               onClick={activeStep === 2 ? handleSubmit(onSubmit) : handleNext}
               variant="contained"
               endIcon={<EastOutlined sx={{ marginLeft: "12px" }} />}
@@ -165,7 +168,7 @@ const Signup = () => {
               }}
             >
               {activeStep < 2 ? `Continue` : "Finish"}
-            </Button>
+            </LoadingButton>
 
             <Box
               sx={{

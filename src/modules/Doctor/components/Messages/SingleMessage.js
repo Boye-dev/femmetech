@@ -89,6 +89,7 @@ const SingleMessage = ({ chat, showDrop, onClose }) => {
       };
       mutate(payload);
     }
+    console.log(isTyping);
   };
 
   const messageGroups = messages.reduce((groups, message) => {

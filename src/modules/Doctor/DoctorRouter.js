@@ -4,6 +4,7 @@ import Appointments from "./pages/Appointments";
 import Announcements from "./pages/Announcements";
 import Messages from "./pages/Messages";
 import Notification from "./pages/Notification";
+import Settings from "./pages/Settings";
 
 function DoctorRouter() {
   return (
@@ -14,6 +15,7 @@ function DoctorRouter() {
       <Route exact path="announcements" element={<Announcements />} />
       <Route exact path="notifications" element={<Notification />} />
       <Route exact path="messages" element={<Messages />} />
+      <Route exact path="settings" element={<Settings />} />
     </Routes>
   );
 }

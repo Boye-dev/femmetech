@@ -29,6 +29,18 @@ export const updateStatusToRead = async ({ queryKey }) => {
   );
 };
 
+export const profileUpdate = async (formData) => {
+  const _id = formData.get("_id");
+  return Api.put(`/patient/editProfile/${_id}`, formData).then(
+    (res) => res.data
+  );
+};
+
+export const passwordChange = async (payload) => {
+  return Api.put(`/patient/updatePassword/${payload.id}`, payload).then(
+    (res) => res.data
+  );
+};
 export const book = async (payload) => {
   return Api.post("/appointment/book/", payload).then((res) => res.data);
 };

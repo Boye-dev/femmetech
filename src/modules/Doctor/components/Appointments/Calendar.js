@@ -26,14 +26,11 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useRef } from "react";
-import { useEffect } from "react";
 import {
   AccessTime,
   CalendarMonth,
   HourglassBottom,
   LocalHospital,
-  LockClockOutlined,
 } from "@mui/icons-material";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";

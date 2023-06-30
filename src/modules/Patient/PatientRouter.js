@@ -4,7 +4,7 @@ import Appointments from "./pages/Appointments";
 import Announcements from "./pages/Announcements";
 import Messages from "../Doctor/pages/Messages";
 import Settings from "./pages/Settings";
-import Notification from "./pages/Notification";
+import Notification from "../Doctor/pages/Notification";
 
 function PatientRouter() {
   return (

@@ -1,8 +1,9 @@
 import { Close } from "@mui/icons-material";
 import { Box, Divider, Typography } from "@mui/material";
 import React from "react";
+import { formatDateTime, getFormattedTime } from "../../../../utils/formatDate";
 
-const Notify = () => {
+const Notify = ({ notification }) => {
   return (
     <Box>
       <Box sx={{ mt: 10, width: "100%", display: "flex" }}>
@@ -23,8 +24,9 @@ const Notify = () => {
         <Box>
           <Box
             sx={{
-              backgroundColor: "#6C00FF",
-              width: "79px",
+              backgroundColor:
+                notification.type === "Appointment" ? "#13D71B" : "#6C00FF",
+              width: "100px",
               height: "23px",
               borderRadius: "3px",
               p: 1,
@@ -36,19 +38,30 @@ const Notify = () => {
             }}
           >
             <Typography color="white" variant="h6">
-              Message
+              {notification.type}
             </Typography>
           </Box>
           <Typography color="black" variant="h6" sx={{ margin: "5px 0" }}>
-            Dr. Olufemi Nifemi sent a new message
+            {notification.title}
           </Typography>
           <Typography
             color="text.secondary"
             variant="caption"
             sx={{ margin: "5px 0" }}
           >
-            Don’t worry about the headaches, its part of the symptoms during the
-            first stages
+            {notification.content}
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "flex-end",
+            alignItems: "center",
+          }}
+        >
+          <Typography color="text.secondary" variant="caption">
+            {formatDateTime(notification.createdAt)}
           </Typography>
         </Box>
       </Box>

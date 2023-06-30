@@ -25,6 +25,26 @@ export const setPassword = async (payload) => {
     (res) => res.data
   );
 };
+export const forgotPasswordPatient = async (payload) => {
+  return Api.post("/patient/forgotPassword", payload).then(
+    (res) => res.data
+  );
+};
+export const resetPasswordPatient = async (payload) => {
+  return Api.post("/patient/resetPassword", payload).then(
+    (res) => res.data
+  );
+};
+export const forgotPasswordDoctor = async (payload) => {
+  return Api.post("/doctor/forgotPassword", payload).then(
+    (res) => res.data
+  );
+};
+export const resetPasswordDoctor = async (payload) => {
+  return Api.post("/doctor/resetPassword", payload).then(
+    (res) => res.data
+  );
+};
 export const verifyToken = async (payload) => {
   return Api.post("/personnels/verify-token/", payload).then((res) => res.data);
 };
