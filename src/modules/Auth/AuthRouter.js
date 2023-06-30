@@ -10,6 +10,7 @@ import VerifyPage from "./pages/VerifyPage";
 import DoctorSignup from "./pages/DoctorSignup";
 import ForgotPasswordPatient from "./pages/ForgotPasswordPatient";
 import ForgotPasswordDoctor from "./pages/ForgotPasswordDoctor";
+import FAQ from "../../pages/FAQ";
 
 function Auth() {
   return (
@@ -17,6 +18,7 @@ function Auth() {
       <Routes>
         <Route path="" element={<Navigate to="home" replace />} />
         <Route path="/home" exact element={<Home />} />
+        <Route path="/faq" exact element={<FAQ />} />
         <Route path="/verify" exact element={<VerifyPage />} />
         <Route path="/forgot-password-patient" exact element={<ForgotPasswordPatient />} />
         <Route path="/forgot-password-doctor" exact element={<ForgotPasswordDoctor />} />
