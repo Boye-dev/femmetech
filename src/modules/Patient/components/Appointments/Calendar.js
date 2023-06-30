@@ -6,8 +6,8 @@ import Fullcalendar from "@fullcalendar/react";
 import "../../../../styles/calendar.css";
 import { useState } from "react";
 import EventDrawer from "./EventDrawer";
-import { useQuery } from "react-query";
-import { fetchUpcoming } from "../../services/patientService";
+import { useQuery, useMutation, useQueryClient } from "react-query";
+import { cancel, fetchUpcoming } from "../../services/patientService";
 import { getDecodedJwt } from "../../../../utils/auth";
 import { useAlert } from "../../../../context/NotificationProvider";
 import {
@@ -30,6 +30,7 @@ import {
   getDuration,
   getFormattedTime,
 } from "../../../../utils/formatDate";
+import { LoadingButton } from "@mui/lab";
 function Calendar(props) {
   const [event, setEvent] = useState(false);
   const { showNotification } = useAlert();
@@ -50,6 +51,7 @@ function Calendar(props) {
     upcomingLoading ||
     upcoming?.data.map((data) => {
       return {
+        appointmentId: data._id,
         title: data.title,
         status: data.status,
         doctorId: data.doctorId,
@@ -59,6 +61,7 @@ function Calendar(props) {
         additionalInformation: data.additionalInformation,
       };
     });
+  const queryClient = useQueryClient();
 
   const [popoverAnchorEl, setPopoverAnchorEl] = useState(null);
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -74,6 +77,26 @@ function Calendar(props) {
     setPopoverAnchorEl(null);
     setSelectedEvent(null);
   };
+  const { mutate, isLoading } = useMutation(cancel, {
+    onError: (error) => {
+      showNotification?.(error.response.data.errors[0], { type: "error" });
+    },
+    onSuccess: (data) => {
+      setSelectedEvent(null);
+      setPopoverAnchorEl(null);
+      queryClient.refetchQueries("upcoming_app");
+
+      showNotification?.(data.message, { type: "success" });
+    },
+  });
+  const onCancel = (appointmentId) => {
+    const payload = {
+      appointmentId,
+    };
+
+    mutate(payload);
+  };
+
   return (
     <div>
       {upcomingLoading ? (
@@ -301,7 +324,11 @@ function Calendar(props) {
                           Reschedule Appontment
                         </Typography>
                       </Button> */}
-                      <Button
+                      <LoadingButton
+                        loading={isLoading}
+                        onClick={() =>
+                          onCancel(selectedEvent.extendedProps?.appointmentId)
+                        }
                         variant="outlined"
                         color="error"
                         sx={{
@@ -315,7 +342,7 @@ function Calendar(props) {
                         >
                           Cancel Appontment
                         </Typography>
-                      </Button>
+                      </LoadingButton>
                     </Box>
                   </Box>
                 </div>
