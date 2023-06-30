@@ -20,6 +20,7 @@ import { fetchUser, fetchUserDoctor } from "../../../services/authService";
 import { useQuery } from "react-query";
 import { useAlert } from "../../../context/NotificationProvider";
 import { useNavigate } from "react-router-dom/dist";
+import { Logout, SettingsOutlined } from "@mui/icons-material";
 
 const PatientSidebar = (props) => {
   const location = useLocation();
@@ -172,12 +173,14 @@ const PatientSidebar = (props) => {
                     id="basic-menu"
                     anchorEl={anchorEl}
                     open={open}
+                    sx={{width: 200}}
                     onClose={handleClose}
                     MenuListProps={{
                       "aria-labelledby": "basic-button",
                     }}
                   >
                     <MenuItem color="black" 
+                      sx={{width: "220px"}}
                       onClick={
                         data?.data ? 
                         () => {
@@ -191,9 +194,12 @@ const PatientSidebar = (props) => {
                         }
                       }
                     >
-                      <Typography color="black" variant="h6">
-                        Profile
-                      </Typography>
+                      <Box sx={{display: "flex", alignItems: "center", }}>
+                        <SettingsOutlined sx={{color: "black",}} />
+                        <Typography color="black" variant="h6"  sx={{marginLeft: "10px",}}>
+                           Profile
+                        </Typography>
+                      </Box>
                     </MenuItem>
                     <MenuItem
                       color="black"
@@ -205,9 +211,12 @@ const PatientSidebar = (props) => {
                           : navigate("/signin-doctor");
                       }}
                     >
-                      <Typography color="black" variant="h6">
-                        Logout
-                      </Typography>
+                      <Box sx={{display: "flex", alignItems: "center"}}>
+                        <Logout sx={{color: "black",}} />
+                        <Typography color="black" variant="h6" sx={{marginLeft: "10px",}}>
+                          Logout
+                        </Typography>
+                      </Box>
                     </MenuItem>
                   </Menu>
                 </>

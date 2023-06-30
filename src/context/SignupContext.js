@@ -64,6 +64,48 @@ const SignupContextProvider = ({children}) => {
         agreeToTerms: yup.boolean().oneOf([true], 'You must agree to the Terms and Conditions'),
     });
     
+    const forgotPasswordSchema = yup.object().shape({
+        email: yup.string().required("Email Is Required"),
+    });
+    
+    const resetPasswordSchema = yup.object().shape({
+        newPassword: yup
+          .string()
+          .required("Password Is Required")
+          .matches(
+            /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)/,
+            "Password Must Contain An Uppercase, A Digit, and A Special Character"
+          )
+          .min(8, "Password Should Have At Least 8 Characters")
+          .max(32, "Password Should Have At Most 32 Characters"),
+        confirmPassword: yup
+          .string()
+          .required("Password Must Match")
+          .oneOf([yup.ref("newPassword"), null]),
+        
+    });
+    
+    const forgotPasswordSchemaDoctor = yup.object().shape({
+        email: yup.string().required("Email Is Required"),
+    });
+    
+    const resetPasswordSchemaDoctor = yup.object().shape({
+        newPassword: yup
+          .string()
+          .required("Password Is Required")
+          .matches(
+            /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)/,
+            "Password Must Contain An Uppercase, A Digit, and A Special Character"
+          )
+          .min(8, "Password Should Have At Least 8 Characters")
+          .max(32, "Password Should Have At Most 32 Characters"),
+        confirmPassword: yup
+          .string()
+          .required("Password Must Match")
+          .oneOf([yup.ref("newPassword"), null]),
+        
+    });
+
     const defaultValues = {
         firstName: "",
         lastName: "",
@@ -97,6 +139,24 @@ const SignupContextProvider = ({children}) => {
         address: "",
         agreeToTerms: false,
     }
+    
+    const forgotPasswordDefaultValues = {
+        email: "",
+    }
+    
+    const resetPasswordDefaultValues = {
+        newPassword: "",
+        confirmPassword: "",
+    }
+    const forgotPasswordDefaultValuesDoctor = {
+        email: "",
+    }
+    
+    const resetPasswordDefaultValuesDoctor = {
+        newPassword: "",
+        confirmPassword: "",
+    }
+
     const { control, handleSubmit, formState: { errors }, trigger, watch, reset, setValue, getValues, unregister } = useForm({
         resolver: yupResolver(schema),
         defaultValues: defaultValues,
@@ -105,9 +165,25 @@ const SignupContextProvider = ({children}) => {
         resolver: yupResolver(doctorSchema),
         defaultValues: doctorDefaultValues,
     });
+    const { control: forgotPasswordControl, handleSubmit: forgotPasswordHandleSubmit, formState: { errors: forgotPasswordErrors }, trigger: forgotPasswordTrigger, watch: forgotPasswordWatch, reset: forgotPasswordReset, setValue: forgotPasswordSetValue, getValues: forgotPasswordGetValues, unregister: forgotPasswordUnregister } = useForm({
+        resolver: yupResolver(forgotPasswordSchema),
+        defaultValues: forgotPasswordDefaultValues,
+    });
+    const { control: resetPasswordControl, handleSubmit: resetPasswordHandleSubmit, formState: { errors: resetPasswordErrors }, trigger: resetPasswordTrigger, watch: resetPasswordWatch, reset: resetPasswordReset, setValue: resetPasswordSetValue, getValues: resetPasswordGetValues, unregister: resetPasswordUnregister } = useForm({
+        resolver: yupResolver(resetPasswordSchema),
+        defaultValues: resetPasswordDefaultValues,
+    });
+    const { control: forgotPasswordControlDoctor, handleSubmit: forgotPasswordHandleSubmitDoctor, formState: { errors: forgotPasswordErrorsDoctor }, trigger: forgotPasswordTriggerDoctor, watch: forgotPasswordWatchDoctor, reset: forgotPasswordResetDoctor, setValue: forgotPasswordSetValueDoctor, getValues: forgotPasswordGetValuesDoctor, unregister: forgotPasswordUnregisterDoctor } = useForm({
+        resolver: yupResolver(forgotPasswordSchemaDoctor),
+        defaultValues: forgotPasswordDefaultValuesDoctor,
+    });
+    const { control: resetPasswordControlDoctor, handleSubmit: resetPasswordHandleSubmitDoctor, formState: { errors: resetPasswordErrorsDoctor }, trigger: resetPasswordTriggerDoctor, watch: resetPasswordWatchDoctor, reset: resetPasswordResetDoctor, setValue: resetPasswordSetValueDoctor, getValues: resetPasswordGetValuesDoctor, unregister: resetPasswordUnregisterDoctor } = useForm({
+        resolver: yupResolver(resetPasswordSchemaDoctor),
+        defaultValues: resetPasswordDefaultValuesDoctor,
+    });
 
     return (
-        <SignupContext.Provider value={{control, handleSubmit, errors, trigger, watch, reset, setValue, getValues, unregister, doctorControl, doctorHandleSubmit, doctorErrors, doctorTrigger, doctorWatch, doctorReset, doctorSetValue, doctorGetValues, doctorUnregister}}>
+        <SignupContext.Provider value={{control, handleSubmit, errors, trigger, watch, reset, setValue, getValues, unregister, doctorControl, doctorHandleSubmit, doctorErrors, doctorTrigger, doctorWatch, doctorReset, doctorSetValue, doctorGetValues, doctorUnregister, forgotPasswordControl, forgotPasswordHandleSubmit, forgotPasswordErrors, forgotPasswordTrigger, forgotPasswordWatch, forgotPasswordReset, forgotPasswordSetValue, forgotPasswordGetValues, forgotPasswordUnregister, resetPasswordControl, resetPasswordHandleSubmit, resetPasswordErrors, resetPasswordTrigger, resetPasswordWatch, resetPasswordReset, resetPasswordSetValue, resetPasswordGetValues, resetPasswordUnregister, forgotPasswordControlDoctor, forgotPasswordHandleSubmitDoctor, forgotPasswordErrorsDoctor, forgotPasswordTriggerDoctor, forgotPasswordWatchDoctor, forgotPasswordResetDoctor, forgotPasswordSetValueDoctor, forgotPasswordGetValuesDoctor, forgotPasswordUnregisterDoctor, resetPasswordControlDoctor, resetPasswordHandleSubmitDoctor, resetPasswordErrorsDoctor, resetPasswordTriggerDoctor, resetPasswordWatchDoctor, resetPasswordResetDoctor, resetPasswordSetValueDoctor, resetPasswordGetValuesDoctor, resetPasswordUnregisterDoctor}}>
             {children}
         </SignupContext.Provider>
     )
