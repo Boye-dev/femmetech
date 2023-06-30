@@ -16,8 +16,6 @@ import {
 } from "../../../constants/sidebarItems";
 import { useLocation } from "react-router-dom";
 import { getDecodedJwt, isAuthenticated, logOut } from "../../../utils/auth";
-import { useAuthenticatedUser } from "../../../hooks/useAuthenticatedUser";
-import { useAuthenticatedUserDoctor } from "../../../hooks/useAuthenticatedUserDoctor";
 import { fetchUser, fetchUserDoctor } from "../../../services/authService";
 import { useQuery } from "react-query";
 import { useAlert } from "../../../context/NotificationProvider";
@@ -179,7 +177,20 @@ const PatientSidebar = (props) => {
                       "aria-labelledby": "basic-button",
                     }}
                   >
-                    <MenuItem color="black" onClick={handleClose}>
+                    <MenuItem color="black" 
+                      onClick={
+                        data?.data ? 
+                        () => {
+                          navigate("/patient/settings")
+                          handleClose()
+                        } 
+                        : 
+                        () => {
+                          navigate("/doctor/settings")
+                          handleClose()
+                        }
+                      }
+                    >
                       <Typography color="black" variant="h6">
                         Profile
                       </Typography>

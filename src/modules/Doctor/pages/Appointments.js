@@ -1,11 +1,7 @@
-import { Box, Button, Typography } from "@mui/material";
-import React, { useState } from "react";
+import { Box, Typography } from "@mui/material";
 import Calendar from "../components/Appointments/Calendar";
-import Book from "../components/Appointments/Book";
-import { Add } from "@mui/icons-material";
 
 const Appointments = () => {
-  const [book, setBook] = useState(false);
 
   return (
     <Box

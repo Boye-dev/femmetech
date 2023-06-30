@@ -19,14 +19,11 @@ import {
   Popover,
   Typography,
 } from "@mui/material";
-import { useRef } from "react";
-import { useEffect } from "react";
 import {
   AccessTime,
   CalendarMonth,
   HourglassBottom,
   LocalHospital,
-  LockClockOutlined,
 } from "@mui/icons-material";
 import {
   formatDate,

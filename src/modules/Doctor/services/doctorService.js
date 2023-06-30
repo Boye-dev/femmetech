@@ -30,6 +30,15 @@ export const updateStatusToRead = async ({ queryKey }) => {
   return Api.put(`/announcements/doctor/${announcementId}/${doctorId}`).then((res) => res.data);
 };
 
+export const profileUpdate = async (formData) => {
+  const _id = formData.get("_id")
+  return Api.put(`/doctor/editProfile/${_id}`, formData).then((res) => res.data);
+};
+export const passwordChange = async (formData) => {
+  const _id = formData.get("_id")
+  return Api.put(`/doctor/updatePassword/${_id}`, formData).then((res) => res.data);
+};
+
 export const postAnnouncement = async (payload) => {
   return Api.post("/announcements", payload).then((res) => res.data);
 };

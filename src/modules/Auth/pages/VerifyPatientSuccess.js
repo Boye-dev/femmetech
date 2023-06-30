@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import loginImg from "../../../assets/images/login.png";
 import { useAlert } from "../../../context/NotificationProvider";
 import { LoadingButton } from "@mui/lab";
-import { useQuery, useMutation } from "react-query";
+import { useQuery,  } from "react-query";
 import { useParams } from 'react-router-dom';
 import { useState } from "react";
 // import { verifyPatient } from "../services/authServices";
@@ -24,16 +24,6 @@ const VerifyPatientSuccess = () => {
 
   
   const { patientId, uniqueString } = useParams();
-  const mutation = useMutation(verifyPatient, {
-        onError: (error) => {
-            showNotification?.(error.response?.data?.message, { type: "error" });
-            setMessage(error.response?.data?.message)
-        },
-        onSuccess: (data) => {
-            setMessage(data.message)
-        },
-    });
-  
   const { isLoading, data } = useQuery(
     [
       "verifyPatient",
@@ -61,7 +51,7 @@ const VerifyPatientSuccess = () => {
   useEffect(() => {
     
     window.scrollTo(0, 0);
-  }, []);
+  }, [data]);
   
 
   return (
@@ -148,7 +138,7 @@ const VerifyPatientSuccess = () => {
                             fontSize: "18px !important",
                         }}
                         >
-                            {message}
+                            {message || data?.message}
                         </Typography>
 
 
