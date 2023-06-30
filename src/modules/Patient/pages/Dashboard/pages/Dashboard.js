@@ -1,7 +1,6 @@
-import { Box, Button, CircularProgress, Grid, Typography } from "@mui/material";
+import { Box, CircularProgress, Grid, Typography } from "@mui/material";
 import React, { useState } from "react";
 import ProfileSidebar from "../../../../../components/ProfileSidebar";
-import { useWidth } from "../../../../../hooks/useWidth";
 import { useQuery } from "react-query";
 import {
   fetchAppointments,
@@ -16,7 +15,6 @@ import PendingDrawer from "../../../components/Dasboard/PendingDrawer";
 import { formatDate } from "@fullcalendar/core";
 
 const Dashboard = () => {
-  const { isMobile } = useWidth();
   const navigate = useNavigate();
   const { showNotification } = useAlert();
   const decodedUser = getDecodedJwt();

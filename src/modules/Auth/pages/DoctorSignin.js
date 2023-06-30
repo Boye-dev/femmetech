@@ -354,7 +354,23 @@ const DoctorSignin = () => {
                   />
                 )}
               />
-
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "start",
+                  mb: 5
+                }}
+              >
+              
+                <Typography variant="caption">
+                  <Link
+                    style={{ textDecoration: "none", color: "#CE1E23" }}
+                    to={"/forgot-password-doctor"}
+                  >
+                    Forgot Password?
+                  </Link>
+                </Typography>
+              </Box>
               <LoadingButton
                 fullWidth
                 size="small"

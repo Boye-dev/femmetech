@@ -47,7 +47,7 @@ const NexusContextProvider = ({ children }) => {
     socketRef.current.on("stopType", (data) => {
       setTyping(data);
     });
-  }, [userId]);
+  }, [notification, userId]);
   useEffect(() => {
     if (notification.length > 0) {
       setOpenNotification(true);

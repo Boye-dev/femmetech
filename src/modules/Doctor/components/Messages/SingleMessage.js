@@ -27,7 +27,7 @@ const SingleMessage = ({ chat, showDrop, onClose }) => {
   const { showNotification } = useAlert();
 
   const decodedUser = getDecodedJwt();
-  const chatData = chat?.users.filter(
+  const chatData = chat?.users?.filter(
     (item) => item.userDetails._id !== decodedUser.id
   );
   const { socketRef, arrivalMessage, users, typing } = useContext(NexusContext);
@@ -89,6 +89,7 @@ const SingleMessage = ({ chat, showDrop, onClose }) => {
       };
       mutate(payload);
     }
+    console.log(isTyping);
   };
 
   const messageGroups = messages.reduce((groups, message) => {
@@ -179,18 +180,18 @@ const SingleMessage = ({ chat, showDrop, onClose }) => {
                           width: "10px",
                           height: "10px",
                           backgroundColor:
-                            users.filter(
+                            users?.filter(
                               (item) => item.userId === chatData[0].userId
-                            ).length > 0
+                            )?.length > 0
                               ? "#13D71B"
                               : "#F5F5F6",
                           borderRadius: "100%",
                         }}
                       />
                       <Typography variant="body2" color="text.secondary" ml={2}>
-                        {users.filter(
+                        {users?.filter(
                           (item) => item.userId === chatData[0].userId
-                        ).length > 0
+                        )?.length > 0
                           ? "Active"
                           : "Offline"}
                       </Typography>

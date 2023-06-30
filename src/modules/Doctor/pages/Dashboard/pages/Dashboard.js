@@ -1,7 +1,7 @@
-import { Box, Button, CircularProgress, Grid, Typography } from "@mui/material";
+import { Box, CircularProgress, Grid, Typography } from "@mui/material";
 import React, { useState } from "react";
-import ProfileSidebar from "../../../../../components/ProfileSidebar";
-import { useWidth } from "../../../../../hooks/useWidth";
+// import ProfileSidebar from "../../../../../components/ProfileSidebar";
+// import { useWidth } from "../../../../../hooks/useWidth";
 import { useQuery } from "react-query";
 import {
   fetchAppointmentsDoctor,
@@ -17,7 +17,7 @@ import { formatDate } from "@fullcalendar/core";
 import DoctorProfileSidebar from "../../../../../components/DoctorProfileSidebar";
 
 const Dashboard = () => {
-  const { isMobile } = useWidth();
+  // const { isMobile } = useWidth();
   const navigate = useNavigate();
   const { showNotification } = useAlert();
   const decodedUser = getDecodedJwt();

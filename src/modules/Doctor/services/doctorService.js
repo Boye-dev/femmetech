@@ -25,9 +25,34 @@ export const fetchAnnouncementsDoctor = async ({ queryKey }) => {
   const [, { doctorId }] = queryKey;
   return Api.get(`/announcements/doctor/${doctorId}`).then((res) => res.data);
 };
+export const fetchNotifications = async ({ queryKey }) => {
+  const [, { userId, status }] = queryKey;
+  return Api.get(
+    `/notifications/${userId}${status ? `?status=${status}` : ""}`
+  ).then((res) => res.data);
+};
+export const markReadAll = async (payload) => {
+  return Api.put(`/notifications/readAll/${payload.userId}`).then(
+    (res) => res.data
+  );
+};
 export const updateStatusToRead = async ({ queryKey }) => {
   const [, { doctorId, announcementId }] = queryKey;
-  return Api.put(`/announcements/doctor/${announcementId}/${doctorId}`).then((res) => res.data);
+  return Api.put(`/announcements/doctor/${announcementId}/${doctorId}`).then(
+    (res) => res.data
+  );
+};
+
+export const profileUpdate = async (formData) => {
+  const _id = formData.get("_id");
+  return Api.put(`/doctor/editProfile/${_id}`, formData).then(
+    (res) => res.data
+  );
+};
+export const passwordChange = async (payload) => {
+  return Api.put(`/doctor/updatePassword/${payload.id}`, payload).then(
+    (res) => res.data
+  );
 };
 
 export const postAnnouncement = async (payload) => {

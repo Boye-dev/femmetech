@@ -7,6 +7,8 @@ import DoctorRouter from "../modules/Doctor/DoctorRouter";
 import DoctorGuard from "../shared/components/DoctorGuard";
 import VerifyPatientSuccess from "../modules/Auth/pages/VerifyPatientSuccess";
 import VerifyDoctorSuccess from "../modules/Auth/pages/VerifyDoctorSuccess";
+import ResetPasswordPatient from "../modules/Auth/pages/ResetPasswordPatient";
+import ResetPasswordDoctor from "../modules/Auth/pages/ResetPasswordDoctor";
 
 export const RoutesWrapper = () => {
   return (
@@ -15,6 +17,8 @@ export const RoutesWrapper = () => {
       
       <Route path="/verify-patient/:patientId/:uniqueString" exact element={<VerifyPatientSuccess />} />
       <Route path="/verify-doctor/:doctorId/:uniqueString" exact element={<VerifyDoctorSuccess />} />
+      <Route path="/resetPassword/patient/:patientId/:resetString" exact element={<ResetPasswordPatient />} />
+      <Route path="/resetPassword/doctor/:doctorId/:resetString" exact element={<ResetPasswordDoctor />} />
       <Route element={<PatientGuard />}>
         <Route element={<MainLayout />}>
           <Route exact path="/patient/*" element={<PatientRouter />} />
