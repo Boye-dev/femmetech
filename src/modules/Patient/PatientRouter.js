@@ -4,6 +4,7 @@ import Appointments from "./pages/Appointments";
 import Announcements from "./pages/Announcements";
 import Messages from "../Doctor/pages/Messages";
 import Settings from "./pages/Settings";
+import Notification from "../Doctor/pages/Notification";
 
 function PatientRouter() {
   return (
@@ -12,6 +13,7 @@ function PatientRouter() {
       <Route exact path="dashboard" element={<Dashboard />} />
       <Route exact path="appointments" element={<Appointments />} />
       <Route exact path="announcements" element={<Announcements />} />
+      <Route exact path="notifications" element={<Notification />} />
       <Route exact path="messages" element={<Messages />} />
       <Route exact path="settings" element={<Settings />} />
     </Routes>
