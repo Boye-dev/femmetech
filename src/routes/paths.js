@@ -23,6 +23,7 @@ export const PatientPaths = {
 export const DoctorPaths = {
   DOCTOR_DASHBOARD: "/doctor/dashboard",
   DOCTOR_APPOINTMENT: "/doctor/appointments",
+  DOCTOR_WAITLIST: "/doctor/waitlist",
   DOCTOR_MESSAGES: "/doctor/messages",
   DOCTOR_ANNOUNCEMENTS: "/doctor/announcements",
   DOCTOR_NOTIFICATIONS: "/doctor/notifications",

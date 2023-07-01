@@ -1,7 +1,7 @@
 import React from "react";
 import { CircularProgress,  } from "@mui/material";
 import { useMutation } from "react-query";
-import { resetPasswordDoctor, resetPasswordPatient,  } from "../services/authServices";
+import { resetPasswordDoctor,   } from "../services/authServices";
 // import logo from "../../../assets/svgs/logosmall.svg";
 import { Grid, Typography,  } from "@mui/material";
 import Box from "@mui/material/Box";
@@ -11,8 +11,6 @@ import loginImg from "../../../assets/images/login.png";
 import { useAlert } from "../../../context/NotificationProvider";
 import { LoadingButton } from "@mui/lab";
 import { useSignupContext } from "../../../context/SignupContext";
-import ResetPasswordPatientStep1 from "../components.js/ResetPasswordPatientStep1";
-import ResetPasswordPatientStep2 from "../components.js/ResetPasswordPatientStep2";
 import ResetPasswordDoctorStep1 from "../components.js/ResetPasswordDoctorStep1";
 import ResetPasswordDoctorStep2 from "../components.js/ResetPasswordDoctorStep2";
 

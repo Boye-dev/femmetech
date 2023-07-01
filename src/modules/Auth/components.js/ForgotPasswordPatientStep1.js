@@ -1,12 +1,8 @@
-import { Box, IconButton, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { Controller } from "react-hook-form";
 import TextField from "@mui/material/TextField";
-import Grid from "@mui/material/Grid";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { useState } from "react";
 import { useSignupContext } from "../../../context/SignupContext";
 import logo from "../../../assets/svgs/logosmall.svg";
-import { Link } from "react-router-dom";
 
 const formStyles = {
 //   marginBottom: "20px",

@@ -6,19 +6,21 @@ import DoctorProfileSidebar from "../../../components/DoctorProfileSidebar";
 import image from "../../../assets/images/test-image.png";
 import { format } from "date-fns";
 import { getDecodedJwt } from "./../../../utils/auth";
-import {  fetchAnnouncementsDoctor, updateStatusToRead } from "../services/doctorService";
+import {  fetchAnnouncementsDoctor, fetchAppointmentsDoctor, updateStatusToRead } from "../services/doctorService";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useAlert } from "../../../context/NotificationProvider";
 import { Add } from "@mui/icons-material";
 import NewAnnouncement from "../components/Announcements.js/NewAnnouncement";
+import ViewWaitlist from "../components/Waitlist/ViewWailtlist";
 
 
-const Announcements = () => {
+const Waitlist = () => {
     const { isMobile } = useWidth();
     const queryClient = useQueryClient();
     const decodedUser = getDecodedJwt();
     const doctorId = decodedUser.id;
-    const [newPost, setNewPost] = useState(false);
+    const [open, setOpen] = useState(false);
+    const [IndividualAppointmentData, setIndividualAppointmentData] = useState(false);
     
     const { showNotification } = useAlert();
     console.log(doctorId);
@@ -35,17 +37,48 @@ const Announcements = () => {
     );
 
     // Update to read
-    const mutation = useMutation(updateStatusToRead, {
-        onError: (error) => {
-          showNotification?.(error.response.data?.error, { type: "error" });
-        },
+    // const mutation = useMutation(updateStatusToRead, {
+    //     onError: (error) => {
+    //       showNotification?.(error.response.data?.error, { type: "error" });
+    //     },
 
-        onSuccess: (data) => {
-            console.log(data);
-            // Get all announcements again
-            queryClient.refetchQueries("announcements")
+    //     onSuccess: (data) => {
+    //         console.log(data);
+    //         // Get all announcements again
+    //         queryClient.refetchQueries("announcements")
+    //     }
+    // });
+
+    
+    const color = ["#0FC916", "#FCBA03", "#6E00FF", "#F30505"];
+    let lastColorIndex;
+
+    function getRandomColor() {
+        let randomColorIndex = Math.floor(Math.random() * color.length);
+        while (randomColorIndex === lastColorIndex) {
+            randomColorIndex = Math.floor(Math.random() * color.length);
         }
-    });
+        lastColorIndex = randomColorIndex;
+        return color[randomColorIndex];
+    }
+
+    const { isLoading: isAppointmentLoading, data: appointmentData } = useQuery(
+        [
+        "appointments",
+        {
+            doctorId: doctorId,
+
+            status: "PENDING",
+        },
+        ],
+        fetchAppointmentsDoctor,
+        {
+        enabled: isLoading === false,
+        onError: (error) => {
+            showNotification?.(error.response?.data?.message, { type: "error" });
+        },
+        }
+    );
       
     // ...
     const getAnnouncementSection = (timestamp) => {
@@ -99,24 +132,24 @@ const Announcements = () => {
     });
     
 
-    const [selectedAnnouncement, setSelectedAnnouncement] = useState(null);
+    // const [selectedAnnouncement, setSelectedAnnouncement] = useState(null);
 
-    const handleShowMoreClick = (announcement) => {
-        setSelectedAnnouncement(announcement);
-        const announcementId = announcement._id; // Replace with the actual announcementId
-        const queryKey = ['updateStatus', { doctorId, announcementId }];
-        mutation.mutate({ queryKey });
-    };
+    // const handleShowMoreClick = (announcement) => {
+    //     setSelectedAnnouncement(announcement);
+    //     const announcementId = announcement._id; // Replace with the actual announcementId
+    //     const queryKey = ['updateStatus', { doctorId, announcementId }];
+    //     mutation.mutate({ queryKey });
+    // };
 
-    const handleCloseDialog = () => {
-        setSelectedAnnouncement(null);
-    };
+    // const handleCloseDialog = () => {
+    //     setSelectedAnnouncement(null);
+    // };
 
     console.log(unreadAnnouncements);
 
     return (
         <>
-            {isLoading ? 
+            {isLoading || isAppointmentLoading ? 
                 (
                     <Box
                         sx={{
@@ -155,25 +188,16 @@ const Announcements = () => {
                           <Box sx={{  pl: 4, }}>
                               
                               <Typography variant="h3" sx={{ color: "black", fontSize: {xs: "24px !important", } }}>
-                              Announcements
+                                Waitlist
                               </Typography>
                               <Typography variant="caption" sx={{ color: "black", fontWeight: 400, letterSpacing: 1 }}>
-                              You have <span style={{ fontWeight: 600, color: "#ED2228" }}>{unreadAnnouncements?.length}</span> unread announcements.
+                              You have <span style={{ fontWeight: 600, color: "#ED2228" }}>{appointmentData?.data?.appointments.length}</span> pending appointments.
                               </Typography>
                           </Box>
-                          <Button
-                            disableElevation
-                            variant="contained"
-                            startIcon={<Add />}
-                            sx={{ borderRadius: "14px", height: "fit-content" }}
-                            onClick={() => setNewPost(true)}
-                          >
-                            New Announcement
-                          </Button>
                         </Box>
                             
 
-                            {Object.entries(announcementSections).map(([section, items]) => (
+                            {/* {Object.entries(announcementSections).map(([section, items]) => (
                                 <React.Fragment key={section}>
                                     <Typography variant="h3" sx={{ color: "#AEAEAE", margin: "20px 0" }}>
                                         {section}
@@ -207,7 +231,7 @@ const Announcements = () => {
                                                         overflow: "hidden",
                                                         hyphens: "auto",
                                                         wordBreak: "break-all",
-                                                        maxWidth: "70%",
+                                                        width: "70%",
                                                         display: "-webkit-box",
                                                         WebkitLineClamp: 1,
                                                         WebkitBoxOrient: "vertical",
@@ -218,47 +242,113 @@ const Announcements = () => {
                                                         {item.text}
                                                     </Typography>
                                                     <Typography onClick={() => handleShowMoreClick(item)} variant="caption" sx={{ color: "#AEAEAE", cursor: "pointer" }}>
-                                                        .show more
+                                                        show more
                                                     </Typography>
                                                 </Box>
                                             </Box>
                                         </Box>
                                     ))}
                                 </React.Fragment>
-                            ))}
+                            ))} */}
+                            {appointmentData.data?.appointments.length > 0 ? (
+                            appointmentData.data?.appointments.map((item, index) => {
+                                return (
+                                <>
+                                    <Box
+                                    key={item._id}
+                                    sx={{
+                                        width: "100%",
+                                        minHeight: "30px",
+                                        backgroundColor: "#F4F4F4",
+                                        borderTopRightRadius: "5px",
+                                        borderBottomRightRadius: "5px",
+                                        display: "flex",
+
+                                        mt: 3,
+                                        mb: 2,
+                                        justifyContent: "space-between",
+                                    }}
+                                    >
+                                        <Box display="flex" sx={{ width: "100%" }}>
+                                            <Box
+                                                sx={{
+                                                    width: "3px",
+                                                    height: "100%",
+                                                    borderRadius: "5px",
+                                                    backgroundColor: getRandomColor(),
+                                                }}
+                                            />
+                                            <Box
+                                                sx={{
+                                                    width: "100%",
+                                                    height: "100%",
+                                                    display: "flex",
+                                                    justifyContent: "space-between",
+                                                    mr: 10
+                                                }}
+                                            >
+                                                <Box
+                                                    ml={5}
+                                                    display="flex"
+                                                    flexDirection="column"
+                                                    justifyContent="center"
+                                                    p={1}
+                                                >
+                                                    <Typography color="black" variant="h4">
+                                                        {item.title}
+                                                    </Typography>
+                                                    <Typography color="text.secondary" variant="h6">
+                                                        {`Patient: ${item.patientId.firstName} ${item.patientId.lastName}`}
+                                                    </Typography>
+                                                    <Typography color="text.secondary" variant="caption">
+                                                        {`Additional Information: ${item.additionalInformation}`}
+                                                    </Typography>
+                                                </Box>
+                                                <Box
+                                                    ml={5}
+                                                    display="flex"
+                                                    flexDirection="column"
+                                                    justifyContent="center"
+                                                    p={1}
+                                                    sx={{justifySelf: "end"}}
+                                                >
+                                                    <Button
+                                                        disableElevation
+                                                        variant="contained"
+                                                        sx={{ borderRadius: "14px", height: "fit-content" }}
+                                                        onClick={() => {setIndividualAppointmentData(item); setOpen(true); }}
+                                                    >
+                                                        View
+                                                    </Button>
+                                                </Box>
+                                            </Box>
+                                        </Box>
+                                    </Box>
+                                </>
+                                );
+                            })
+                            ) : (
+                            <Typography variant="h6" mt={4} color="text.secondary">
+                                No Waitlist
+                            </Typography>
+                            )}
                         </Box>
                     </Box>
                     
                 )
             }
             {!isMobile && <DoctorProfileSidebar width="250px" />}
-            <Dialog open={selectedAnnouncement !== null} onClose={handleCloseDialog}>
-                {selectedAnnouncement && (
-                    <>
-                        <DialogTitle variant="h4" sx={{fontSize: {xs: "18px !important", }}} color="black">
-                            {selectedAnnouncement?.name}
-                        </DialogTitle>
-                        <DialogContent>
-                            <Typography color="black" variant="body1" sx={{fontSize: {xs: "14px !important", md: "16px !important",}}} >
-                                {selectedAnnouncement?.text}
-                            </Typography>
-                            <Typography variant="caption" marginTop="20px">
-                                Date: {format(new Date(selectedAnnouncement.timestamp.replace(/(\d{2})\/(\d{2})\/(\d{4})/, "$2/$1/$3")), "dd/MM/yyyy")}
-                            </Typography>
-                        </DialogContent>
-                    </>
-                )}
-            </Dialog>
             
-            <NewAnnouncement
-              open={newPost}
+            <ViewWaitlist
+              open={open}
+              appointmentData={IndividualAppointmentData}
               onClose={() => {
-                setNewPost(false);
-                queryClient.refetchQueries("announcements")
+                setOpen(false);
+                queryClient.refetchQueries("appointments")
               }}
             />
         </>
     );
 };
 
-export default Announcements;
+export default Waitlist;

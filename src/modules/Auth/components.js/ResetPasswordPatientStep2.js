@@ -1,19 +1,15 @@
 import React from "react";
-import { CircularProgress } from "@mui/material";
+// import { CircularProgress } from "@mui/material";
 import logo from "../../../assets/svgs/logosmall.svg";
 import check from "../../../assets/images/Check.png";
 import {  Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import { useEffect, } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAlert } from "../../../context/NotificationProvider";
 import { LoadingButton } from "@mui/lab";
 
 const ResetPasswordPatientStep2 = (props) => {
     const navigate = useNavigate();
-
-    // const [message, setMessage ] = useState("")
-    const { showNotification } = useAlert();
 
     
     const onSubmit = () => {

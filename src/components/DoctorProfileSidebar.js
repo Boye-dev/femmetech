@@ -6,6 +6,7 @@ import { useQuery } from "react-query";
 import PendingDrawer from "../modules/Doctor/components/Dasboard/PendingDrawer";
 import { useAuthenticatedUserDoctor } from "../hooks/useAuthenticatedUserDoctor";
 import { fetchAppointmentsDoctor } from "../modules/Doctor/services/doctorService";
+import { Link } from "react-router-dom";
 
 const DoctorProfileSidebar = (props) => {
   const { isLoading, userDetails } = useAuthenticatedUserDoctor();
@@ -215,13 +216,14 @@ const DoctorProfileSidebar = (props) => {
                         Waitlist
                       </Typography>
                     </Box>
-                    <Typography
-                      onClick={() => setOpen(true)}
+                    <Link
+                      // onClick={() => setOpen(true)}
+                      to={"/doctor/waitlist"}
                       variant="caption"
-                      sx={{ textDecoration: "underline", cursor: "pointer" }}
+                      style={{ color: "#F30505", fontSize: "12px", fontFamily: "sans-serif"}}
                     >
                       Show All
-                    </Typography>
+                    </Link>
                   </Box>
                   {data.data?.appointments.length > 0 ? (
                     data.data?.appointments.slice(0, 4).map((item, index) => {
