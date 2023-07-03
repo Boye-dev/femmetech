@@ -71,7 +71,7 @@ const ProfileSidebar = (props) => {
                     }}
                   >
                     <img
-                      src={userDetails.data.profilePicture}
+                      src={userDetails?.data?.profilePicture}
                       alt=""
                       style={{
                         width: "100%",
@@ -92,7 +92,8 @@ const ProfileSidebar = (props) => {
                   }}
                 >
                   <Typography variant="h6" color="black">
-                    {userDetails.data.lastName} {userDetails.data.firstName}
+                    {userDetails?.data?.lastName || "--"}{" "}
+                    {userDetails?.data?.firstName || "--"}
                   </Typography>
 
                   {/* <Box
@@ -158,7 +159,7 @@ const ProfileSidebar = (props) => {
                       Phone:
                     </Typography>
                     <Typography variant="caption" color="#787878">
-                      {userDetails.data.phoneNumber}
+                      {userDetails?.data?.phoneNumber || "--"}
                     </Typography>
                   </Box>
                   <Box
@@ -189,7 +190,7 @@ const ProfileSidebar = (props) => {
                       Email:
                     </Typography>
                     <Typography variant="caption" color="#787878">
-                      {userDetails.data.email}
+                      {userDetails?.data?.email || "--"}
                     </Typography>
                   </Box>
                 </Box>
@@ -263,13 +264,13 @@ const ProfileSidebar = (props) => {
                                 p={1}
                               >
                                 <Typography color="black" variant="h6">
-                                  {item.title}
+                                  {item?.title || "--"}
                                 </Typography>
                                 <Typography
                                   color="text.secondary"
                                   variant="caption"
                                 >
-                                  Doctor : Dr {item.doctorId.lastName}
+                                  Doctor : Dr {item?.doctorId?.lastName || "--"}
                                 </Typography>
                               </Box>
                             </Box>

@@ -131,10 +131,10 @@ const Dashboard = () => {
                         }}
                       >
                         <Typography color="text.secondary" variant="h6">
-                          {item.name}
+                          {item?.name || "--"}
                         </Typography>
                         <Typography color="black" variant="h3">
-                          {item.value}
+                          {item?.value || "--"}
                         </Typography>
                       </Box>
                     </Grid>
@@ -209,13 +209,14 @@ const Dashboard = () => {
                                   p={1}
                                 >
                                   <Typography color="black" variant="h5">
-                                    {item.title}
+                                    {item?.title || "--"}
                                   </Typography>
                                   <Typography
                                     color="text.secondary"
                                     variant="caption"
                                   >
-                                    Doctor : Dr {item.doctorId.lastName}
+                                    Doctor : Dr{" "}
+                                    {item?.doctorId?.lastName || "--"}
                                   </Typography>
                                   <Typography
                                     color="text.secondary"
@@ -330,13 +331,14 @@ const Dashboard = () => {
                                     p={1}
                                   >
                                     <Typography color="black" variant="h5">
-                                      {item.title}
+                                      {item?.title || "--"}
                                     </Typography>
                                     <Typography
                                       color="text.secondary"
                                       variant="caption"
                                     >
-                                      Doctor : Dr {item.doctorId.lastName}
+                                      Doctor : Dr{" "}
+                                      {item?.doctorId?.lastName || "--"}
                                     </Typography>
                                   </Box>
                                 </Box>

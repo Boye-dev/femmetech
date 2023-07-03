@@ -82,8 +82,8 @@ const Chat = ({ chat, onClick, cleared }) => {
             >
               {typing.typing && typing.sender[0].userId === chatData[0].userId
                 ? "typing"
-                : `${lastMessage?.content.substring(0, 15)}${
-                    lastMessage?.content.length > 15 ? "..." : ""
+                : `${lastMessage?.content?.substring(0, 15)}${
+                    lastMessage?.content?.length > 15 ? "..." : ""
                   }`}
             </Typography>
           </Box>
