@@ -1,55 +1,11 @@
-import { Box, CircularProgress, IconButton, Typography } from "@mui/material";
-import { Controller } from "react-hook-form";
-import TextField from "@mui/material/TextField";
-import Grid from "@mui/material/Grid";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { useState } from "react";
+import { Box, CircularProgress, Typography } from "@mui/material";
 import { useSignupContext } from "../../../context/SignupContext";
 import logo from "../../../assets/svgs/logosmall.svg";
 import mail from "../../../assets/images/Dove.png";
-import { Link } from "react-router-dom";
 import { forgotPasswordPatient } from "../services/authServices";
 import { useMutation } from "react-query";
 import { useAlert } from "../../../context/NotificationProvider";
 
-const formStyles = {
-  marginBottom: "20px",
-  color: "black !important",
-  background: "#F5F5F6",
-  borderRadius: "5px",
-  "& .MuiInputBase-input": {
-    outline: "none",
-    borderRadius: "3px",
-    color: "#000",
-  },
-  "& .MuiInputBase-input:hover": {
-    border: "0",
-    outline: "none",
-    borderRadius: "5px",
-    color: "#000",
-  },
-  "& .MuiFormHelperText-root": {
-    color: "red !important",
-    background: "#fff",
-    width: "100%",
-    margin: 0,
-  },
-  "& .Mui-active": {
-    outline: "none",
-    borderRadius: "5px",
-  },
-  "& .Mui-focused": {
-    color: "#000",
-  },
-  "& .MuiOutlinedInput-root": {
-    "&:hover fieldset": {
-      borderColor: "#000",
-    },
-    "&.Mui-focused fieldset": {
-      borderColor: "#000",
-    },
-  },
-};
 
 const ForgotPasswordPatientStep2 = () => {
   

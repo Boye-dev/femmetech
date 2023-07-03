@@ -8,6 +8,7 @@ import {
   History,
   Message,
   Notifications,
+  Subject,
 } from "@mui/icons-material";
 
 export const PATIENT_NAV_ITEMS = [
@@ -73,6 +74,13 @@ export const DOCTOR_NAV_ITEMS = [
     name: "Appointments",
     url: DoctorPaths.DOCTOR_APPOINTMENT,
     icon: <CalendarMonth />,
+    role: Roles.DOCTOR,
+    bottom: false,
+  },
+  {
+    name: "Waitlist",
+    url: DoctorPaths.DOCTOR_WAITLIST,
+    icon: <Subject />,
     role: Roles.DOCTOR,
     bottom: false,
   },

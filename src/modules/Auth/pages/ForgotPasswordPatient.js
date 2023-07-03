@@ -1,27 +1,20 @@
 import React from "react";
-import { useForm, Controller } from "react-hook-form";
-import * as yup from "yup";
-// import { PatientPaths, BasePaths } from "../../../routes/paths";
-// import { Roles } from "../../../constants/roles";
 import { CircularProgress,  } from "@mui/material";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "react-query";
 import { forgotPasswordPatient,  } from "../services/authServices";
 // import logo from "../../../assets/svgs/logosmall.svg";
 import { Grid, Typography,  } from "@mui/material";
 import Box from "@mui/material/Box";
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link,  } from "react-router-dom";
 import loginImg from "../../../assets/images/login.png";
 import { useAlert } from "../../../context/NotificationProvider";
 import { LoadingButton } from "@mui/lab";
 import ForgotPasswordPatientStep1 from "../components.js/ForgotPasswordPatientStep1";
 import ForgotPasswordPatientStep2 from "../components.js/ForgotPasswordPatientStep2";
 import { useSignupContext } from "../../../context/SignupContext";
-import { EastOutlined } from "@mui/icons-material";
 
 const ForgotPasswordPatient = () => {
-    const navigate = useNavigate();
     const { showNotification } = useAlert();
   
     const { forgotPasswordHandleSubmit, } = useSignupContext();
@@ -48,9 +41,6 @@ const ForgotPasswordPatient = () => {
       window.scrollTo(0, 0);
     }, []);
   
-    const handleNext = () => {
-      setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    };
 
   return (
     <>
