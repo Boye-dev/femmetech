@@ -12,7 +12,6 @@ import { getDecodedJwt } from "../../../../utils/auth";
 import { useAlert } from "../../../../context/NotificationProvider";
 import {
   Box,
-  Button,
   CircularProgress,
   Divider,
   Grid,

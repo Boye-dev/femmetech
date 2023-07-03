@@ -1,28 +1,31 @@
 import { Close } from "@mui/icons-material";
 import {
   Box,
-  Button,
   Divider,
   Drawer,
-  TextField,
   Typography,
 } from "@mui/material";
-import React from "react";
+import {useState} from "react";
 import Timeline from "@mui/lab/Timeline";
 import TimelineSeparator from "@mui/lab/TimelineSeparator";
 import TimelineConnector from "@mui/lab/TimelineConnector";
 import TimelineContent from "@mui/lab/TimelineContent";
 import TimelineItem, { timelineItemClasses } from "@mui/lab/TimelineItem";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "react-query";
 import { useAlert } from "../../../../context/NotificationProvider";
-import { postAnnouncement } from "../../services/doctorService";
+import { approveAppointment, declineAppointment,  } from "../../services/doctorService";
 import { LoadingButton } from "@mui/lab";
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { getDecodedJwt } from "../../../../utils/auth";
+import { useEffect } from "react";
 
 const textFieldStyle ={
-    
+    width: "100%",
     "& .MuiInputBase-input": {
         outline: "none",
         borderRadius: "3px",
@@ -62,19 +65,46 @@ const textFieldStyle ={
 
 const ViewWaitlist = (props) => {
   const { showNotification } = useAlert();
+  const decodedUser = getDecodedJwt();
+  const doctorId = decodedUser.id;
+
+  const [approve, setApprove] = useState(false);
+
+  const handleStartDateTimeChange = (date) => {
+    setValue("startDateTime", date)
+  };
+  const handleEndDateTimeChange = (date) => {
+    setValue("endDateTime", date)
+  };
 
   const schema = yup.object().shape({
-    name: yup.string().required("Name Is Required"),
-    additionalInformation: yup.string().required("Required"),
-    title: yup.string().required("Title Is Required"),
-    text: yup.string().required("Details Is Required"),
+    startDateTime: yup.string().required("Start date And Time Is Required"),
+    endDateTime: yup.string().required("End date And Time Is Required"),
   });
 
-  const { handleSubmit, trigger, control, watch, reset } = useForm({
+  const { handleSubmit, watch, reset, setValue } = useForm({
     resolver: yupResolver(schema),
   });
-  const { name, title, text } = watch();
-  const { mutate, isLoading } = useMutation(postAnnouncement, {
+  const { startDateTime, endDateTime } = watch();
+
+  const { mutate: mutateDecline, isLoading: declineLoading } = useMutation(declineAppointment, {
+    onError: (error) => {
+      showNotification?.(error.response.data.errors[0] || error || error.error || error.message, { type: "error" });
+    },
+    onSuccess: (data) => {
+      reset();
+      props.onClose();
+      showNotification?.(data.message, { type: "success" });
+    },
+  });
+  const onSubmitDecline = () => {
+    const payload = {
+      appointmentId: props.appointmentData._id
+    }
+    mutateDecline(payload);
+  };
+
+  const { mutate: mutateApprove, isLoading: approveLoading } = useMutation(approveAppointment, {
     onError: (error) => {
       showNotification?.(error.response.data.errors[0], { type: "error" });
     },
@@ -84,9 +114,19 @@ const ViewWaitlist = (props) => {
       showNotification?.(data.message, { type: "success" });
     },
   });
-  const onSubmit = (payload) => {
-    mutate(payload);
+  const onSubmitApprove = (data) => {
+    const payload = {
+      appointmentId: props.appointmentData._id,
+      startDateTime: data.startDateTime,
+      endDateTime: data.endDateTime,
+      doctorId: doctorId
+    }
+    mutateApprove(payload);
   };
+
+  useEffect(() => {
+    setApprove(false)
+  }, [props.appointmentData])
 
   console.log(props.appointmentData);
   return (
@@ -135,6 +175,7 @@ const ViewWaitlist = (props) => {
             </Typography>
           </Box>
           <Box>
+            
             <Timeline
               sx={{
                 [`& .${timelineItemClasses.root}:before`]: {
@@ -147,7 +188,7 @@ const ViewWaitlist = (props) => {
                 <TimelineSeparator>
                   <Box
                     sx={{
-                      backgroundColor: name ? "#ED2228" : "#F3F5F9",
+                      backgroundColor: props.appointmentData.additionalInformation ? "#ED2228" : "#F3F5F9",
                       width: "50px",
                       height: "50px",
                       borderRadius: "100%",
@@ -156,7 +197,7 @@ const ViewWaitlist = (props) => {
                       alignItems: "center",
                     }}
                   >
-                    <Typography color={name ? "white" : "black"}>
+                    <Typography color={props.appointmentData.additionalInformation ? "white" : "black"}>
                       1
                     </Typography>
                   </Box>
@@ -166,8 +207,6 @@ const ViewWaitlist = (props) => {
                   <Box
                     sx={{
                       width: "100%",
-                    //   height: "80px",
-
                       borderRadius: "8px",
                       boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
                     }}
@@ -175,60 +214,37 @@ const ViewWaitlist = (props) => {
                     <Box p={5}>
                       <Typography
                         color="black"
-                        variant="h6"
-                        sx={{ fontSize: "10px !important" }}
+                        variant="h5"
+                        // sx={{ fontSize: "10px !important" }}
                       >
                         Meeting Information
                       </Typography>
-                      <Controller
-                        name="additionalInformation"
-                        control={control}
-                        defaultValue={props.appointmentData.additionalInformation}
-                        render={({
-                          field: { ref, ...fields },
-                          fieldState: { error },
-                        }) => (
-                          <TextField
-                            variant="outlined"
-                            size="small"
-                            disabled
-                            InputProps={{
-                              style: {
-                                fontSize: "12px !important",
-
-                                color: "#000 !important",
-                              },
-                            }}
-                            InputLabelProps={{
-                              style: {
-                                fontSize: "12px !important",
-                                color: "black",
-                              },
-                            }}
-                            sx={textFieldStyle}
-                            multiline
-                            rows={5}
-                            // label="Announcement"
-                            fullWidth
-                            {...fields}
-                            inputRef={ref}
-                            error={Boolean(error?.message)}
-                            helperText={error?.message}
-                            onKeyUp={() => {
-                              trigger("additionalInformation");
-                            }}
-                          />
-                        )}
-                      />
+                      <Box
+                        sx={{
+                          mt: 4,
+                          height: "130px",
+                          backgroundColor: "#D9D9D9",
+                          borderTopLeftRadius: "8px",
+                          borderTopRightRadius: "8px",
+                          borderBottom: "1px solid black",
+                          overflowY: "auto",
+                        }}
+                      >
+                        <Box p={2}>
+                          <Typography color="black" variant="body2">
+                            {props.appointmentData.additionalInformation}
+                          </Typography>
+                        </Box>
+                      </Box>
                     </Box>
                   </Box>
                 </TimelineContent>
               </TimelineItem>
-              <TimelineItem>
+              <TimelineItem sx={{visibility: approve ? "visible" : "hidden"}}>
                 <TimelineSeparator>
                   <Box
                     sx={{
-                      backgroundColor: title ? "#ED2228" : "#F3F5F9",
+                      backgroundColor: startDateTime && endDateTime ? "#ED2228" : "#F3F5F9",
 
                       width: "50px",
                       height: "50px",
@@ -238,7 +254,7 @@ const ViewWaitlist = (props) => {
                       alignItems: "center",
                     }}
                   >
-                    <Typography color={title ? "white" : "black"}>2</Typography>
+                    <Typography color={startDateTime && endDateTime ? "white" : "black"}>2</Typography>
                   </Box>
                   <TimelineConnector />
                 </TimelineSeparator>
@@ -255,123 +271,40 @@ const ViewWaitlist = (props) => {
                     <Box p={5}>
                       <Typography
                         color="black"
-                        variant="h6"
-                        sx={{ fontSize: "10px !important" }}
+                        variant="h5"
+                        sx={{ mb: 3 }}
                       >
-                        Please enter a title for the Announcement
+                        SCHEDULE
                       </Typography>
-                      <Controller
-                        name="title"
-                        control={control}
-                        defaultValue=""
-                        render={({
-                          field: { ref, ...fields },
-                          fieldState: { error },
-                        }) => (
-                          <TextField
-                            variant="outlined"
-                            size="small"
-                            InputProps={{
-                              style: {
-                                fontSize: "16px",
-                                color: "#000 !important",
-                              },
-                            }}
-                            InputLabelProps={{
-                              style: {
-                                color: "black",
-                              },
-                            }}
+                      <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          <DateTimePicker
                             sx={textFieldStyle}
-                            // label="Title"
-                            fullWidth
-                            {...fields}
-                            inputRef={ref}
-                            error={Boolean(error?.message)}
-                            helperText={error?.message}
-                            onKeyUp={() => {
-                              trigger("title");
-                            }}
+                              label="Start Date and Time"
+                              inputVariant="outlined"
+                              // value={selectedDateTime}
+                              fullwidth
+                              onChange={handleStartDateTimeChange}
                           />
-                        )}
-                      />
+                      </LocalizationProvider>
                     </Box>
-                  </Box>
-                </TimelineContent>
-              </TimelineItem>
-              <TimelineItem>
-                <TimelineSeparator>
-                  <Box
-                    sx={{
-                        backgroundColor: text ? "#ED2228" : "#F3F5F9",
-                      width: "50px",
-                      height: "50px",
-                      borderRadius: "100%",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Typography color={text ? "white" : "black"}>3</Typography>
-                  </Box>
-                </TimelineSeparator>
-                <TimelineContent>
-                  <Box
-                    sx={{
-                      width: "100%",
-                      height: "auto",
-
-                      borderRadius: "8px",
-                      boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
-                    }}
-                  >
                     <Box p={5}>
-                      <Typography
+                      {/* <Typography
                         color="black"
-                        variant="h6"
-                        sx={{ fontSize: "10px !important" }}
+                        variant="h5"
+                        sx={{ mb: 3 }}
                       >
-                        Please enter your announcement
-                      </Typography>
-                      <Controller
-                        name="text"
-                        control={control}
-                        defaultValue=""
-                        render={({
-                          field: { ref, ...fields },
-                          fieldState: { error },
-                        }) => (
-                          <TextField
-                            variant="outlined"
-                            size="small"
-                            InputProps={{
-                              style: {
-                                fontSize: "12px !important",
-
-                                color: "#000 !important",
-                              },
-                            }}
-                            InputLabelProps={{
-                              style: {
-                                fontSize: "12px !important",
-                                color: "black",
-                              },
-                            }}
+                        Please enter the end date and time for the appointment
+                      </Typography> */}
+                      <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          <DateTimePicker
                             sx={textFieldStyle}
-                            multiline
-                            rows={5}
-                            // label="Announcement"
-                            fullWidth
-                            {...fields}
-                            inputRef={ref}
-                            error={Boolean(error?.message)}
-                            helperText={error?.message}
-                            onKeyUp={() => {
-                              trigger("text");
-                            }}
+                              label="End Date and Time"
+                              inputVariant="outlined"
+                              // value={selectedDateTime}
+                              fullwidth
+                              onChange={handleEndDateTimeChange}
                           />
-                        )}
-                      />
+                      </LocalizationProvider>
                     </Box>
                   </Box>
                 </TimelineContent>
@@ -391,22 +324,24 @@ const ViewWaitlist = (props) => {
                 boxShadow: "0px -1px 4px rgba(0, 0, 0, 0.25)",
               }}
             >
-              <Button
-                onClick={props.onClose}
+              <LoadingButton
+                onClick={onSubmitDecline}
+                loading={declineLoading}
                 variant="text"
                 color="error"
                 sx={{
                   width: "40%",
                   height: "40px",
+                  visibility: approve ? "hidden" : "visible"
                 }}
               >
-                <Typography variant="subtitle2">Cancel</Typography>
-              </Button>
+                <Typography variant="subtitle2" color="red">Decline</Typography>
+              </LoadingButton>
               <LoadingButton
-                loading={isLoading}
+                loading={approveLoading}
                 variant="contained"
                 color="secondary"
-                onClick={handleSubmit(onSubmit)}
+                onClick={approve ? handleSubmit(onSubmitApprove) : () => setApprove(true)}
                 sx={{
                   width: "40%",
                   height: "40px",
@@ -414,7 +349,7 @@ const ViewWaitlist = (props) => {
                 }}
               >
                 <Typography variant="subtitle2" color="white">
-                  Submit
+                  {approve ? "Schedule" : "Approve"}
                 </Typography>
               </LoadingButton>
             </Box>

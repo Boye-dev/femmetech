@@ -22,7 +22,6 @@ import {
   Grid,
   MenuItem,
   Popover,
-  Select,
   TextField,
   Typography,
 } from "@mui/material";
@@ -190,13 +189,13 @@ function Calendar(props) {
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    // formState: { errors },
     trigger,
-    watch,
-    reset,
-    setValue,
-    getValues,
-    unregister,
+    // watch,
+    // reset,
+    // setValue,
+    // getValues,
+    // unregister,
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: defaultValues,

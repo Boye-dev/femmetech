@@ -135,13 +135,13 @@ const Announcements = () => {
                         sx={{
                         backgroundColor: "#F5F5F5",
                         width: isMobile ? "100%" : "calc(100% - 250px)",
-                        height: "auto",
+                        minHeight: "100vh",
                         display: "flex",
                         justifyContent: "space-between",
                         pb: 20,
                         }}
                     >
-                        <Box sx={{ width: "100%", pl: 8, pr: 8, backgroundColor: "#F5F5F5", height: "100vh" }}>
+                        <Box sx={{ width: "100%", pl: 8, pr: 8, backgroundColor: "#F5F5F5",  }}>
                         <Box
                           sx={{
                             display: "flex",

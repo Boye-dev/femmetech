@@ -20,7 +20,16 @@ export const fetchAppointmentsDoctor = async ({ queryKey }) => {
     }${status ? "&status=" + status : ""}`
   ).then((res) => res.data);
 };
-
+export const approveAppointment = async (payload) => {
+  return Api.put(`/appointment/${payload.appointmentId}/approve`, payload).then(
+    (res) => res.data
+  );
+};
+export const declineAppointment = async (payload) => {
+  return Api.put(`/appointment/${payload.appointmentId}/decline`).then(
+    (res) => res.data
+  );
+};
 export const fetchAnnouncementsDoctor = async ({ queryKey }) => {
   const [, { doctorId }] = queryKey;
   return Api.get(`/announcements/doctor/${doctorId}`).then((res) => res.data);

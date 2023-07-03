@@ -1,16 +1,12 @@
-import { Box, Button, CircularProgress, Dialog, DialogContent, DialogTitle } from "@mui/material";
+import { Box, Button, CircularProgress,  } from "@mui/material";
 import { useWidth } from "../../../hooks/useWidth";
 import { Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DoctorProfileSidebar from "../../../components/DoctorProfileSidebar";
-import image from "../../../assets/images/test-image.png";
-import { format } from "date-fns";
 import { getDecodedJwt } from "./../../../utils/auth";
-import {  fetchAnnouncementsDoctor, fetchAppointmentsDoctor, updateStatusToRead } from "../services/doctorService";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import {  fetchAppointmentsDoctor,  } from "../services/doctorService";
+import { useQuery, useQueryClient } from "react-query";
 import { useAlert } from "../../../context/NotificationProvider";
-import { Add } from "@mui/icons-material";
-import NewAnnouncement from "../components/Announcements.js/NewAnnouncement";
 import ViewWaitlist from "../components/Waitlist/ViewWailtlist";
 
 
@@ -24,31 +20,6 @@ const Waitlist = () => {
     
     const { showNotification } = useAlert();
     console.log(doctorId);
-
-    const { isLoading, data } = useQuery(
-        ["announcements", { doctorId: doctorId }],
-        fetchAnnouncementsDoctor,
-        {
-            enabled: doctorId !== null || doctorId !== undefined,
-            onError: (error) => {
-                showNotification?.(error.response.data?.error, { type: "error" });
-            },
-        }
-    );
-
-    // Update to read
-    // const mutation = useMutation(updateStatusToRead, {
-    //     onError: (error) => {
-    //       showNotification?.(error.response.data?.error, { type: "error" });
-    //     },
-
-    //     onSuccess: (data) => {
-    //         console.log(data);
-    //         // Get all announcements again
-    //         queryClient.refetchQueries("announcements")
-    //     }
-    // });
-
     
     const color = ["#0FC916", "#FCBA03", "#6E00FF", "#F30505"];
     let lastColorIndex;
@@ -67,89 +38,29 @@ const Waitlist = () => {
         "appointments",
         {
             doctorId: doctorId,
-
             status: "PENDING",
         },
         ],
         fetchAppointmentsDoctor,
         {
-        enabled: isLoading === false,
+        enabled: true,
         onError: (error) => {
             showNotification?.(error.response?.data?.message, { type: "error" });
         },
         }
     );
       
-    // ...
-    const getAnnouncementSection = (timestamp) => {
-        const today = new Date().toLocaleDateString();
-        const yesterday = new Date();
-        yesterday.setDate(yesterday.getDate() - 1);
-        const announcementDate = new Date(timestamp).toLocaleDateString();
-      
-        if (announcementDate === today) {
-          return "Today";
-        } else if (announcementDate === yesterday.toLocaleDateString()) {
-          return "Yesterday";
-        } else {
-          return "Later";
-        }
-      };
-      
-      const sortedAnnouncements = isLoading
-        ? []
-        : data?.data?.sort((a, b) => {
-            const timestampA = new Date(a.timestamp)?.getTime();
-            const timestampB = new Date(b.timestamp)?.getTime();
-            const announcementDateA = new Date(a.timestamp)?.toLocaleDateString();
-            const announcementDateB = new Date(b.timestamp)?.toLocaleDateString();
-      
-            if (announcementDateA === announcementDateB) {
-              // Sort based on the latest announcement within the same date
-              return timestampB - timestampA;
-            }
-      
-            // Sort based on the date in descending order
-            const dateA = new Date(a.timestamp)?.getTime();
-            const dateB = new Date(b.timestamp)?.getTime();
-            return dateB - dateA;
-          });
-      
-      const announcementSections = sortedAnnouncements?.reduce((sections, item) => {
-        const section = getAnnouncementSection(item.timestamp);
-        if (!sections[section]) {
-          sections[section] = [];
-        }
-        sections[section].push(item);
-        return sections;
-      }, {});
-      
+ 
 
-    const unreadAnnouncements = isLoading ? [] : data?.data?.filter((item) => {
-        return item.doctorStatus.some((stat) => {
-            return stat.status === "unread" && stat.doctorId === doctorId;
-        });
-    });
-    
 
-    // const [selectedAnnouncement, setSelectedAnnouncement] = useState(null);
+    // useEffect(() => {
+    //     isAppointmentLoading && queryClient.refetchQueries("appointments")
+    // }, [])
 
-    // const handleShowMoreClick = (announcement) => {
-    //     setSelectedAnnouncement(announcement);
-    //     const announcementId = announcement._id; // Replace with the actual announcementId
-    //     const queryKey = ['updateStatus', { doctorId, announcementId }];
-    //     mutation.mutate({ queryKey });
-    // };
-
-    // const handleCloseDialog = () => {
-    //     setSelectedAnnouncement(null);
-    // };
-
-    console.log(unreadAnnouncements);
 
     return (
         <>
-            {isLoading || isAppointmentLoading ? 
+            { isAppointmentLoading ? 
                 (
                     <Box
                         sx={{
@@ -168,13 +79,13 @@ const Waitlist = () => {
                         sx={{
                         backgroundColor: "#F5F5F5",
                         width: isMobile ? "100%" : "calc(100% - 250px)",
-                        height: "auto",
+                        minHeight: "100vh",
                         display: "flex",
                         justifyContent: "space-between",
                         pb: 20,
                         }}
                     >
-                        <Box sx={{ width: "100%", pl: 8, pr: 8, backgroundColor: "#F5F5F5", height: "100vh" }}>
+                        <Box sx={{ width: "100%", pl: 8, pr: 8, backgroundColor: "#F5F5F5",  }}>
                         <Box
                           sx={{
                             display: "flex",
