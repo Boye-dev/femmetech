@@ -41,7 +41,9 @@ const Book = (props) => {
   const { specialty, title } = watch();
   const { mutate, isLoading } = useMutation(book, {
     onError: (error) => {
-      showNotification?.(error.response.data.errors[0], { type: "error" });
+      showNotification?.(error.response.data.errors[0] || error.message, {
+        type: "error",
+      });
     },
     onSuccess: (data) => {
       reset();

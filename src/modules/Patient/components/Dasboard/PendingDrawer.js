@@ -73,7 +73,7 @@ const PendingDrawer = (props) => {
                         {item.title || "--"}
                       </Typography>
                       <Typography color="text.secondary" variant="caption">
-                        Doctor : Dr {item.doctorId.lastName || "--"}
+                        Doctor : Dr {item?.doctorId?.lastName || "--"}
                       </Typography>
                     </Box>
                   </Box>

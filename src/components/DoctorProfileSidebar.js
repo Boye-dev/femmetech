@@ -27,7 +27,9 @@ const DoctorProfileSidebar = (props) => {
     {
       enabled: isLoading === false,
       onError: (error) => {
-        showNotification?.(error.response?.data?.message, { type: "error" });
+        showNotification?.(error.response?.data?.message || error.message, {
+          type: "error",
+        });
       },
     }
   );
@@ -173,7 +175,9 @@ const DoctorProfileSidebar = (props) => {
                     <Typography variant="h6" color="black">
                       Email:
                     </Typography>
-                    <Typography variant="caption" color="#787878" 
+                    <Typography
+                      variant="caption"
+                      color="#787878"
                       sx={{
                         wordWrap: "break-word",
                         textOverflow: "ellipsis",
@@ -220,7 +224,11 @@ const DoctorProfileSidebar = (props) => {
                       // onClick={() => setOpen(true)}
                       to={"/doctor/waitlist"}
                       variant="caption"
-                      style={{ color: "#F30505", fontSize: "12px", fontFamily: "sans-serif"}}
+                      style={{
+                        color: "#F30505",
+                        fontSize: "12px",
+                        fontFamily: "sans-serif",
+                      }}
                     >
                       Show All
                     </Link>

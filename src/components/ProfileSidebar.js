@@ -25,7 +25,9 @@ const ProfileSidebar = (props) => {
     {
       enabled: isLoading === false,
       onError: (error) => {
-        showNotification?.(error.response?.data?.message, { type: "error" });
+        showNotification?.(error.response?.data?.message || error.message, {
+          type: "error",
+        });
       },
     }
   );

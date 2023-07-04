@@ -1,5 +1,4 @@
-
-import { Grid, Typography, } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import { useEffect, useState } from "react";
 import loginImg from "../../../assets/images/login.png";
@@ -15,12 +14,13 @@ import { signup } from "../services/authServices";
 import { LoadingButton } from "@mui/lab";
 
 const Signup = () => {
-
   const navigate = useNavigate();
   const { showNotification } = useAlert();
   const { mutate, isLoading } = useMutation(signup, {
     onError: (error) => {
-      showNotification?.(error.response.data.errors[0], { type: "error" });
+      showNotification?.(error.response.data.errors[0] || error.message, {
+        type: "error",
+      });
     },
     onSuccess: (data) => {
       console.log(data);
@@ -30,33 +30,37 @@ const Signup = () => {
   });
   const onSubmit = (payload) => {
     const formData = new FormData();
-    formData.append('profilePicture', payload.profilePicture);
-    formData.append('lastName', payload.lastName);
-    formData.append('firstName', payload.firstName);
-    formData.append('email', payload.email);
-    formData.append('dateOfBirth', payload.dateOfBirth);
-    formData.append('relationshipStatus', payload.relationshipStatus);
-    formData.append('emergencyContactName', payload.emergencyContactName);
-    formData.append('emergencyContactNumber', payload.emergencyContactNumber);
-    formData.append('emergencyContactAddress', payload.emergencyContactAddress);
-    formData.append('password', payload.password);
-    formData.append('phoneNumber', payload.phoneNumber);
-    formData.append('address', payload.address);
-    formData.append('gender', payload.gender);
-    formData.append('existingMedicalConditions', payload.existingMedicalConditions);
-    formData.append('existingMedicalConditions', payload.existingMedicalConditions);
-    formData.append('confirmPassword', payload.confirmPassword);
-    formData.append('allergies', payload.allergies);
+    formData.append("profilePicture", payload.profilePicture);
+    formData.append("lastName", payload.lastName);
+    formData.append("firstName", payload.firstName);
+    formData.append("email", payload.email);
+    formData.append("dateOfBirth", payload.dateOfBirth);
+    formData.append("relationshipStatus", payload.relationshipStatus);
+    formData.append("emergencyContactName", payload.emergencyContactName);
+    formData.append("emergencyContactNumber", payload.emergencyContactNumber);
+    formData.append("emergencyContactAddress", payload.emergencyContactAddress);
+    formData.append("password", payload.password);
+    formData.append("phoneNumber", payload.phoneNumber);
+    formData.append("address", payload.address);
+    formData.append("gender", payload.gender);
+    formData.append(
+      "existingMedicalConditions",
+      payload.existingMedicalConditions
+    );
+    formData.append(
+      "existingMedicalConditions",
+      payload.existingMedicalConditions
+    );
+    formData.append("confirmPassword", payload.confirmPassword);
+    formData.append("allergies", payload.allergies);
     mutate(formData);
   };
-
-
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  const { handleSubmit, } = useSignupContext();
+  const { handleSubmit } = useSignupContext();
 
   const [activeStep, setActiveStep] = useState(0);
 
@@ -147,7 +151,6 @@ const Signup = () => {
             {activeStep === 1 ? <SignupStep2 /> : ""}
             {activeStep === 2 ? <SignupStep3 /> : ""}
 
-            
             <LoadingButton
               fullWidth
               size="small"

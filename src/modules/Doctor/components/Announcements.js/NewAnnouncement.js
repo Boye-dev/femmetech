@@ -21,44 +21,43 @@ import { useAlert } from "../../../../context/NotificationProvider";
 import { postAnnouncement } from "../../services/doctorService";
 import { LoadingButton } from "@mui/lab";
 
-const textFieldStyle ={
-    
-    "& .MuiInputBase-input": {
-        outline: "none",
-        borderRadius: "3px",
-        color: "#000",
-      },
-      "& .MuiInputBase-input:hover": {
-        border: "0",
-        outline: "none",
-        borderRadius: "5px",
-        color: "#000",
-      },
-      "& .MuiFormHelperText-root": {
-        color: "red !important",
-        background: "#fff",
-        width: "100%",
-        margin: 0,
-      },
-      "& .Mui-active": {
-        // border: errors.email
-        //   ? "1px solid red"
-        //   : "1px solid white",
-        outline: "none",
-        borderRadius: "5px",
-      },
-      "& .Mui-focused": {
-        color: "#000",
-      },
-      "& .MuiOutlinedInput-root": {
-        "&:hover fieldset": {
-          borderColor: "#000", // Change the border color on hover
-        },
-        "&.Mui-focused fieldset": {
-          borderColor: "#000", // Change the border color when active/focused
-        },
-      },
-}
+const textFieldStyle = {
+  "& .MuiInputBase-input": {
+    outline: "none",
+    borderRadius: "3px",
+    color: "#000",
+  },
+  "& .MuiInputBase-input:hover": {
+    border: "0",
+    outline: "none",
+    borderRadius: "5px",
+    color: "#000",
+  },
+  "& .MuiFormHelperText-root": {
+    color: "red !important",
+    background: "#fff",
+    width: "100%",
+    margin: 0,
+  },
+  "& .Mui-active": {
+    // border: errors.email
+    //   ? "1px solid red"
+    //   : "1px solid white",
+    outline: "none",
+    borderRadius: "5px",
+  },
+  "& .Mui-focused": {
+    color: "#000",
+  },
+  "& .MuiOutlinedInput-root": {
+    "&:hover fieldset": {
+      borderColor: "#000", // Change the border color on hover
+    },
+    "&.Mui-focused fieldset": {
+      borderColor: "#000", // Change the border color when active/focused
+    },
+  },
+};
 
 const NewAnnouncement = (props) => {
   const { showNotification } = useAlert();
@@ -75,7 +74,9 @@ const NewAnnouncement = (props) => {
   const { name, title, text } = watch();
   const { mutate, isLoading } = useMutation(postAnnouncement, {
     onError: (error) => {
-      showNotification?.(error.response.data.errors[0], { type: "error" });
+      showNotification?.(error.response.data.errors[0] || error.message, {
+        type: "error",
+      });
     },
     onSuccess: (data) => {
       reset();
@@ -154,9 +155,7 @@ const NewAnnouncement = (props) => {
                       alignItems: "center",
                     }}
                   >
-                    <Typography color={name ? "white" : "black"}>
-                      1
-                    </Typography>
+                    <Typography color={name ? "white" : "black"}>1</Typography>
                   </Box>
                   <TimelineConnector />
                 </TimelineSeparator>
@@ -164,7 +163,7 @@ const NewAnnouncement = (props) => {
                   <Box
                     sx={{
                       width: "100%",
-                    //   height: "80px",
+                      //   height: "80px",
 
                       borderRadius: "8px",
                       boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
@@ -239,7 +238,7 @@ const NewAnnouncement = (props) => {
                   <Box
                     sx={{
                       width: "100%",
-                    //   height: "80px",
+                      //   height: "80px",
 
                       borderRadius: "8px",
                       boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
@@ -296,7 +295,7 @@ const NewAnnouncement = (props) => {
                 <TimelineSeparator>
                   <Box
                     sx={{
-                        backgroundColor: text ? "#ED2228" : "#F3F5F9",
+                      backgroundColor: text ? "#ED2228" : "#F3F5F9",
                       width: "50px",
                       height: "50px",
                       borderRadius: "100%",

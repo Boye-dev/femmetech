@@ -36,7 +36,9 @@ const Announcements = () => {
     {
       enabled: patientId !== null || patientId !== undefined,
       onError: (error) => {
-        showNotification?.(error.response.data?.error, { type: "error" });
+        showNotification?.(error.response?.data?.message || error.message, {
+          type: "error",
+        });
       },
     }
   );

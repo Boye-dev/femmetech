@@ -42,7 +42,9 @@ function Calendar(props) {
       enabled: patientId !== null || patientId !== undefined,
 
       onError: (error) => {
-        showNotification?.(error.response.data?.message, { type: "error" });
+        showNotification?.(error.response?.data?.message || error.message, {
+          type: "error",
+        });
       },
     }
   );
@@ -78,7 +80,9 @@ function Calendar(props) {
   };
   const { mutate, isLoading } = useMutation(cancel, {
     onError: (error) => {
-      showNotification?.(error.response.data.errors[0], { type: "error" });
+      showNotification?.(error.response.data.errors[0] || error.message, {
+        type: "error",
+      });
     },
     onSuccess: (data) => {
       setSelectedEvent(null);
@@ -256,15 +260,23 @@ function Calendar(props) {
                               {getDuration(
                                 selectedEvent._instance.range.start,
                                 selectedEvent._instance.range.end
-                              ).hours || "--"}{" "}
-                              {`hour${
+                              ).hours > 0 &&
                                 getDuration(
                                   selectedEvent._instance.range.start,
                                   selectedEvent._instance.range.end
-                                ).hours > 1
-                                  ? "s"
-                                  : ""
-                              }`}{" "}
+                                ).hours}{" "}
+                              {getDuration(
+                                selectedEvent._instance.range.start,
+                                selectedEvent._instance.range.end
+                              ).hours > 0 &&
+                                `hour${
+                                  getDuration(
+                                    selectedEvent._instance.range.start,
+                                    selectedEvent._instance.range.end
+                                  ).hours > 1
+                                    ? "s"
+                                    : ""
+                                }`}{" "}
                               {getDuration(
                                 selectedEvent._instance.range.start,
                                 selectedEvent._instance.range.end

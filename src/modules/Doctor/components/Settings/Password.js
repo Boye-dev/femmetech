@@ -90,7 +90,9 @@ const Password = () => {
 
   const { mutate, isLoading: submitLoading } = useMutation(passwordChange, {
     onError: (error) => {
-      showNotification?.(error.response.data.message, { type: "error" });
+      showNotification?.(error.response?.data?.message || error.message, {
+        type: "error",
+      });
     },
     onSuccess: (data) => {
       showNotification?.(data.message, { type: "success" });

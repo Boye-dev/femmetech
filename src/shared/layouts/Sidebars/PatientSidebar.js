@@ -39,7 +39,9 @@ const PatientSidebar = (props) => {
         decodedUser.id !== null &&
         decodedUser.id !== undefined,
       onError: (error) => {
-        showNotification?.(error.response.data.message, { type: "error" });
+        showNotification?.(error.response?.data?.message || error.message, {
+          type: "error",
+        });
       },
     }
   );
@@ -53,7 +55,9 @@ const PatientSidebar = (props) => {
         decodedUser.id !== null &&
         decodedUser.id !== undefined,
       onError: (error) => {
-        showNotification?.(error.response.data.message, { type: "error" });
+        showNotification?.(error.response?.data?.message || error.message, {
+          type: "error",
+        });
       },
     }
   );
@@ -173,31 +177,35 @@ const PatientSidebar = (props) => {
                     id="basic-menu"
                     anchorEl={anchorEl}
                     open={open}
-                    sx={{width: 200}}
+                    sx={{ width: 200 }}
                     onClose={handleClose}
                     MenuListProps={{
                       "aria-labelledby": "basic-button",
                     }}
                   >
-                    <MenuItem color="black" 
-                      sx={{width: "220px"}}
+                    <MenuItem
+                      color="black"
+                      sx={{ width: "220px" }}
                       onClick={
-                        data?.data ? 
-                        () => {
-                          navigate("/patient/settings")
-                          handleClose()
-                        } 
-                        : 
-                        () => {
-                          navigate("/doctor/settings")
-                          handleClose()
-                        }
+                        data?.data
+                          ? () => {
+                              navigate("/patient/settings");
+                              handleClose();
+                            }
+                          : () => {
+                              navigate("/doctor/settings");
+                              handleClose();
+                            }
                       }
                     >
-                      <Box sx={{display: "flex", alignItems: "center", }}>
-                        <SettingsOutlined sx={{color: "black",}} />
-                        <Typography color="black" variant="h6"  sx={{marginLeft: "10px",}}>
-                           Profile
+                      <Box sx={{ display: "flex", alignItems: "center" }}>
+                        <SettingsOutlined sx={{ color: "black" }} />
+                        <Typography
+                          color="black"
+                          variant="h6"
+                          sx={{ marginLeft: "10px" }}
+                        >
+                          Profile
                         </Typography>
                       </Box>
                     </MenuItem>
@@ -211,9 +219,13 @@ const PatientSidebar = (props) => {
                           : navigate("/signin-doctor");
                       }}
                     >
-                      <Box sx={{display: "flex", alignItems: "center"}}>
-                        <Logout sx={{color: "black",}} />
-                        <Typography color="black" variant="h6" sx={{marginLeft: "10px",}}>
+                      <Box sx={{ display: "flex", alignItems: "center" }}>
+                        <Logout sx={{ color: "black" }} />
+                        <Typography
+                          color="black"
+                          variant="h6"
+                          sx={{ marginLeft: "10px" }}
+                        >
                           Logout
                         </Typography>
                       </Box>
