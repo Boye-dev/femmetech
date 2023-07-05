@@ -28,15 +28,23 @@ const Signin = () => {
   const { showNotification } = useAlert();
   const { mutate, isLoading } = useMutation(login, {
     onError: (error) => {
-      showNotification?.(error.response.data.errors[0], { type: "error" });
+      showNotification?.(error.response.data.errors[0] || error.message, {
+        type: "error",
+      });
     },
     onSuccess: (data) => {
       console.log(data);
-      setToken(data?.token);
+      if (data.data.verified) {
+        setToken(data?.token);
 
-      // const decodedUser = getDecodedJwt();
+        // const decodedUser = getDecodedJwt();
 
-      navigate("/patient", { replace: true });
+        navigate("/patient", { replace: true });
+      } else {
+        showNotification?.("Please Verify Your Email", {
+          type: "error",
+        });
+      }
     },
   });
   const onSubmit = (payload) => {
@@ -357,10 +365,9 @@ const Signin = () => {
                 sx={{
                   display: "flex",
                   justifyContent: "start",
-                  mb: 5
+                  mb: 5,
                 }}
               >
-              
                 <Typography variant="caption">
                   <Link
                     style={{ textDecoration: "none", color: "#CE1E23" }}

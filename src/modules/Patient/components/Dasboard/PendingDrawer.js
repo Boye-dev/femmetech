@@ -1,6 +1,7 @@
 import { Close } from "@mui/icons-material";
 import { Box, Drawer, Typography } from "@mui/material";
 import React from "react";
+import { getRandomColor } from "../../../Doctor/pages/Waitlist";
 
 const PendingDrawer = (props) => {
   const color = ["#0FC916", "#FCBA03", "#6E00FF", "#F30505", "#6E00FF"];
@@ -59,7 +60,7 @@ const PendingDrawer = (props) => {
                         width: "1.99px",
                         height: "100%",
                         borderRadius: "5px",
-                        backgroundColor: color[index],
+                        backgroundColor: getRandomColor(),
                       }}
                     />
                     <Box
@@ -73,7 +74,7 @@ const PendingDrawer = (props) => {
                         {item.title || "--"}
                       </Typography>
                       <Typography color="text.secondary" variant="caption">
-                        Doctor : Dr {item.doctorId.lastName || "--"}
+                        Doctor : Dr {item?.doctorId?.lastName || "--"}
                       </Typography>
                     </Box>
                   </Box>

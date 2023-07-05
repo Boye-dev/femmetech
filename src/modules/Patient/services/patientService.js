@@ -41,6 +41,12 @@ export const passwordChange = async (payload) => {
     (res) => res.data
   );
 };
+export const fetchPastAppointmentsDoctor = async ({ queryKey }) => {
+  const [, { patientId }] = queryKey;
+  return Api.get(`/past-appointments/patient/${patientId}`).then(
+    (res) => res.data
+  );
+};
 export const book = async (payload) => {
   return Api.post("/appointment/book/", payload).then((res) => res.data);
 };

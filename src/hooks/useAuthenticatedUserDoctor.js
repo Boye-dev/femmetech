@@ -15,7 +15,9 @@ export const useAuthenticatedUserDoctor = () => {
     {
       enabled: isAuthenticated() && doctorId !== null && doctorId !== undefined,
       onError: (error) => {
-        showNotification?.(error.response.data.message, { type: "error" });
+        showNotification?.(error.response?.data?.message || error.message, {
+          type: "error",
+        });
       },
     }
   );

@@ -41,7 +41,9 @@ const SingleMessage = ({ chat, showDrop, onClose }) => {
       enabled: chat._id !== null || chat._id !== undefined,
 
       onError: (error) => {
-        showNotification?.(error.response.data?.message, { type: "error" });
+        showNotification?.(error.response?.data?.message || error.message, {
+          type: "error",
+        });
       },
       onSuccess: (data) => {
         setMessages(data.data);
@@ -65,7 +67,9 @@ const SingleMessage = ({ chat, showDrop, onClose }) => {
   const { mutate, isLoading: isPosting } = useMutation(postMessages, {
     onError: (error) => {
       console.log(error);
-      showNotification?.(error.response.data.errors[0], { type: "error" });
+      showNotification?.(error.response.data.errors[0] || error.message, {
+        type: "error",
+      });
     },
     onSuccess: (data) => {
       socketRef.current.emit("sendMessage", data.data);

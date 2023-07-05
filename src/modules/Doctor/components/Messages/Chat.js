@@ -12,8 +12,10 @@ import { useEffect } from "react";
 import { useState } from "react";
 const Chat = ({ chat, onClick, cleared }) => {
   const { latestMessage, typing, notification } = useContext(NexusContext);
+  const initialMessage =
+    chat?.latestMessage !== undefined ? chat?.latestMessage || "" : "";
   const decodedUser = getDecodedJwt();
-  const [lastMessage, setLastMessage] = useState(chat?.latestMessage || "");
+  const [lastMessage, setLastMessage] = useState(chat?.latestMessage);
   const unread = chat.unreadMessages.filter(
     (item) => item.userId.userDetails._id === decodedUser.id
   );
@@ -82,15 +84,16 @@ const Chat = ({ chat, onClick, cleared }) => {
             >
               {typing.typing && typing.sender[0].userId === chatData[0].userId
                 ? "typing"
-                : `${lastMessage?.content.substring(0, 15)}${
-                    lastMessage?.content.length > 15 ? "..." : ""
+                : lastMessage !== undefined &&
+                  `${lastMessage?.content?.substring(0, 15)}${
+                    lastMessage?.content?.length > 15 ? "..." : ""
                   }`}
             </Typography>
           </Box>
         </Box>
         <Box alignItems="flex-end" display="flex" flexDirection="column">
           <Typography variant="caption" sx={{}} color="text.secondary">
-            {formatDateTime(lastMessage.updatedAt)}
+            {lastMessage !== undefined && formatDateTime(lastMessage.updatedAt)}
           </Typography>
           {unreadCount > 0 && (
             <Box
