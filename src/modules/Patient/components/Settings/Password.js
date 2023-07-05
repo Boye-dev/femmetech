@@ -220,6 +220,7 @@ const Password = () => {
                       <TextField
                         variant="outlined"
                         placeholder="******************"
+                        type="password"
                         size="small"
                         InputProps={{
                           style: {
@@ -282,6 +283,7 @@ const Password = () => {
                         variant="outlined"
                         size="small"
                         placeholder="******************"
+                        type="password"
                         InputProps={{
                           style: {
                             fontSize: "16px",
@@ -343,6 +345,7 @@ const Password = () => {
                       <TextField
                         variant="outlined"
                         size="small"
+                        type="password"
                         InputProps={{
                           style: {
                             fontSize: "16px",
@@ -355,7 +358,6 @@ const Password = () => {
                           },
                         }}
                         sx={formStyles}
-                        // label="First Name"
                         placeholder="******************"
                         fullWidth
                         {...fields}

@@ -94,7 +94,7 @@ const Password = () => {
     },
     onSuccess: (data) => {
       showNotification?.(data.message, { type: "success" });
-      queryClient.refetchQueries("patient_by_id");
+      queryClient.refetchQueries("doctor_by_id");
       reset();
     },
   });
@@ -217,6 +217,7 @@ const Password = () => {
                     }) => (
                       <TextField
                         variant="outlined"
+                        type="password"
                         placeholder="******************"
                         size="small"
                         InputProps={{
@@ -272,6 +273,7 @@ const Password = () => {
                   <Controller
                     name="newPassword"
                     control={control}
+                    type="password"
                     render={({
                       field: { ref, ...fields },
                       fieldState: { error },
@@ -333,6 +335,7 @@ const Password = () => {
                 <Grid item xs={12} md={7}>
                   <Controller
                     name="confirmPassword"
+                    type="password"
                     control={control}
                     render={({
                       field: { ref, ...fields },
