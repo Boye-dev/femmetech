@@ -34,11 +34,17 @@ const Signin = () => {
     },
     onSuccess: (data) => {
       console.log(data);
-      setToken(data?.token);
+      if (data.data.verified) {
+        setToken(data?.token);
 
-      // const decodedUser = getDecodedJwt();
+        // const decodedUser = getDecodedJwt();
 
-      navigate("/patient", { replace: true });
+        navigate("/patient", { replace: true });
+      } else {
+        showNotification?.("Please Verify Your Email", {
+          type: "error",
+        });
+      }
     },
   });
   const onSubmit = (payload) => {

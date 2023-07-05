@@ -33,12 +33,17 @@ const DoctorSignin = () => {
       });
     },
     onSuccess: (data) => {
-      console.log(data);
-      setToken(data?.token);
+      if (data.data.verified) {
+        setToken(data?.token);
 
-      // const decodedUser = getDecodedJwt();
+        // const decodedUser = getDecodedJwt();
 
-      navigate("/doctor", { replace: true });
+        navigate("/doctor", { replace: true });
+      } else {
+        showNotification?.("Please Verify Your Email", {
+          type: "error",
+        });
+      }
     },
   });
   const onSubmit = (payload) => {
