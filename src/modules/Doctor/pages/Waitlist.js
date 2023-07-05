@@ -9,6 +9,16 @@ import { useQuery, useQueryClient } from "react-query";
 import { useAlert } from "../../../context/NotificationProvider";
 import ViewWaitlist from "../components/Waitlist/ViewWailtlist";
 
+const color = ["#0FC916", "#FCBA03", "#6E00FF", "#F30505"];
+let lastColorIndex;
+export const getRandomColor = () => {
+  let randomColorIndex = Math.floor(Math.random() * color.length);
+  while (randomColorIndex === lastColorIndex) {
+    randomColorIndex = Math.floor(Math.random() * color.length);
+  }
+  lastColorIndex = randomColorIndex;
+  return color[randomColorIndex];
+};
 const Waitlist = () => {
   const { isMobile } = useWidth();
   const queryClient = useQueryClient();
@@ -20,18 +30,6 @@ const Waitlist = () => {
 
   const { showNotification } = useAlert();
   console.log(doctorId);
-
-  const color = ["#0FC916", "#FCBA03", "#6E00FF", "#F30505"];
-  let lastColorIndex;
-
-  function getRandomColor() {
-    let randomColorIndex = Math.floor(Math.random() * color.length);
-    while (randomColorIndex === lastColorIndex) {
-      randomColorIndex = Math.floor(Math.random() * color.length);
-    }
-    lastColorIndex = randomColorIndex;
-    return color[randomColorIndex];
-  }
 
   const { isLoading: isAppointmentLoading, data: appointmentData } = useQuery(
     [

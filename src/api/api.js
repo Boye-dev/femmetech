@@ -62,6 +62,7 @@ Api.interceptors.response.use(
       });
       setTimeout(() => {
         removeToken();
+        window.location.reload();
         window.history.pushState({}, "User Login", "/home");
       }, 4000);
     }
