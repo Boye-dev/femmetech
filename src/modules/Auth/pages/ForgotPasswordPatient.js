@@ -28,7 +28,6 @@ const ForgotPasswordPatient = () => {
       });
     },
     onSuccess: (data) => {
-      console.log(data);
       setActiveStep(1);
       // navigate("/verify", { replace: true });
     },

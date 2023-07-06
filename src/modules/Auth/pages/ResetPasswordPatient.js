@@ -17,10 +17,8 @@ import ResetPasswordPatientStep2 from "../components.js/ResetPasswordPatientStep
 const ResetPasswordPatient = () => {
   const { showNotification } = useAlert();
 
-  const { resetPasswordHandleSubmit, resetPasswordWatch } = useSignupContext();
-  const { newPassword, confirmPassword } = resetPasswordWatch();
+  const { resetPasswordHandleSubmit,  } = useSignupContext();
 
-  console.log(newPassword, confirmPassword);
   const [activeStep, setActiveStep] = useState(0);
   const [message, setmessage] = useState("");
   const { patientId, resetString } = useParams();
@@ -33,7 +31,6 @@ const ResetPasswordPatient = () => {
       setmessage(error.message);
     },
     onSuccess: (data) => {
-      console.log(data);
       setmessage(data.message);
       setActiveStep(1);
     },

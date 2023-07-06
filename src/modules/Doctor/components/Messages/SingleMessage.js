@@ -66,7 +66,6 @@ const SingleMessage = ({ chat, showDrop, onClose }) => {
   }, [arrivalMessage, chat]);
   const { mutate, isLoading: isPosting } = useMutation(postMessages, {
     onError: (error) => {
-      console.log(error);
       showNotification?.(error.response.data.errors[0] || error.message, {
         type: "error",
       });
@@ -93,7 +92,6 @@ const SingleMessage = ({ chat, showDrop, onClose }) => {
       };
       mutate(payload);
     }
-    console.log(isTyping);
   };
 
   const messageGroups = messages.reduce((groups, message) => {

@@ -17,11 +17,8 @@ import ResetPasswordDoctorStep2 from "../components.js/ResetPasswordDoctorStep2"
 const ResetPasswordDoctor = () => {
   const { showNotification } = useAlert();
 
-  const { resetPasswordHandleSubmitDoctor, resetPasswordWatchDoctor } =
-    useSignupContext();
-  const { newPassword, confirmPassword } = resetPasswordWatchDoctor();
+  const { resetPasswordHandleSubmitDoctor,  } = useSignupContext();
 
-  console.log(newPassword, confirmPassword);
   const [activeStep, setActiveStep] = useState(0);
   const [message, setmessage] = useState("");
   const { doctorId, resetString } = useParams();
@@ -34,7 +31,6 @@ const ResetPasswordDoctor = () => {
       setmessage(error.message);
     },
     onSuccess: (data) => {
-      console.log(data);
       setActiveStep(1);
       setmessage(data.message);
     },

@@ -46,11 +46,10 @@ const Announcements = () => {
   // Update to read
   const mutation = useMutation(updateStatusToRead, {
     onError: (error) => {
-      showNotification?.(error.response.data?.error, { type: "error" });
+      showNotification?.(error.response.data?.message, { type: "error" });
     },
 
     onSuccess: (data) => {
-      console.log(data);
       // Get all announcements again
       queryClient.refetchQueries("announcements");
     },
@@ -120,8 +119,6 @@ const Announcements = () => {
   const handleCloseDialog = () => {
     setSelectedAnnouncement(null);
   };
-
-  console.log(unreadAnnouncements);
 
   return (
     <>
@@ -243,7 +240,7 @@ const Announcements = () => {
                             overflow: "hidden",
                             hyphens: "auto",
                             wordBreak: "break-all",
-                            width: "70%",
+                            maxWidth: "70%",
                             display: "-webkit-box",
                             WebkitLineClamp: 1,
                             WebkitBoxOrient: "vertical",
@@ -258,7 +255,7 @@ const Announcements = () => {
                           variant="caption"
                           sx={{ color: "#AEAEAE", cursor: "pointer" }}
                         >
-                          show more
+                          .show more
                         </Typography>
                       </Box>
                     </Box>

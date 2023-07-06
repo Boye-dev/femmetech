@@ -19,9 +19,6 @@ const ForgotPasswordPatientStep2 = () => {
         type: "error",
       });
     },
-    onSuccess: (data) => {
-      console.log(data);
-    },
   });
   const onSubmitEmail = (payload) => {
     mutate(payload);

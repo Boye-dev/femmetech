@@ -101,7 +101,6 @@ const Password = () => {
     },
   });
   const onSubmit = (payload) => {
-    console.log(payload);
     payload.id = patientId;
 
     mutate(payload);

@@ -1,8 +1,6 @@
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import * as yup from "yup";
-// import { PatientPaths, BasePaths } from "../../../routes/paths";
-// import { Roles } from "../../../constants/roles";
 import { TextField } from "@mui/material";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "react-query";
@@ -22,8 +20,6 @@ import { LoadingButton } from "@mui/lab";
 
 const Signin = () => {
   const navigate = useNavigate();
-  // const location = useLocation();
-  // const from = location.state?.from?.pathname;
 
   const { showNotification } = useAlert();
   const { mutate, isLoading } = useMutation(login, {
@@ -33,12 +29,8 @@ const Signin = () => {
       });
     },
     onSuccess: (data) => {
-      console.log(data);
       if (data.data.verified) {
         setToken(data?.token);
-
-        // const decodedUser = getDecodedJwt();
-
         navigate("/patient", { replace: true });
       } else {
         showNotification?.("Please Verify Your Email", {
@@ -115,7 +107,6 @@ const Signin = () => {
             display: "flex",
             alignItems: "center",
             height: { xs: "100vh", md: "100vh" },
-            // paddingBottom: {xs: "100px", md: "0"},
           }}
         >
           <Box

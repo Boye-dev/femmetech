@@ -24,9 +24,9 @@ import {
   DialogTitle,
   Divider,
   Grid,
-  MenuItem,
+  // MenuItem,
   Popover,
-  TextField,
+  // TextField,
   Typography,
 } from "@mui/material";
 import {
@@ -44,8 +44,8 @@ import {
 } from "../../../../utils/formatDate";
 import { cancel, reschedule } from "../../../Patient/services/patientService";
 import { LoadingButton } from "@mui/lab";
-import { Controller, useForm } from "react-hook-form";
-import moment from "moment/moment";
+import { useForm } from "react-hook-form";
+// import moment from "moment/moment";
 const textFieldStyle = {
   width: "100%",
   "& .MuiInputBase-input": {
@@ -89,45 +89,7 @@ function Calendar(props) {
   const { showNotification } = useAlert();
   const decodedUser = getDecodedJwt();
   const doctorId = decodedUser.id;
-  const formStyles = {
-    marginBottom: "20px",
-    color: "black !important",
-    background: "#F5F5F6",
-    borderRadius: "5px",
-    "& .MuiInputBase-input": {
-      outline: "none",
-      borderRadius: "3px",
-      color: "#000",
-      textAlign: "left",
-    },
-    "& .MuiInputBase-input:hover": {
-      border: "0",
-      outline: "none",
-      borderRadius: "5px",
-      color: "#000",
-    },
-    "& .MuiFormHelperText-root": {
-      color: "red !important",
-      background: "#fff",
-      width: "100%",
-      margin: 0,
-    },
-    "& .Mui-active": {
-      outline: "none",
-      borderRadius: "5px",
-    },
-    "& .Mui-focused": {
-      color: "#000",
-    },
-    "& .MuiOutlinedInput-root": {
-      "&:hover fieldset": {
-        borderColor: "#000",
-      },
-      "&.Mui-focused fieldset": {
-        borderColor: "#000",
-      },
-    },
-  };
+  
 
   const { isLoading: upcomingLoading, data: upcoming } = useQuery(
     ["upcoming_app", { doctorId: doctorId }],
@@ -159,12 +121,10 @@ function Calendar(props) {
   const [popoverAnchorEl, setPopoverAnchorEl] = useState(null);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [rescheduleApp, setReshedule] = useState(null);
-  console.log(selectedEvent);
+  
   const handleEventClick = (clickInfo) => {
     const { clientX, clientY } = clickInfo.jsEvent;
-    console.log(clientX, clientY);
     setPopoverAnchorEl({ left: clientX, top: clientY });
-    console.log(popoverAnchorEl);
     setSelectedEvent(clickInfo.event);
   };
   const queryClient = useQueryClient();
@@ -232,11 +192,11 @@ function Calendar(props) {
     allTimes.push(time);
   }
   const {
-    control,
+    // control,
     handleSubmit,
     // formState: { errors },
-    trigger,
-    watch,
+    // trigger,
+    // watch,
     // reset,
     setValue,
     // getValues,
@@ -251,10 +211,9 @@ function Calendar(props) {
   const handleEndDateTimeChange = (date) => {
     setValue("endDateTime", date);
   };
-  const { startDateTime, endDateTime } = watch();
+  // const { startDateTime, endDateTime } = watch();
 
   const onReschedule = (payload) => {
-    console.log(payload);
     payload = {
       appointmentId: rescheduleApp,
       doctorId,
@@ -479,10 +438,6 @@ function Calendar(props) {
                     <Box display="flex" justifyContent="space-between" mt={2}>
                       <Button
                         onClick={() => {
-                          console.log(
-                            selectedEvent.extendedProps?.appointmentId
-                          );
-
                           setReshedule(
                             selectedEvent.extendedProps?.appointmentId
                           );

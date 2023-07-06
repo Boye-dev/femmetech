@@ -1,7 +1,7 @@
 import { Box, Button, CircularProgress } from "@mui/material";
 import { useWidth } from "../../../hooks/useWidth";
 import { Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import DoctorProfileSidebar from "../../../components/DoctorProfileSidebar";
 import { getDecodedJwt } from "./../../../utils/auth";
 import { fetchAppointmentsDoctor } from "../services/doctorService";
@@ -29,7 +29,6 @@ const Waitlist = () => {
     useState(false);
 
   const { showNotification } = useAlert();
-  console.log(doctorId);
 
   const { isLoading: isAppointmentLoading, data: appointmentData } = useQuery(
     [

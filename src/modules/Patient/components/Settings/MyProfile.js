@@ -92,7 +92,6 @@ const MyProfile = () => {
   });
 
   const [selectedPicture, setSelectedPicture] = useState("");
-  // const {lastName, firstName, email, profilePicture, role, phoneNumber, address, emergencyContactName, emergencyContactAddress, emergencyContactNumber} = watch()
   const handlePictureClick = async () => {
     const inputElement = document.createElement("input");
     inputElement.type = "file";
@@ -426,14 +425,6 @@ const MyProfile = () => {
                         marginRight: "12px",
                       }}
                     >
-                      {/* {
-                                            selectedPicture ? (
-                                            <img src={userDetails?.data.profilePicture || selectedPicture} alt="Profile" style={{ width: '100%', height: '100%', borderRadius: "50%", objectFit: 'cover' }} />
-                                        ) : (
-                                            <Box >
-                                                <Person bgcolor="#F1F3F9" style={{fontSize:'70px', color: "black", background: "#F1F3F9", padding: "6px", boder: "10px solid #F1F3F9", borderRadius: "50%"}}/>
-                                            </Box>
-                                        )} */}
                       {selectedPicture ? (
                         <img
                           src={selectedPicture}

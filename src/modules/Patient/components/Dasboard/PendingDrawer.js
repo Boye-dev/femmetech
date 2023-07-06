@@ -4,7 +4,7 @@ import React from "react";
 import { getRandomColor } from "../../../Doctor/pages/Waitlist";
 
 const PendingDrawer = (props) => {
-  const color = ["#0FC916", "#FCBA03", "#6E00FF", "#F30505", "#6E00FF"];
+  // const color = ["#0FC916", "#FCBA03", "#6E00FF", "#F30505", "#6E00FF"];
 
   return (
     <Drawer

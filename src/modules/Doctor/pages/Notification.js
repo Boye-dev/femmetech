@@ -65,7 +65,6 @@ const Notification = () => {
     fetchNotifications,
     {
       onError: (error) => {
-        console.log(error);
         showNotification?.(
           error.response?.data?.message ||
             error.response.error ||

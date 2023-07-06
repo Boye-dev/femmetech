@@ -17,6 +17,7 @@ import {
 } from "../../services/doctorService";
 import { LoadingButton } from "@mui/lab";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import { MobileDateTimePicker } from "@mui/x-date-pickers/MobileDateTimePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { getDecodedJwt } from "../../../../utils/auth";
@@ -140,7 +141,6 @@ const ViewWaitlist = (props) => {
     setApprove(false);
   }, [props.appointmentData]);
 
-  console.log(props.appointmentData);
   return (
     <>
       <Drawer
@@ -298,7 +298,7 @@ const ViewWaitlist = (props) => {
                         SCHEDULE
                       </Typography>
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DateTimePicker
+                        <MobileDateTimePicker
                           sx={textFieldStyle}
                           label="Start Date and Time"
                           inputVariant="outlined"
@@ -317,7 +317,7 @@ const ViewWaitlist = (props) => {
                         Please enter the end date and time for the appointment
                       </Typography> */}
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DateTimePicker
+                        <MobileDateTimePicker
                           sx={textFieldStyle}
                           label="End Date and Time"
                           inputVariant="outlined"

@@ -79,10 +79,7 @@ const PatientSidebar = (props) => {
           onClose={() => props.setOpen(false)}
         >
           <Box
-            display="flex"
-            flexDirection="column"
-            justifyContent="space-between"
-            height="100%"
+            sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100%"  }}            
           >
             <Box sx={{ width: props.width }}>
               <Box

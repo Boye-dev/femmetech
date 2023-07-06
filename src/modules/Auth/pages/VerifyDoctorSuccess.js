@@ -13,7 +13,6 @@ import { LoadingButton } from "@mui/lab";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
-// import { verifyPatient } from "../services/authServices";
 
 const VerifyPatientSuccess = () => {
   const navigate = useNavigate();

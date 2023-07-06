@@ -5,7 +5,7 @@ export const BasePaths = {
 
 export const AuthPaths = {
   SIGNIN: "/signin",
-  DOCTOR_SIGNIN: "/sigin-doctor",
+  DOCTOR_SIGNIN: "/signin-doctor",
   SIGNUP: "/signup",
   FORGOT_PASSWORD: "/forgot-password",
 };

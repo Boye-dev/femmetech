@@ -30,7 +30,6 @@ const Announcements = () => {
   const [newPost, setNewPost] = useState(false);
 
   const { showNotification } = useAlert();
-  console.log(doctorId);
 
   const { isLoading, data } = useQuery(
     ["announcements", { doctorId: doctorId }],
@@ -38,7 +37,7 @@ const Announcements = () => {
     {
       enabled: doctorId !== null || doctorId !== undefined,
       onError: (error) => {
-        showNotification?.(error.response.data?.error || error.message, {
+        showNotification?.(error.response.data?.message || error.message, {
           type: "error",
         });
       },
@@ -48,13 +47,12 @@ const Announcements = () => {
   // Update to read
   const mutation = useMutation(updateStatusToRead, {
     onError: (error) => {
-      showNotification?.(error.response.data?.error || error.message, {
+      showNotification?.(error.response.data?.message || error.message, {
         type: "error",
       });
     },
 
     onSuccess: (data) => {
-      console.log(data);
       // Get all announcements again
       queryClient.refetchQueries("announcements");
     },
@@ -125,7 +123,6 @@ const Announcements = () => {
     setSelectedAnnouncement(null);
   };
 
-  console.log(unreadAnnouncements);
 
   return (
     <>

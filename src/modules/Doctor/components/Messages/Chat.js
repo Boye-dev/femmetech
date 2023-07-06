@@ -12,8 +12,8 @@ import { useEffect } from "react";
 import { useState } from "react";
 const Chat = ({ chat, onClick, cleared }) => {
   const { latestMessage, typing, notification } = useContext(NexusContext);
-  const initialMessage =
-    chat?.latestMessage !== undefined ? chat?.latestMessage || "" : "";
+  // const initialMessage =
+    // chat?.latestMessage !== undefined ? chat?.latestMessage || "" : "";
   const decodedUser = getDecodedJwt();
   const [lastMessage, setLastMessage] = useState(chat?.latestMessage);
   const unread = chat.unreadMessages.filter(

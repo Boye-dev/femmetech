@@ -35,7 +35,6 @@ const Messages = () => {
   );
   const { mutate, isLoading: isPosting } = useMutation(readMessages, {
     onError: (error) => {
-      console.log(error);
       showNotification?.(error.response.data.errors[0] || error.message, {
         type: "error",
       });
@@ -45,7 +44,6 @@ const Messages = () => {
       setCleared(!cleared);
     },
   });
-  console.log(isPosting);
   return (
     <>
       {isLoading ? (

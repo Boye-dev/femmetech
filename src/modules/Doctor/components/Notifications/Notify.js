@@ -1,7 +1,7 @@
 import { Close } from "@mui/icons-material";
 import { Box, Divider, Typography } from "@mui/material";
 import React from "react";
-import { formatDateTime, getFormattedTime } from "../../../../utils/formatDate";
+import { formatDateTime,  } from "../../../../utils/formatDate";
 
 const Notify = ({ notification }) => {
   return (

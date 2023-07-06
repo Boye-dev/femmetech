@@ -22,7 +22,6 @@ const DoctorSignup = () => {
       });
     },
     onSuccess: (data) => {
-      console.log(data);
 
       navigate("/verify", { replace: true });
     },
