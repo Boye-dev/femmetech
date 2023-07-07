@@ -35,12 +35,12 @@ const PendingDrawer = (props) => {
           />
         </Box>
 
-        {props?.data.data?.appointments.length > 0 ? (
-          props?.data.data?.appointments.map((item, index) => {
+        {props?.data?.data?.appointments.length > 0 ? (
+          props?.data?.data?.appointments.map((item, index) => {
             return (
               <>
                 <Box
-                  key={item._id}
+                  key={item?._id}
                   sx={{
                     width: "100%",
                     minHeight: "30px",
@@ -71,7 +71,7 @@ const PendingDrawer = (props) => {
                       p={1}
                     >
                       <Typography color="black" variant="h6">
-                        {item.title || "--"}
+                        {item?.title || "--"}
                       </Typography>
                       <Typography color="text.secondary" variant="caption">
                         Doctor : Dr {item?.doctorId?.lastName || "--"}

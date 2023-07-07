@@ -144,7 +144,7 @@ const ProfileSidebar = (props) => {
                     </Typography>
                     <Typography variant="caption" color="#787878">
                       {new Date(
-                        userDetails.data.dateOfBirth
+                        userDetails?.data?.dateOfBirth
                       ).toLocaleDateString("en-US")}
                     </Typography>
                   </Box>
@@ -176,8 +176,8 @@ const ProfileSidebar = (props) => {
                       Address:
                     </Typography>
                     <Typography variant="caption" color="#787878">
-                      {userDetails.data.address.slice(0, 13)}
-                      {userDetails.data.address.length > 8 && "..."}
+                      {userDetails?.data?.address.slice(0, 13)}
+                      {userDetails?.data?.address.length > 8 && "..."}
                     </Typography>
                   </Box>
                   <Box
@@ -230,8 +230,8 @@ const ProfileSidebar = (props) => {
                       Show All
                     </Typography>
                   </Box>
-                  {data.data?.appointments.length > 0 ? (
-                    data.data?.appointments.slice(0, 4).map((item, index) => {
+                  {data?.data?.appointments.length > 0 ? (
+                    data?.data?.appointments.slice(0, 4).map((item, index) => {
                       return (
                         <>
                           <Box

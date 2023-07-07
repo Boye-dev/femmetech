@@ -180,7 +180,7 @@ const Announcements = () => {
               </Typography>
             </Box>
 
-            {Object.entries(announcementSections).map(([section, items]) => (
+            {Object.entries(announcementSections)?.map(([section, items]) => (
               <React.Fragment key={section}>
                 <Typography
                   variant="h3"
@@ -189,7 +189,7 @@ const Announcements = () => {
                   {section}
                 </Typography>
 
-                {items.map((item, pos) => (
+                {items?.map((item, pos) => (
                   <Box
                     key={pos}
                     sx={{
@@ -230,7 +230,7 @@ const Announcements = () => {
                         sx={{ fontSize: { xs: "16px !important" } }}
                         color="black"
                       >
-                        {item.name}
+                        {item?.name || "--"}
                       </Typography>
                       <Box sx={{ display: "flex", alignItems: "center" }}>
                         <Typography
@@ -248,7 +248,7 @@ const Announcements = () => {
                           variant="caption"
                           color="black"
                         >
-                          {item.text}
+                          {item?.text || "--"}
                         </Typography>
                         <Typography
                           onClick={() => handleShowMoreClick(item)}
@@ -275,7 +275,7 @@ const Announcements = () => {
               sx={{ fontSize: { xs: "18px !important" } }}
               color="black"
             >
-              {selectedAnnouncement.name}
+              {selectedAnnouncement?.name || "--"}
             </DialogTitle>
             <DialogContent>
               <Typography
@@ -285,13 +285,13 @@ const Announcements = () => {
                   fontSize: { xs: "14px !important", md: "16px !important" },
                 }}
               >
-                {selectedAnnouncement.text}
+                {selectedAnnouncement?.text || "--"}
               </Typography>
               <Typography variant="caption" marginTop="20px">
                 Date:{" "}
                 {format(
                   new Date(
-                    selectedAnnouncement.timestamp.replace(
+                    selectedAnnouncement?.timestamp?.replace(
                       /(\d{2})\/(\d{2})\/(\d{4})/,
                       "$2/$1/$3"
                     )
