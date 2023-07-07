@@ -84,14 +84,11 @@ const DoctorSignupStep2 = () => {
         
         inputElement.onchange = (event) => {
             const file = event.target.files[0];
-            console.log(file);
             setSelectedPicture(file);
             
             doctorSetValue('profilePicture', file);
         };
     };
-
-    console.log(doctorWatch("profilePicture"));
 
     return (
         <Box>

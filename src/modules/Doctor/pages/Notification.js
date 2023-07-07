@@ -54,7 +54,9 @@ const Notification = () => {
     fetchNotifications,
     {
       onError: (error) => {
-        showNotification?.(error.response.data?.message, { type: "error" });
+        showNotification?.(error?.response?.data?.message || error.message, {
+          type: "error",
+        });
       },
     }
   );
@@ -63,9 +65,10 @@ const Notification = () => {
     fetchNotifications,
     {
       onError: (error) => {
-        console.log(error);
         showNotification?.(
-          error.response.data?.message || error.response.error,
+          error.response?.data?.message ||
+            error.response.error ||
+            error.message,
           { type: "error" }
         );
       },
@@ -76,14 +79,18 @@ const Notification = () => {
     fetchNotifications,
     {
       onError: (error) => {
-        showNotification?.(error.response.data?.message, { type: "error" });
+        showNotification?.(error.response?.data?.message || error.message, {
+          type: "error",
+        });
       },
     }
   );
 
   const { mutate, isLoading: submitLoading } = useMutation(markReadAll, {
     onError: (error) => {
-      showNotification?.(error.response.data.errors[0], { type: "error" });
+      showNotification?.(error.response.data.errors[0] || error.message, {
+        type: "error",
+      });
     },
     onSuccess: (data) => {
       showNotification?.(data.message, { type: "success" });

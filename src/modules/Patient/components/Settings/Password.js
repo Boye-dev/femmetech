@@ -10,19 +10,15 @@ import {
 import { useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import * as yup from "yup";
-// import { PatientPaths, BasePaths } from "../../../routes/paths";
-// import { Roles } from "../../../constants/roles";
 import { TextField } from "@mui/material";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "react-query";
 import { getDecodedJwt } from "../../../../utils/auth";
-// import { useAuthenticatedUser } from "../../../../hooks/useAuthenticatedUser";
 import { passwordChange } from "../../services/patientService";
 import { useAlert } from "../../../../context/NotificationProvider";
 import { useQueryClient } from "react-query";
 
 const formStyles = {
-  // marginBottom: "20px",
   color: "black !important",
   background: "#F5F5F6",
   borderRadius: "5px",
@@ -61,7 +57,6 @@ const formStyles = {
 };
 
 const Password = () => {
-  // const { isLoading, userDetails,  } = useAuthenticatedUser();
   const patientId = getDecodedJwt().id;
   const { showNotification } = useAlert();
   const queryClient = useQueryClient();
@@ -93,7 +88,9 @@ const Password = () => {
 
   const { mutate, isLoading: submitLoading } = useMutation(passwordChange, {
     onError: (error) => {
-      showNotification?.(error.response.data.message, { type: "error" });
+      showNotification?.(error.response?.data?.message || error.message, {
+        type: "error",
+      });
     },
     onSuccess: (data) => {
       showNotification?.(data.message, { type: "success" });
@@ -220,6 +217,7 @@ const Password = () => {
                       <TextField
                         variant="outlined"
                         placeholder="******************"
+                        type="password"
                         size="small"
                         InputProps={{
                           style: {
@@ -282,6 +280,7 @@ const Password = () => {
                         variant="outlined"
                         size="small"
                         placeholder="******************"
+                        type="password"
                         InputProps={{
                           style: {
                             fontSize: "16px",
@@ -343,6 +342,7 @@ const Password = () => {
                       <TextField
                         variant="outlined"
                         size="small"
+                        type="password"
                         InputProps={{
                           style: {
                             fontSize: "16px",
@@ -355,7 +355,6 @@ const Password = () => {
                           },
                         }}
                         sx={formStyles}
-                        // label="First Name"
                         placeholder="******************"
                         fullWidth
                         {...fields}

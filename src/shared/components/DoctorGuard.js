@@ -4,7 +4,6 @@ import React from "react";
 import { isDoctor } from "../../utils/auth";
 
 const DoctorGuard = ({ children }) => {
-  console.log("test");
   const location = useLocation();
 
   if (isDoctor()) {

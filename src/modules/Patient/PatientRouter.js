@@ -5,6 +5,7 @@ import Announcements from "./pages/Announcements";
 import Messages from "../Doctor/pages/Messages";
 import Settings from "./pages/Settings";
 import Notification from "../Doctor/pages/Notification";
+import History from "./pages/History";
 
 function PatientRouter() {
   return (
@@ -16,6 +17,7 @@ function PatientRouter() {
       <Route exact path="notifications" element={<Notification />} />
       <Route exact path="messages" element={<Messages />} />
       <Route exact path="settings" element={<Settings />} />
+      <Route exact path="history" element={<History />} />
     </Routes>
   );
 }

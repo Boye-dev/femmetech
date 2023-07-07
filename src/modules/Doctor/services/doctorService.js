@@ -20,6 +20,12 @@ export const fetchAppointmentsDoctor = async ({ queryKey }) => {
     }${status ? "&status=" + status : ""}`
   ).then((res) => res.data);
 };
+export const fetchPastAppointmentsDoctor = async ({ queryKey }) => {
+  const [, { doctorId }] = queryKey;
+  return Api.get(`/past-appointments/doctor/${doctorId}`).then(
+    (res) => res.data
+  );
+};
 export const approveAppointment = async (payload) => {
   return Api.put(`/appointment/${payload.appointmentId}/approve`, payload).then(
     (res) => res.data

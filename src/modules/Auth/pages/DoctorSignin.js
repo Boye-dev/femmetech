@@ -6,7 +6,7 @@ import * as yup from "yup";
 import { TextField } from "@mui/material";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "react-query";
-import { doctorLogin,  } from "../services/authServices";
+import { doctorLogin } from "../services/authServices";
 import logo from "../../../assets/svgs/logosmall.svg";
 import { Grid, Typography, IconButton } from "@mui/material";
 import Box from "@mui/material/Box";
@@ -17,7 +17,7 @@ import SendIcon from "@mui/icons-material/Send";
 import { Link, useNavigate } from "react-router-dom";
 import loginImg from "../../../assets/images/login.png";
 import { useAlert } from "../../../context/NotificationProvider";
-import {  setToken } from "../../../utils/auth";
+import { setToken } from "../../../utils/auth";
 import { LoadingButton } from "@mui/lab";
 
 const DoctorSignin = () => {
@@ -28,15 +28,22 @@ const DoctorSignin = () => {
   const { showNotification } = useAlert();
   const { mutate, isLoading } = useMutation(doctorLogin, {
     onError: (error) => {
-      showNotification?.(error.response.data.message, { type: "error" });
+      showNotification?.(error.response?.data?.message || error.message, {
+        type: "error",
+      });
     },
     onSuccess: (data) => {
-      console.log(data);
-      setToken(data?.token);
+      if (data.data.verified) {
+        setToken(data?.token);
 
-      // const decodedUser = getDecodedJwt();
+        // const decodedUser = getDecodedJwt();
 
-      navigate("/doctor", { replace: true });
+        navigate("/doctor", { replace: true });
+      } else {
+        showNotification?.("Please Verify Your Email", {
+          type: "error",
+        });
+      }
     },
   });
   const onSubmit = (payload) => {
@@ -358,10 +365,9 @@ const DoctorSignin = () => {
                 sx={{
                   display: "flex",
                   justifyContent: "start",
-                  mb: 5
+                  mb: 5,
                 }}
               >
-              
                 <Typography variant="caption">
                   <Link
                     style={{ textDecoration: "none", color: "#CE1E23" }}

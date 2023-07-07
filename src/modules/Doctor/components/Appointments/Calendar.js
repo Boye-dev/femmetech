@@ -11,6 +11,10 @@ import { useQuery, useMutation, useQueryClient } from "react-query";
 import { fetchUpcoming } from "../../services/doctorService";
 import { getDecodedJwt } from "../../../../utils/auth";
 import { useAlert } from "../../../../context/NotificationProvider";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+
 import {
   Box,
   Button,
@@ -20,9 +24,9 @@ import {
   DialogTitle,
   Divider,
   Grid,
-  MenuItem,
+  // MenuItem,
   Popover,
-  TextField,
+  // TextField,
   Typography,
 } from "@mui/material";
 import {
@@ -40,61 +44,62 @@ import {
 } from "../../../../utils/formatDate";
 import { cancel, reschedule } from "../../../Patient/services/patientService";
 import { LoadingButton } from "@mui/lab";
-import { Controller, useForm } from "react-hook-form";
-import moment from "moment/moment";
+import { useForm } from "react-hook-form";
+// import moment from "moment/moment";
+const textFieldStyle = {
+  width: "100%",
+  "& .MuiInputBase-input": {
+    outline: "none",
+    borderRadius: "3px",
+    color: "#000",
+  },
+  "& .MuiInputBase-input:hover": {
+    border: "0",
+    outline: "none",
+    borderRadius: "5px",
+    color: "#000",
+  },
+  "& .MuiFormHelperText-root": {
+    color: "red !important",
+    background: "#fff",
+    width: "100%",
+    margin: 0,
+  },
+  "& .Mui-active": {
+    // border: errors.email
+    //   ? "1px solid red"
+    //   : "1px solid white",
+    outline: "none",
+    borderRadius: "5px",
+  },
+  "& .Mui-focused": {
+    color: "#000",
+  },
+  "& .MuiOutlinedInput-root": {
+    "&:hover fieldset": {
+      borderColor: "#000", // Change the border color on hover
+    },
+    "&.Mui-focused fieldset": {
+      borderColor: "#000", // Change the border color when active/focused
+    },
+  },
+};
 function Calendar(props) {
   const [event, setEvent] = useState(false);
   const { showNotification } = useAlert();
   const decodedUser = getDecodedJwt();
   const doctorId = decodedUser.id;
-  const formStyles = {
-    marginBottom: "20px",
-    color: "black !important",
-    background: "#F5F5F6",
-    borderRadius: "5px",
-    "& .MuiInputBase-input": {
-      outline: "none",
-      borderRadius: "3px",
-      color: "#000",
-      textAlign: "left",
-    },
-    "& .MuiInputBase-input:hover": {
-      border: "0",
-      outline: "none",
-      borderRadius: "5px",
-      color: "#000",
-    },
-    "& .MuiFormHelperText-root": {
-      color: "red !important",
-      background: "#fff",
-      width: "100%",
-      margin: 0,
-    },
-    "& .Mui-active": {
-      outline: "none",
-      borderRadius: "5px",
-    },
-    "& .Mui-focused": {
-      color: "#000",
-    },
-    "& .MuiOutlinedInput-root": {
-      "&:hover fieldset": {
-        borderColor: "#000",
-      },
-      "&.Mui-focused fieldset": {
-        borderColor: "#000",
-      },
-    },
-  };
+  
 
   const { isLoading: upcomingLoading, data: upcoming } = useQuery(
     ["upcoming_app", { doctorId: doctorId }],
     fetchUpcoming,
     {
       enabled: doctorId !== null || doctorId !== undefined,
-
       onError: (error) => {
-        showNotification?.(error.response.data?.message, { type: "error" });
+        showNotification?.(error.response?.data?.message || error.message, {
+          type: "error",
+        });
       },
     }
   );
@@ -116,12 +121,10 @@ function Calendar(props) {
   const [popoverAnchorEl, setPopoverAnchorEl] = useState(null);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [rescheduleApp, setReshedule] = useState(null);
-  console.log(selectedEvent);
+  
   const handleEventClick = (clickInfo) => {
     const { clientX, clientY } = clickInfo.jsEvent;
-    console.log(clientX, clientY);
     setPopoverAnchorEl({ left: clientX, top: clientY });
-    console.log(popoverAnchorEl);
     setSelectedEvent(clickInfo.event);
   };
   const queryClient = useQueryClient();
@@ -132,7 +135,9 @@ function Calendar(props) {
   };
   const { mutate, isLoading } = useMutation(cancel, {
     onError: (error) => {
-      showNotification?.(error.response.data.errors[0], { type: "error" });
+      showNotification?.(error.response.data.errors[0] || error.message, {
+        type: "error",
+      });
     },
     onSuccess: (data) => {
       setSelectedEvent(null);
@@ -146,7 +151,9 @@ function Calendar(props) {
     reschedule,
     {
       onError: (error) => {
-        showNotification?.(error.response.data.errors[0], { type: "error" });
+        showNotification?.(error.response.data.errors[0] || error.message, {
+          type: "error",
+        });
       },
       onSuccess: (data) => {
         setSelectedEvent(null);
@@ -169,14 +176,12 @@ function Calendar(props) {
     setReshedule(null);
   };
   const schema = yup.object().shape({
-    date: yup.string().required("Date Is Required"),
-    start_time: yup.string().required("Start Time Is Required"),
-    end_time: yup.string().required("End Time Is Required"),
+    startDateTime: yup.string().required("Start date And Time Is Required"),
+    endDateTime: yup.string().required("End date And Time Is Required"),
   });
   const defaultValues = {
-    date: "",
-    start_time: "",
-    end_time: "",
+    startDateTime: "",
+    endDateTime: "",
   };
   const allTimes = [];
 
@@ -187,38 +192,33 @@ function Calendar(props) {
     allTimes.push(time);
   }
   const {
-    control,
+    // control,
     handleSubmit,
     // formState: { errors },
-    trigger,
+    // trigger,
     // watch,
     // reset,
-    // setValue,
+    setValue,
     // getValues,
     // unregister,
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: defaultValues,
   });
+  const handleStartDateTimeChange = (date) => {
+    setValue("startDateTime", date);
+  };
+  const handleEndDateTimeChange = (date) => {
+    setValue("endDateTime", date);
+  };
+  // const { startDateTime, endDateTime } = watch();
+
   const onReschedule = (payload) => {
-    let hours = moment(payload.end_time, ["hA"]).format("HH:mm");
-
-    let hoursStart = moment(payload.start_time, ["hA"]).format("HH:mm");
-
-    const endDateTime = moment(
-      `${payload.date} ${hours}`,
-      "YYYY-MM-DD HH:mm"
-    ).toDate();
-    const startDateTime = moment(
-      `${payload.date} ${hoursStart}`,
-      "YYYY-MM-DD HH:mm"
-    ).toDate();
-
     payload = {
       appointmentId: rescheduleApp,
       doctorId,
-      endDateTime,
-      startDateTime,
+      startDateTime: payload.startDateTime,
+      endDateTime: payload.endDateTime,
     };
 
     mutateReschedule(payload);
@@ -375,20 +375,26 @@ function Calendar(props) {
                               Duration
                             </Typography>
                             <Typography color="black" variant="h6">
-                              {
+                              {getDuration(
+                                selectedEvent._instance.range.start,
+                                selectedEvent._instance.range.end
+                              ).hours > 0 &&
                                 getDuration(
                                   selectedEvent._instance.range.start,
                                   selectedEvent._instance.range.end
-                                ).hours
-                              }{" "}
-                              {`hour${
-                                getDuration(
-                                  selectedEvent._instance.range.start,
-                                  selectedEvent._instance.range.end
-                                ).hours > 1
-                                  ? "s"
-                                  : ""
-                              }`}{" "}
+                                ).hours}{" "}
+                              {getDuration(
+                                selectedEvent._instance.range.start,
+                                selectedEvent._instance.range.end
+                              ).hours > 0 &&
+                                `hour${
+                                  getDuration(
+                                    selectedEvent._instance.range.start,
+                                    selectedEvent._instance.range.end
+                                  ).hours > 1
+                                    ? "s"
+                                    : ""
+                                }`}{" "}
                               {getDuration(
                                 selectedEvent._instance.range.start,
                                 selectedEvent._instance.range.end
@@ -432,10 +438,6 @@ function Calendar(props) {
                     <Box display="flex" justifyContent="space-between" mt={2}>
                       <Button
                         onClick={() => {
-                          console.log(
-                            selectedEvent.extendedProps?.appointmentId
-                          );
-
                           setReshedule(
                             selectedEvent.extendedProps?.appointmentId
                           );
@@ -482,7 +484,7 @@ function Calendar(props) {
             <Dialog open={rescheduleApp !== null} onClose={handleCloseDialog}>
               {selectedEvent && (
                 <>
-                  <Box sx={{ width: "350px", height: "470px" }}>
+                  <Box sx={{ width: "350px", height: "400px" }}>
                     <DialogTitle
                       variant="h4"
                       sx={{ fontSize: { xs: "18px !important" } }}
@@ -503,156 +505,39 @@ function Calendar(props) {
                         variant="body1"
                         sx={{ fontSize: { xs: "14px !important" }, mb: 3 }}
                       >
-                        Please select new date
+                        Please select new start date and time
                       </Typography>
-                      <Controller
-                        label="Date"
-                        name="date"
-                        control={control}
-                        defaultValue={null}
-                        render={({
-                          field: { ref, ...fields },
-                          fieldState: { error },
-                        }) => (
-                          <TextField
-                            variant="outlined"
-                            size="small"
-                            InputProps={{
-                              style: {
-                                fontSize: "16px",
-                                color: "#000 !important",
-                              },
-                              placeholder: "",
-                            }}
-                            placeholder=""
-                            InputLabelProps={{
-                              style: {
-                                color: "black",
-                              },
-                            }}
-                            sx={formStyles}
-                            type="date"
-                            fullWidth
-                            {...fields}
-                            inputRef={ref}
-                            error={Boolean(error?.message)}
-                            helperText={error?.message}
-                            onKeyUp={() => {
-                              trigger("date");
-                            }}
+                      <Box p={5}>
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          <DateTimePicker
+                            sx={textFieldStyle}
+                            label="Start Date and Time"
+                            inputVariant="outlined"
+                            // value={selectedDateTime}
+                            fullwidth
+                            onChange={handleStartDateTimeChange}
                           />
-                        )}
-                      />
+                        </LocalizationProvider>
+                      </Box>
                       <Typography
                         color="black"
                         variant="body1"
                         sx={{ fontSize: { xs: "14px !important" }, mb: 3 }}
                       >
-                        Please select new start time
+                        Please select new end date and time
                       </Typography>
-                      <Controller
-                        name="start_time"
-                        control={control}
-                        defaultValue={null}
-                        render={({
-                          field: { ref, ...fields },
-                          fieldState: { error },
-                        }) => (
-                          <TextField
-                            variant="outlined"
-                            size="small"
-                            InputProps={{
-                              style: {
-                                fontSize: "16px",
-                                color: "#000 !important",
-                              },
-                            }}
-                            InputLabelProps={{
-                              style: {
-                                color: "black",
-                              },
-                            }}
-                            sx={formStyles}
-                            select
-                            fullWidth
-                            {...fields}
-                            inputRef={ref}
-                            error={Boolean(error?.message)}
-                            helperText={error?.message}
-                            onKeyUp={() => {
-                              trigger("end_time");
-                            }}
-                          >
-                            {allTimes.map((item) => {
-                              return (
-                                <MenuItem value={item}>
-                                  <Typography
-                                    sx={{ color: "black" }}
-                                    variant="h6"
-                                  >
-                                    {item}
-                                  </Typography>
-                                </MenuItem>
-                              );
-                            })}
-                          </TextField>
-                        )}
-                      />{" "}
-                      <Typography
-                        color="black"
-                        variant="body1"
-                        sx={{ fontSize: { xs: "14px !important" }, mb: 3 }}
-                      >
-                        Please select new end time
-                      </Typography>
-                      <Controller
-                        name="end_time"
-                        control={control}
-                        defaultValue={null}
-                        render={({
-                          field: { ref, ...fields },
-                          fieldState: { error },
-                        }) => (
-                          <TextField
-                            variant="outlined"
-                            size="small"
-                            InputProps={{
-                              style: {
-                                fontSize: "16px",
-                                color: "#000 !important",
-                              },
-                            }}
-                            InputLabelProps={{
-                              style: {
-                                color: "black",
-                              },
-                            }}
-                            sx={formStyles}
-                            select
-                            fullWidth
-                            {...fields}
-                            inputRef={ref}
-                            error={Boolean(error?.message)}
-                            helperText={error?.message}
-                            onKeyUp={() => {
-                              trigger("end_time");
-                            }}
-                          >
-                            {allTimes.map((item) => {
-                              return (
-                                <MenuItem value={item}>
-                                  <Typography
-                                    sx={{ color: "black" }}
-                                    variant="h6"
-                                  >
-                                    {item}
-                                  </Typography>
-                                </MenuItem>
-                              );
-                            })}
-                          </TextField>
-                        )}
-                      />
+                      <Box p={5}>
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          <DateTimePicker
+                            sx={textFieldStyle}
+                            label="End Date and Time"
+                            inputVariant="outlined"
+                            // value={selectedDateTime}
+                            fullwidth
+                            onChange={handleEndDateTimeChange}
+                          />
+                        </LocalizationProvider>
+                      </Box>
                       <LoadingButton
                         loading={isRescheduling}
                         onClick={handleSubmit(onReschedule)}

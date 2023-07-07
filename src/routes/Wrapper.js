@@ -19,14 +19,12 @@ export const RoutesWrapper = () => {
       <Route path="/verify-doctor/:doctorId/:uniqueString" exact element={<VerifyDoctorSuccess />} />
       <Route path="/resetPassword/patient/:patientId/:resetString" exact element={<ResetPasswordPatient />} />
       <Route path="/resetPassword/doctor/:doctorId/:resetString" exact element={<ResetPasswordDoctor />} />
-      <Route element={<PatientGuard />}>
-        <Route element={<MainLayout />}>
-          <Route exact path="/patient/*" element={<PatientRouter />} />
+      <Route element={<MainLayout />}>
+        <Route element={<PatientGuard />}>
+          <Route path="/patient/*" element={<PatientRouter />} />
         </Route>
-      </Route>
-      <Route element={<DoctorGuard />}>
-        <Route element={<MainLayout />}>
-          <Route exact path="/doctor/*" element={<DoctorRouter />} />
+        <Route element={<DoctorGuard />}>
+          <Route path="/doctor/*" element={<DoctorRouter />} />
         </Route>
       </Route>
     </Routes>

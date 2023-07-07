@@ -5,6 +5,7 @@ import { getDecodedJwt } from "../utils/auth";
 import { useRef } from "react";
 import socketIOClient from "socket.io-client";
 import { Box, Typography } from "@mui/material";
+import { Message } from "@mui/icons-material";
 
 const ENDPOINT = "https://nexus-backend-mhoe.onrender.com";
 const NexusContext = createContext({});
@@ -84,11 +85,15 @@ const NexusContextProvider = ({ children }) => {
             zIndex: 3000,
             right: 0,
             display: "flex",
+            p: 3,
             justifyContent: "center",
             alignItems: "center",
           }}
         >
-          <Typography color="black"> {notification[0]?.message}</Typography>
+          <Message color="primary" />
+          <Typography color="primary" variant="h6" ml={2}>
+            {notification[0]?.message}
+          </Typography>
         </Box>
       )}
       {children}

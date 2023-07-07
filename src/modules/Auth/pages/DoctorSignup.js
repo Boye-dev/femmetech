@@ -1,4 +1,4 @@
-import { Grid, Typography, } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import { useEffect, useState } from "react";
 import loginImg from "../../../assets/images/login.png";
@@ -13,41 +13,39 @@ import DoctorSignupStep2 from "./DoctorSignupStep2";
 import { LoadingButton } from "@mui/lab";
 
 const DoctorSignup = () => {
-
   const navigate = useNavigate();
   const { showNotification } = useAlert();
   const { mutate, isLoading } = useMutation(doctorSignup, {
     onError: (error) => {
-      showNotification?.(error.response.data.errors[0], { type: "error" });
+      showNotification?.(error.response.data.errors[0] || error.message, {
+        type: "error",
+      });
     },
     onSuccess: (data) => {
-      console.log(data);
 
       navigate("/verify", { replace: true });
     },
   });
   const onSubmit = (payload) => {
     const formData = new FormData();
-    formData.append('profilePicture', payload.profilePicture);
-    formData.append('lastName', payload.lastName);
-    formData.append('firstName', payload.firstName);
-    formData.append('email', payload.email);
-    formData.append('specialty', payload.specialty);
-    formData.append('password', payload.password);
-    formData.append('phoneNumber', payload.phoneNumber);
-    formData.append('address', payload.address);
-    formData.append('gender', payload.gender);
-    formData.append('confirmPassword', payload.confirmPassword);
+    formData.append("profilePicture", payload.profilePicture);
+    formData.append("lastName", payload.lastName);
+    formData.append("firstName", payload.firstName);
+    formData.append("email", payload.email);
+    formData.append("specialty", payload.specialty);
+    formData.append("password", payload.password);
+    formData.append("phoneNumber", payload.phoneNumber);
+    formData.append("address", payload.address);
+    formData.append("gender", payload.gender);
+    formData.append("confirmPassword", payload.confirmPassword);
     mutate(formData);
   };
-
-
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  const { doctorHandleSubmit, } = useSignupContext();
+  const { doctorHandleSubmit } = useSignupContext();
 
   const [activeStep, setActiveStep] = useState(0);
 
@@ -142,7 +140,9 @@ const DoctorSignup = () => {
               fullWidth
               size="small"
               loading={isLoading}
-              onClick={activeStep === 1 ? doctorHandleSubmit(onSubmit) : handleNext}
+              onClick={
+                activeStep === 1 ? doctorHandleSubmit(onSubmit) : handleNext
+              }
               variant="contained"
               endIcon={<EastOutlined sx={{ marginLeft: "12px" }} />}
               sx={{

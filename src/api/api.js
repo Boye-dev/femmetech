@@ -25,6 +25,7 @@ Api.interceptors.request.use(
     return config;
   },
   (err) => {
+    console.log(err, "from");
     if (
       err?.response?.status === 401 &&
       err?.response?.data?.detail === "Incorrect authentication credentials." &&
@@ -51,6 +52,20 @@ Api.interceptors.response.use(
   },
   async function (error) {
     console.log({ error });
+    if (
+      error?.response?.status === 401 &&
+      error?.response?.data?.message === "No Valid Token Please Login"
+    ) {
+      console.log("yes");
+      toast.error("Session expired", {
+        position: "top-center",
+      });
+      setTimeout(() => {
+        removeToken();
+        window.location.reload();
+        window.history.pushState({}, "User Login", "/home");
+      }, 4000);
+    }
     // const originalRequest = error?.config;
     // if (error?.response?.status === 401 && !originalRequest?._retry) {
     //   originalRequest._retry = true;

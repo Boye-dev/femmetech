@@ -37,7 +37,9 @@ const Dashboard = () => {
     {
       enabled: doctorId !== null || doctorId !== undefined,
       onError: (error) => {
-        showNotification?.(error.response?.data?.message, { type: "error" });
+        showNotification?.(error.response?.data?.message || error.message, {
+          type: "error",
+        });
       },
     }
   );
@@ -48,7 +50,9 @@ const Dashboard = () => {
       enabled: doctorId !== null || doctorId !== undefined,
 
       onError: (error) => {
-        showNotification?.(error.response.data?.message, { type: "error" });
+        showNotification?.(error.response?.data?.message || error.message, {
+          type: "error",
+        });
       },
     }
   );
@@ -59,7 +63,9 @@ const Dashboard = () => {
       enabled: doctorId !== null || doctorId !== undefined,
 
       onError: (error) => {
-        showNotification?.(error.response.data?.message, { type: "error" });
+        showNotification?.(error.response?.data?.message || error.message, {
+          type: "error",
+        });
       },
     }
   );
@@ -86,7 +92,7 @@ const Dashboard = () => {
               width: { xs: "100%", md: "calc(100% - 250px)" },
               height: "auto",
               display: "flex",
-
+              pb: 10,
               justifyContent: "space-between",
             }}
           >

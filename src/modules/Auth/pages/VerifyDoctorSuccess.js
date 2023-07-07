@@ -1,31 +1,27 @@
 import React from "react";
 import { CircularProgress } from "@mui/material";
-import { verifyDoctor, } from "../services/authServices";
+import { verifyDoctor } from "../services/authServices";
 import logo from "../../../assets/svgs/logosmall.svg";
 import { Grid, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
-import { useEffect, } from "react";
+import { useEffect } from "react";
 import SendIcon from "@mui/icons-material/Send";
 import { useNavigate } from "react-router-dom";
 import loginImg from "../../../assets/images/login.png";
 import { useAlert } from "../../../context/NotificationProvider";
 import { LoadingButton } from "@mui/lab";
-import { useQuery,  } from "react-query";
-import { useParams } from 'react-router-dom';
+import { useQuery } from "react-query";
+import { useParams } from "react-router-dom";
 import { useState } from "react";
-// import { verifyPatient } from "../services/authServices";
 
 const VerifyPatientSuccess = () => {
-
   const navigate = useNavigate();
 
-  const [message, setMessage ] = useState("")
+  const [message, setMessage] = useState("");
   const { showNotification } = useAlert();
 
-  
   const { doctorId, uniqueString } = useParams();
-  
-  
+
   const { isLoading, data } = useQuery(
     [
       "verifyDoctor",
@@ -36,142 +32,139 @@ const VerifyPatientSuccess = () => {
     ],
     verifyDoctor,
     {
-        enabled: true,
-        onError: (error) => {
-            showNotification?.(error.response?.data?.message, { type: "error" });
-            setMessage(error.response?.data?.message)
-        },
-        onSuccess: (data) => {
-            setMessage(data.message)
-        },
+      enabled: true,
+      onError: (error) => {
+        showNotification?.(error.response?.data?.message || error.message, {
+          type: "error",
+        });
+        setMessage(error.response?.data?.message);
+      },
+      onSuccess: (data) => {
+        setMessage(data.message);
+      },
     }
   );
   const onSubmit = () => {
-    navigate("/doctorsignin")
+    navigate("/doctorsignin");
   };
 
   useEffect(() => {
-    
     window.scrollTo(0, 0);
   }, []);
-  
 
   return (
     <>
-        {
-            isLoading ? 
+      {isLoading ? (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: { xs: "auto", md: "100vh" },
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      ) : (
+        <Box
+          sx={{
+            height: "100vh",
+          }}
+        >
+          <Grid container>
             <Box
-                sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    height: { xs: "auto", md: "100vh" },
-                }}
-            >
-                <CircularProgress />
-            </Box>
-            :
-            <Box
-            sx={{
+              item
+              md={5}
+              xs={12}
+              sx={{
+                position: "fixed",
+                left: 0,
+                width: "40vw",
+                boxShadow: "0 0 5px 0 gray",
+                textAlign: "center",
                 height: "100vh",
-            }}
+                background: `url(${loginImg})`,
+                backgroundRepeat: "no-repeat",
+                backgroundSize: "cover",
+                display: { xs: "none", md: "block" },
+              }}
+            />
+            <Box
+              item
+              md={7}
+              xs={12}
+              sx={{
+                width: { xs: "100%", md: "60%" },
+                marginLeft: { xs: "0", md: "40%" },
+                textAlign: "center",
+                background: { xs: `none`, md: "none" },
+                backgroundRepeat: { xs: "no-repeat", md: "none" },
+                backgroundSize: { xs: "cover", md: "none" },
+                display: "flex",
+                alignItems: "center",
+                height: { xs: "100vh", md: "100vh" },
+              }}
             >
-            <Grid container>
-                <Box
-                item
-                md={5}
-                xs={12}
+              <Box
                 sx={{
-                    position: "fixed",
-                    left: 0,
-                    width: "40vw",
-                    boxShadow: "0 0 5px 0 gray",
-                    textAlign: "center",
-                    height: "100vh",
-                    background: `url(${loginImg})`,
-                    backgroundRepeat: "no-repeat",
-                    backgroundSize: "cover",
-                    display: { xs: "none", md: "block" },
+                  margin: "auto",
+                  width: { xs: "80%", md: "60%" },
                 }}
-                />
-                <Box
-                item
-                md={7}
-                xs={12}
-                sx={{
-                    width: { xs: "100%", md: "60%" },
-                    marginLeft: { xs: "0", md: "40%" },
-                    textAlign: "center",
-                    background: { xs: `none`, md: "none" },
-                    backgroundRepeat: { xs: "no-repeat", md: "none" },
-                    backgroundSize: { xs: "cover", md: "none" },
-                    display: "flex",
-                    alignItems: "center",
-                    height: { xs: "100vh", md: "100vh" },
-                }}
+              >
+                <img src={logo} alt="" />
+
+                <Typography
+                  variant="h6"
+                  color="inherit"
+                  component="div"
+                  sx={{
+                    marginBottom: "12px",
+                    fontWeight: 700,
+                    fontSize: "28px !important",
+                  }}
                 >
-                <Box
-                    sx={{
-                    margin: "auto",
-                    width: { xs: "80%", md: "60%" },
-                    }}
+                  Sign in to <span style={{ color: "#CE1E23" }}> NEXUS</span> as
+                  Doctor
+                </Typography>
+                <Typography
+                  variant="h6"
+                  color="inherit"
+                  component="div"
+                  sx={{
+                    marginBottom: "12px",
+                    fontWeight: 500,
+                    fontSize: "18px !important",
+                  }}
                 >
-                        <img src={logo} alt="" />
+                  {message || data?.message}
+                </Typography>
 
-                        <Typography
-                        variant="h6"
-                        color="inherit"
-                        component="div"
-                        sx={{
-                            marginBottom: "12px",
-                            fontWeight: 700,
-                            fontSize: "28px !important",
-                        }}
-                        >
-                        Sign in to <span style={{ color: "#CE1E23" }}> NEXUS</span> as Doctor
-                        </Typography>
-                        <Typography
-                        variant="h6"
-                        color="inherit"
-                        component="div"
-                        sx={{
-                            marginBottom: "12px",
-                            fontWeight: 500,
-                            fontSize: "18px !important",
-                        }}
-                        >
-                            {message  || data?.message}
-                        </Typography>
-
-
-
-                        <LoadingButton
-                            fullWidth
-                            size="small"
-                            loading={isLoading}
-                            onClick={onSubmit}
-                            endIcon={<SendIcon />}
-                            loadingPosition="end"
-                            variant="contained"
-                            sx={{
-                            fontSize: "18px !important",
-                            background: "#252B33",
-                            padding: "6px",
-                            marginBottom: "6px",
-                            color: "#fff",
-                            "&:hover": {
-                                backgroundColor: "#252B33",
-                            },
-                            }}
-                        >
-                            Proceed To Login
-                        </LoadingButton>
-
-                </Box>
-                </Box>
-            </Grid>
+                <LoadingButton
+                  fullWidth
+                  size="small"
+                  loading={isLoading}
+                  onClick={onSubmit}
+                  endIcon={<SendIcon />}
+                  loadingPosition="end"
+                  variant="contained"
+                  sx={{
+                    fontSize: "18px !important",
+                    background: "#252B33",
+                    padding: "6px",
+                    marginBottom: "6px",
+                    color: "#fff",
+                    "&:hover": {
+                      backgroundColor: "#252B33",
+                    },
+                  }}
+                >
+                  Proceed To Login
+                </LoadingButton>
+              </Box>
             </Box>
-        }
+          </Grid>
+        </Box>
+      )}
     </>
   );
 };

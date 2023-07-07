@@ -1,8 +1,6 @@
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import * as yup from "yup";
-// import { PatientPaths, BasePaths } from "../../../routes/paths";
-// import { Roles } from "../../../constants/roles";
 import { TextField } from "@mui/material";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "react-query";
@@ -22,21 +20,23 @@ import { LoadingButton } from "@mui/lab";
 
 const Signin = () => {
   const navigate = useNavigate();
-  // const location = useLocation();
-  // const from = location.state?.from?.pathname;
 
   const { showNotification } = useAlert();
   const { mutate, isLoading } = useMutation(login, {
     onError: (error) => {
-      showNotification?.(error.response.data.errors[0], { type: "error" });
+      showNotification?.(error.response.data.errors[0] || error.message, {
+        type: "error",
+      });
     },
     onSuccess: (data) => {
-      console.log(data);
-      setToken(data?.token);
-
-      // const decodedUser = getDecodedJwt();
-
-      navigate("/patient", { replace: true });
+      if (data.data.verified) {
+        setToken(data?.token);
+        navigate("/patient", { replace: true });
+      } else {
+        showNotification?.("Please Verify Your Email", {
+          type: "error",
+        });
+      }
     },
   });
   const onSubmit = (payload) => {
@@ -107,7 +107,6 @@ const Signin = () => {
             display: "flex",
             alignItems: "center",
             height: { xs: "100vh", md: "100vh" },
-            // paddingBottom: {xs: "100px", md: "0"},
           }}
         >
           <Box
@@ -357,10 +356,9 @@ const Signin = () => {
                 sx={{
                   display: "flex",
                   justifyContent: "start",
-                  mb: 5
+                  mb: 5,
                 }}
               >
-              
                 <Typography variant="caption">
                   <Link
                     style={{ textDecoration: "none", color: "#CE1E23" }}

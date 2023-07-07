@@ -27,21 +27,23 @@ const Messages = () => {
       enabled: decodedUser.id !== null || decodedUser.id !== undefined,
 
       onError: (error) => {
-        showNotification?.(error.response.data?.message, { type: "error" });
+        showNotification?.(error.response?.data?.message || error.message, {
+          type: "error",
+        });
       },
     }
   );
   const { mutate, isLoading: isPosting } = useMutation(readMessages, {
     onError: (error) => {
-      console.log(error);
-      showNotification?.(error.response.data.errors[0], { type: "error" });
+      showNotification?.(error.response.data.errors[0] || error.message, {
+        type: "error",
+      });
     },
     onSuccess: (data) => {
       setNotification([]);
       setCleared(!cleared);
     },
   });
-  console.log(isPosting);
   return (
     <>
       {isLoading ? (
@@ -187,15 +189,18 @@ const Messages = () => {
                           cleared={cleared}
                           chat={item}
                           onClick={() => {
-                            const unread = item.unreadMessages.filter(
-                              (item) =>
-                                item?.userId?.userDetails._id === decodedUser.id
-                            );
-                            const payload = {
-                              chatId: item?._id,
-                              userId: unread[0]?.userId?.userDetails?._id,
-                            };
-                            mutate(payload);
+                            if (item?.unreadMessages.length > 0) {
+                              const unread = item?.unreadMessages?.filter(
+                                (item) =>
+                                  item?.userId?.userDetails._id ===
+                                  decodedUser.id
+                              );
+                              const payload = {
+                                chatId: item?._id,
+                                userId: unread[0]?.userId?.userDetails?._id,
+                              };
+                              mutate(payload);
+                            }
                             socketRef.current?.emit("leaveRoom", chat?._id);
                             socketRef.current?.emit("joinRoom", {
                               chat: item?._id,

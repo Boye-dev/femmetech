@@ -84,14 +84,11 @@ const SignupStep2 = () => {
         
         inputElement.onchange = (event) => {
             const file = event.target.files[0];
-            console.log(file);
             setSelectedPicture(file);
             
             setValue('profilePicture', file);
         };
     };
-
-    console.log(watch("profilePicture"));
 
     return (
         <Box>
