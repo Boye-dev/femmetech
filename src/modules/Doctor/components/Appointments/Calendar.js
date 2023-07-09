@@ -89,7 +89,6 @@ function Calendar(props) {
   const { showNotification } = useAlert();
   const decodedUser = getDecodedJwt();
   const doctorId = decodedUser.id;
-  
 
   const { isLoading: upcomingLoading, data: upcoming } = useQuery(
     ["upcoming_app", { doctorId: doctorId }],
@@ -121,7 +120,7 @@ function Calendar(props) {
   const [popoverAnchorEl, setPopoverAnchorEl] = useState(null);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [rescheduleApp, setReshedule] = useState(null);
-  
+
   const handleEventClick = (clickInfo) => {
     const { clientX, clientY } = clickInfo.jsEvent;
     setPopoverAnchorEl({ left: clientX, top: clientY });
@@ -168,6 +167,7 @@ function Calendar(props) {
   const onCancel = (appointmentId) => {
     const payload = {
       appointmentId,
+      userId: decodedUser.id,
     };
 
     mutate(payload);

@@ -93,6 +93,7 @@ function Calendar(props) {
   const onCancel = (appointmentId) => {
     const payload = {
       appointmentId,
+      userId: decodedUser.id,
     };
 
     mutate(payload);

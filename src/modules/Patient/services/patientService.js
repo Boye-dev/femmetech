@@ -51,9 +51,10 @@ export const book = async (payload) => {
   return Api.post("/appointment/book/", payload).then((res) => res.data);
 };
 export const cancel = async (payload) => {
-  return Api.put(`/appointment/cancel/${payload.appointmentId}`, payload).then(
-    (res) => res.data
-  );
+  return Api.put(
+    `/appointment/cancel/${payload.appointmentId}/${payload.userId}`,
+    payload
+  ).then((res) => res.data);
 };
 export const reschedule = async (payload) => {
   return Api.put(
