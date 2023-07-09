@@ -8,7 +8,7 @@ const Notification = () => {
       sx={{
         backgroundColor: "#F5F5F5",
         width: "100%",
-        height: "auto",
+        minHeight: "100vh",
       }}
     >
       <Box

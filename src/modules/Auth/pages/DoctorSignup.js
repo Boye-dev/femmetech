@@ -17,15 +17,31 @@ const DoctorSignup = () => {
   const { showNotification } = useAlert();
   const { mutate, isLoading } = useMutation(doctorSignup, {
     onError: (error) => {
-      showNotification?.(error.response.data.errors[0] || error.message, {
-        type: "error",
-      });
+      if (error.response && error.response.status === 500) {
+        // Handle the 500 error here
+        showNotification?.(error.response.data.message || "Internal Server Error" , {
+          type: "error",
+        });
+      } else {
+        // Handle other errors
+        showNotification?.(
+          error.response.data.errors[0] ||
+            error.message ||
+            error.error ||
+            "An error occurred",
+          {
+            type: "error",
+          }
+        );
+      }
     },
     onSuccess: (data) => {
 
       navigate("/verify", { replace: true });
     },
   });
+
+
   const onSubmit = (payload) => {
     const formData = new FormData();
     formData.append("profilePicture", payload.profilePicture);
@@ -45,9 +61,48 @@ const DoctorSignup = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  const { doctorHandleSubmit } = useSignupContext();
+  
+  const { doctorHandleSubmit, doctorWatch, doctorTrigger } = useSignupContext();
+
+  const { profilePicture, lastName, firstName, email, dateOfBirth, relationshipStatus, emergencyContactName, emergencyContactNumber, emergencyContactAddress, password, phoneNumber, address, gender, allergies, confirmPassword, existingMedicalConditions, } = doctorWatch()
 
   const [activeStep, setActiveStep] = useState(0);
+  
+  const handleErrorField = async () => {
+    await doctorTrigger()
+    await doctorTrigger()
+    // console.log(errors);
+    if (
+      firstName === "" ||
+      lastName === "" ||
+      email === "" ||
+      password === "" ||
+      confirmPassword === ""
+    ) {
+      setActiveStep(0);
+    } else if (
+      profilePicture === "" ||
+      gender === "" ||
+      relationshipStatus === "" ||
+      dateOfBirth === "" ||
+      allergies === "" ||
+      existingMedicalConditions === ""
+    ) {
+      setActiveStep(1);
+    } else if (
+      emergencyContactAddress === "" ||
+      emergencyContactName === "" ||
+      emergencyContactNumber === "" ||
+      phoneNumber === "" ||
+      address === ""
+      ) {
+        setActiveStep(2);
+      } else {
+        return false
+      }
+      return false
+    };
+    
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -140,9 +195,14 @@ const DoctorSignup = () => {
               fullWidth
               size="small"
               loading={isLoading}
-              onClick={
-                activeStep === 1 ? doctorHandleSubmit(onSubmit) : handleNext
-              }
+              onClick={() => {
+                if (activeStep >= 1) {
+                  handleErrorField()
+                  doctorHandleSubmit(onSubmit)();
+                } else {
+                  handleNext();
+                }
+              }}
               variant="contained"
               endIcon={<EastOutlined sx={{ marginLeft: "12px" }} />}
               sx={{

@@ -6,6 +6,7 @@ import { useAlert } from "../context/NotificationProvider";
 import { useQuery } from "react-query";
 import { fetchAppointments } from "../modules/Patient/services/patientService";
 import PendingDrawer from "../modules/Patient/components/Dasboard/PendingDrawer";
+import { Link, Navigate } from "react-router-dom";
 
 const ProfileSidebar = (props) => {
   const { isLoading, userDetails } = useAuthenticatedUser();
@@ -120,16 +121,19 @@ const ProfileSidebar = (props) => {
                     <Typography variant="h6" color="black">
                       Personal
                     </Typography>
-                    <Box
-                      sx={{
-                        width: "25px",
-                        height: "25px",
-                        backgroundColor: (theme) => theme.palette.primary.main,
-                        borderRadius: "5px",
-                      }}
-                    >
-                      <NavigateNext color="success" />
-                    </Box>
+                    <Link to={"/patient/settings"}>
+                      <Box
+                        sx={{
+                          width: "25px",
+                          height: "25px",
+                          backgroundColor: (theme) => theme.palette.primary.main,
+                          borderRadius: "5px",
+                          cursor: "pointer"
+                        }}
+                      >
+                        <NavigateNext sx={{cursor: "pointer"}} color="success" />
+                      </Box>
+                    </Link>
                   </Box>
                   <Box
                     sx={{
@@ -144,7 +148,7 @@ const ProfileSidebar = (props) => {
                     </Typography>
                     <Typography variant="caption" color="#787878">
                       {new Date(
-                        userDetails.data.dateOfBirth
+                        userDetails?.data?.dateOfBirth
                       ).toLocaleDateString("en-US")}
                     </Typography>
                   </Box>
@@ -176,8 +180,8 @@ const ProfileSidebar = (props) => {
                       Address:
                     </Typography>
                     <Typography variant="caption" color="#787878">
-                      {userDetails.data.address.slice(0, 13)}
-                      {userDetails.data.address.length > 8 && "..."}
+                      {userDetails?.data?.address.slice(0, 13)}
+                      {userDetails?.data?.address.length > 8 && "..."}
                     </Typography>
                   </Box>
                   <Box
@@ -230,8 +234,8 @@ const ProfileSidebar = (props) => {
                       Show All
                     </Typography>
                   </Box>
-                  {data.data?.appointments.length > 0 ? (
-                    data.data?.appointments.slice(0, 4).map((item, index) => {
+                  {data?.data?.appointments.length > 0 ? (
+                    data?.data?.appointments.slice(0, 4).map((item, index) => {
                       return (
                         <>
                           <Box

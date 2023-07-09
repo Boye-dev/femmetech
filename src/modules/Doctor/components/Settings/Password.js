@@ -124,7 +124,6 @@ const Password = () => {
           sx={{
             backgroundColor: "#F1F3F9",
             width: "100%",
-            height: "100vh",
           }}
         >
           <Box sx={{ width: "100%", backgroundColor: "#F1F3F9", pb: 4 }}>

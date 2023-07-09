@@ -4,7 +4,7 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
 import { Person } from '@mui/icons-material';
-import { Badge, } from '@mui/material';
+import { Badge, Typography, } from '@mui/material';
 import { useState } from 'react';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import { useSignupContext} from '../../../context/SignupContext';
@@ -67,7 +67,7 @@ const relationshipStatusOptions = [
 
 const SignupStep2 = () => {
     
-    const { control, watch, trigger, setValue } = useSignupContext()
+    const { control, watch, trigger, setValue, } = useSignupContext()
 
     const { profilePicture, } = watch()
 
@@ -89,11 +89,10 @@ const SignupStep2 = () => {
             setValue('profilePicture', file);
         };
     };
-
     return (
         <Box>
             <form >
-                <Box display="flex" justifyContent="center" mb={3}>
+                <Box display="flex" justifyContent="center" >
                     {/* Profile picture selection */}
                     <Box textAlign="center" mb={3}>
                         <Box
@@ -143,8 +142,14 @@ const SignupStep2 = () => {
                                 </Box>
                             </Badge>
                         </Box>
+                        {profilePicture === "" && (
+                            <Typography variant='caption' sx={{ color: "red", mb: 3 }}>
+                                Please select a profile photo
+                            </Typography>
+                        )}
                     </Box>
                 </Box>
+                
 
 
                 <Grid container spacing={2}>
@@ -176,12 +181,12 @@ const SignupStep2 = () => {
                             inputRef={ref}
                             error={Boolean(error?.message)}
                             helperText={error?.message}
-                            onKeyUp={() => {
+                            onSelect={() => {
                                 trigger("gender");
                             }}
                         >
                             {genderOptions.map((option) => (
-                            <MenuItem key={option.value} value={option.value}>
+                            <MenuItem key={option.value} value={option.value} >
                                 {option.label}
                             </MenuItem>
                             ))}
@@ -215,12 +220,12 @@ const SignupStep2 = () => {
                             type="date"
                             fullWidth
                             {...fields}
+                            onSelect={() => {
+                                trigger("dateOfBirth");
+                            }}
                             inputRef={ref}
                             error={Boolean(error?.message)}
                             helperText={error?.message}
-                            onKeyUp={() => {
-                                trigger("dateOfBirth");
-                            }}
                         />
                         )}
                     />
@@ -249,13 +254,13 @@ const SignupStep2 = () => {
                             label="Relationship Status"
                             select
                             fullWidth
+                            onSelect={() => {
+                                trigger("relationshipStatus");
+                            }}
                             {...fields}
                             inputRef={ref}
                             error={Boolean(error?.message)}
                             helperText={error?.message}
-                            onKeyUp={() => {
-                                trigger("relationshipStatus");
-                                }}
                         >
                             {relationshipStatusOptions.map((option) => (
                                 <MenuItem key={option.value} value={option.value}>

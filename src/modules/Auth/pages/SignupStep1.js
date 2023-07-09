@@ -53,12 +53,19 @@ const SignupStep1 = () => {
       showPassword: !values.showPassword,
     });
   };
+  const handleClickShowPassword2 = () => {
+    setValues({
+      ...values,
+      showPassword2: !values.showPassword2,
+    });
+  };
 
   const [values, setValues] = useState({
     vertical: "bottom",
     horizontal: "center",
     open: false,
     showPassword: false,
+    showPassword2: false,
   });
 
   const { control, trigger } = useSignupContext();
@@ -80,7 +87,7 @@ const SignupStep1 = () => {
       </Typography>
       <form>
         <Grid container spacing={2}>
-          <Grid item xs={6}>
+          <Grid item xs={12} md={6}>
             <Controller
               name="firstName"
               control={control}
@@ -117,7 +124,7 @@ const SignupStep1 = () => {
               )}
             />
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={12} md={6}>
             <Controller
               name="lastName"
               control={control}
@@ -250,15 +257,15 @@ const SignupStep1 = () => {
                 <TextField
                   variant="outlined"
                   size="small"
-                  type={values.showPassword ? "text" : "password"}
+                  type={values.showPassword2 ? "text" : "password"}
                   InputProps={{
                     style: {
                       fontSize: "16px",
                       color: "#000 !important",
                     },
                     endAdornment: (
-                      <IconButton onClick={handleClickShowPassword}>
-                        {values.showPassword === true ? (
+                      <IconButton onClick={handleClickShowPassword2}>
+                        {values.showPassword2 === true ? (
                           <Visibility />
                         ) : (
                           <VisibilityOff />

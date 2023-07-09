@@ -78,8 +78,8 @@ const History = () => {
             </Box>
           </Box>
           <Box sx={{ pl: 10, pr: 10 }}>
-            {pastData.data?.length > 0 ? (
-              pastData.data?.map((item, index) => {
+            {pastData?.data?.length > 0 ? (
+              pastData?.data?.map((item, index) => {
                 return (
                   <>
                     <Box
@@ -123,25 +123,31 @@ const History = () => {
                             p={1}
                           >
                             <Typography color="black" variant="h4">
-                              {item.title}
+                              {item?.title || "--"}
                             </Typography>
                             <Typography color="black" variant="h6">
-                              {item.specialty}
+                              {item?.specialty || "--"}
                             </Typography>
                             <Typography color="text.secondary" variant="h6">
-                              {`Patient: ${item.patientId.firstName} ${item.patientId.lastName}`}
+                              {`Patient: ${
+                                item?.patientId?.firstName || "--"
+                              } ${item?.patientId?.lastName || "--"}`}
                             </Typography>
                             <Typography
                               color="text.secondary"
                               variant="caption"
                             >
-                              {`Additional Information: ${item.additionalInformation}`}
+                              {`Additional Information: ${
+                                item?.additionalInformation || "--"
+                              }`}
                             </Typography>
                             <Typography
                               color="text.secondary"
                               variant="caption"
                             >
-                              {`Date: ${formatDate(item.startDateTime)}`}
+                              {`Date: ${formatDate(
+                                item?.startDateTime || "--"
+                              )}`}
                             </Typography>
                           </Box>
                           {/* <Box
