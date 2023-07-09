@@ -6,6 +6,7 @@ import { useAlert } from "../context/NotificationProvider";
 import { useQuery } from "react-query";
 import { fetchAppointments } from "../modules/Patient/services/patientService";
 import PendingDrawer from "../modules/Patient/components/Dasboard/PendingDrawer";
+import { Link, Navigate } from "react-router-dom";
 
 const ProfileSidebar = (props) => {
   const { isLoading, userDetails } = useAuthenticatedUser();
@@ -120,16 +121,19 @@ const ProfileSidebar = (props) => {
                     <Typography variant="h6" color="black">
                       Personal
                     </Typography>
-                    <Box
-                      sx={{
-                        width: "25px",
-                        height: "25px",
-                        backgroundColor: (theme) => theme.palette.primary.main,
-                        borderRadius: "5px",
-                      }}
-                    >
-                      <NavigateNext color="success" />
-                    </Box>
+                    <Link to={"/patient/settings"}>
+                      <Box
+                        sx={{
+                          width: "25px",
+                          height: "25px",
+                          backgroundColor: (theme) => theme.palette.primary.main,
+                          borderRadius: "5px",
+                          cursor: "pointer"
+                        }}
+                      >
+                        <NavigateNext sx={{cursor: "pointer"}} color="success" />
+                      </Box>
+                    </Link>
                   </Box>
                   <Box
                     sx={{

@@ -16,7 +16,6 @@ import {
   declineAppointment,
 } from "../../services/doctorService";
 import { LoadingButton } from "@mui/lab";
-import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { MobileDateTimePicker } from "@mui/x-date-pickers/MobileDateTimePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";

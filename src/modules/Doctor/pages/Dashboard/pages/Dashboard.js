@@ -90,7 +90,7 @@ const Dashboard = () => {
             sx={{
               backgroundColor: "#F5F5F5",
               width: { xs: "100%", md: "calc(100% - 250px)" },
-              height: "auto",
+              minHeight: "100vh",
               display: "flex",
               pb: 10,
               justifyContent: "space-between",

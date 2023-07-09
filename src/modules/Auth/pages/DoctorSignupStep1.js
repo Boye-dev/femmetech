@@ -53,12 +53,19 @@ const DoctorSignupStep1 = () => {
       showPassword: !values.showPassword,
     });
   };
+  const handleClickShowPassword2 = () => {
+    setValues({
+      ...values,
+      showPassword2: !values.showPassword2,
+    });
+  };
 
   const [values, setValues] = useState({
     vertical: "bottom",
     horizontal: "center",
     open: false,
     showPassword: false,
+    showPassword2: false,
   });
 
   const { doctorControl, doctorTrigger } = useSignupContext();
@@ -250,15 +257,15 @@ const DoctorSignupStep1 = () => {
                 <TextField
                   variant="outlined"
                   size="small"
-                  type={values.showPassword ? "text" : "password"}
+                  type={values.showPassword2 ? "text" : "password"}
                   InputProps={{
                     style: {
                       fontSize: "16px",
                       color: "#000 !important",
                     },
                     endAdornment: (
-                      <IconButton onClick={handleClickShowPassword}>
-                        {values.showPassword === true ? (
+                      <IconButton onClick={handleClickShowPassword2}>
+                        {values.showPassword2 === true ? (
                           <Visibility />
                         ) : (
                           <VisibilityOff />

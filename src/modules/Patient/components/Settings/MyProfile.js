@@ -200,7 +200,7 @@ const MyProfile = () => {
                   }}
                   onClick={handleSubmit(onSubmit)}
                 >
-                  <Typography variant="subtitle2">Edit</Typography>
+                  <Typography variant="subtitle2">Save</Typography>
                 </Button>
                 <LoadingButton
                   // loading={isLoading}

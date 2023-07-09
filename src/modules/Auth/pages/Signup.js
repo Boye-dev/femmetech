@@ -18,15 +18,29 @@ const Signup = () => {
   const { showNotification } = useAlert();
   const { mutate, isLoading } = useMutation(signup, {
     onError: (error) => {
-      showNotification?.(error.response.data.errors[0] || error.message, {
-        type: "error",
-      });
+      if (error.response && error.response.status === 500) {
+        // Handle the 500 error here
+        showNotification?.(error.response.data.message || "Internal Server Error" , {
+          type: "error",
+        });
+      } else {
+        // Handle other errors
+        showNotification?.(
+          error.response.data.errors[0] ||
+            error.message ||
+            error.error ||
+            "An error occurred",
+          {
+            type: "error",
+          }
+        );
+      }
     },
     onSuccess: (data) => {
       navigate("/verify", { replace: true });
     },
   });
-  const onSubmit = (payload) => {
+  const onSubmit = async (payload) => {
     const formData = new FormData();
     formData.append("profilePicture", payload.profilePicture);
     formData.append("lastName", payload.lastName);
@@ -45,22 +59,60 @@ const Signup = () => {
       "existingMedicalConditions",
       payload.existingMedicalConditions
     );
-    formData.append(
-      "existingMedicalConditions",
-      payload.existingMedicalConditions
-    );
     formData.append("confirmPassword", payload.confirmPassword);
     formData.append("allergies", payload.allergies);
     mutate(formData);
   };
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+  const { handleSubmit, watch, trigger } = useSignupContext();
 
-  const { handleSubmit } = useSignupContext();
+  const { profilePicture, lastName, firstName, email, dateOfBirth, relationshipStatus, emergencyContactName, emergencyContactNumber, emergencyContactAddress, password, phoneNumber, address, gender, allergies, confirmPassword, existingMedicalConditions, } = watch()
 
+  
   const [activeStep, setActiveStep] = useState(0);
+  
+  const handleErrorField = async () => {
+    await trigger()
+    await trigger()
+    // console.log(errors);
+    if (
+      firstName === "" ||
+      lastName === "" ||
+      email === "" ||
+      password === "" ||
+      confirmPassword === ""
+    ) {
+      setActiveStep(0);
+    } else if (
+      profilePicture === "" ||
+      gender === "" ||
+      relationshipStatus === "" ||
+      dateOfBirth === "" ||
+      allergies === "" ||
+      existingMedicalConditions === ""
+    ) {
+      setActiveStep(1);
+    } else if (
+      emergencyContactAddress === "" ||
+      emergencyContactName === "" ||
+      emergencyContactNumber === "" ||
+      phoneNumber === "" ||
+      address === ""
+      ) {
+        setActiveStep(2);
+      } else {
+        return false
+      }
+      return false
+    };
+    
+    useEffect(() => {
+      window.scrollTo(0, 0);
+      // handleErrorField()
+    }, []);
+  
+
+
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -153,7 +205,14 @@ const Signup = () => {
               fullWidth
               size="small"
               loading={isLoading}
-              onClick={activeStep === 2 ? handleSubmit(onSubmit) : handleNext}
+              onClick={() => {
+                if (activeStep >= 2) {
+                  handleErrorField()
+                  handleSubmit(onSubmit)();
+                } else {
+                  handleNext();
+                }
+              }}
               variant="contained"
               endIcon={<EastOutlined sx={{ marginLeft: "12px" }} />}
               sx={{

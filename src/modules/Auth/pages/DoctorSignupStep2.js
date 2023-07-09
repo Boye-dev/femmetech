@@ -4,7 +4,7 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
 import { Person } from '@mui/icons-material';
-import { Badge, Checkbox, FormControlLabel, } from '@mui/material';
+import { Badge, Checkbox, FormControlLabel, Typography, } from '@mui/material';
 import { useState } from 'react';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import { useSignupContext} from '../../../context/SignupContext';
@@ -59,7 +59,8 @@ const genderOptions = [
 ];
 
 const specialtyOptions = [
-    { value: "Dentist", label: "Dentist" },
+    { value: "Dentistry", label: "Dentistry" },
+    { value: "Opthamology", label: "Opthamology" },
     // { value: "married", label: "Married" },
     // { value: "divorced", label: "Divorced" },
     // { value: "widowed", label: "Widowed" },
@@ -67,7 +68,7 @@ const specialtyOptions = [
 
 const DoctorSignupStep2 = () => {
     
-    const { doctorControl, doctorTrigger, doctorWatch, doctorSetValue } = useSignupContext();
+    const { doctorControl, doctorTrigger, doctorWatch, doctorSetValue, doctorErrors } = useSignupContext();
 
     const { profilePicture, } = doctorWatch()
 
@@ -143,6 +144,11 @@ const DoctorSignupStep2 = () => {
                                 </Box>
                             </Badge>
                         </Box>
+                        {profilePicture === "" && (
+                            <Typography variant='caption' sx={{ color: "red", mb: 3 }}>
+                                Please select a profile photo
+                            </Typography>
+                        )}
                     </Box>
                 </Box>
 
@@ -299,24 +305,34 @@ const DoctorSignupStep2 = () => {
                     />
                     </Grid>
                 </Grid>
-                <Grid item xs={12}>
-                <Controller
-                    name="agreeToTerms"
-                    control={doctorControl}
-                    defaultValue={false}
-                    render={({ field: { ref, ...fields }, fieldState: { error } }) => (
-                    <FormControlLabel
-                        control={
-                        <Checkbox
-                            {...fields}
-                            inputRef={ref}
-                            color="primary"
+                <Grid item xs={12}display="flex">
+                    <Box>
+                        <Controller
+                            name="agreeToTerms"
+                            control={doctorControl}
+                            defaultValue={false}
+                            render={({ field: { ref, ...fields }, fieldState: { error } }) => (
+                            <FormControlLabel
+                                control={
+                                <Checkbox
+                                    onClick={() => doctorTrigger("agreeToTerms")}
+                                    {...fields}
+                                    inputRef={ref}
+                                    color="primary"
+                                />
+                                }
+                                label= <Typography  sx={{ color: "black !important", }}>
+                                I agree to the Terms and Conditions
+                            </Typography>
+                            />
+                            )}
                         />
-                        }                        
-                        label="I agree to the Terms and Conditions"
-                    />
-                    )}
-                />
+                        {doctorErrors.agreeToTerms && (
+                            <Typography variant='caption' sx={{  mb: 3, color: "red !important", display: "flex"}}>
+                                Please accept the terms and conditions.
+                            </Typography>
+                        )}
+                    </Box>
                 </Grid>
             </form>
         </Box>

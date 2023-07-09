@@ -6,7 +6,7 @@ import { useQuery } from "react-query";
 import PendingDrawer from "../modules/Doctor/components/Dasboard/PendingDrawer";
 import { useAuthenticatedUserDoctor } from "../hooks/useAuthenticatedUserDoctor";
 import { fetchAppointmentsDoctor } from "../modules/Doctor/services/doctorService";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 const DoctorProfileSidebar = (props) => {
   const { isLoading, userDetails } = useAuthenticatedUserDoctor();
@@ -121,16 +121,20 @@ const DoctorProfileSidebar = (props) => {
                     <Typography variant="h6" color="black">
                       Personal
                     </Typography>
-                    <Box
-                      sx={{
-                        width: "25px",
-                        height: "25px",
-                        backgroundColor: (theme) => theme.palette.primary.main,
-                        borderRadius: "5px",
-                      }}
-                    >
-                      <NavigateNext color="success" />
-                    </Box>
+                    <Link to={"/doctor/settings"}>
+                      <Box
+                        // onClick={Navigate("/doctor/settings")}
+                        sx={{
+                          width: "25px",
+                          height: "25px",
+                          backgroundColor: (theme) => theme.palette.primary.main,
+                          borderRadius: "5px",
+                          cursor: "pointer"
+                        }}
+                      >
+                        <NavigateNext sx={{cursor: "pointer"}} color="success" />
+                      </Box>
+                    </Link>
                   </Box>
 
                   <Box

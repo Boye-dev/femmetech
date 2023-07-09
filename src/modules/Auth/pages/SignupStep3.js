@@ -1,4 +1,4 @@
-import { TextField, Checkbox, FormControlLabel, Grid, Box } from '@mui/material';
+import { TextField, Checkbox, FormControlLabel, Grid, Box, Typography } from '@mui/material';
 import { Controller } from 'react-hook-form';
 import { useSignupContext } from '../../../context/SignupContext';
 
@@ -48,7 +48,7 @@ const formStyles = {
 
 const SignupStep3 = () => {
     
-    const { control, trigger, } = useSignupContext()
+    const { control, trigger, errors } = useSignupContext()
 
     return (
         <Box>
@@ -225,24 +225,34 @@ const SignupStep3 = () => {
                     )}
                 />
                 </Grid>
-                <Grid item xs={12}>
-                <Controller
-                    name="agreeToTerms"
-                    control={control}
-                    defaultValue={false}
-                    render={({ field: { ref, ...fields }, fieldState: { error } }) => (
-                    <FormControlLabel
-                        control={
-                        <Checkbox
-                            {...fields}
-                            inputRef={ref}
-                            color="primary"
+                <Grid item xs={12} display="flex">
+                    <Box>
+                        <Controller
+                            name="agreeToTerms"
+                            control={control}
+                            defaultValue={false}
+                            render={({ field: { ref, ...fields }, fieldState: { error } }) => (
+                            <FormControlLabel
+                                control={
+                                <Checkbox
+                                    onClick={() => trigger("agreeToTerms")}
+                                    {...fields}
+                                    inputRef={ref}
+                                    color="primary"
+                                />
+                                }
+                                label= <Typography  sx={{ color: "black !important", }}>
+                                I agree to the Terms and Conditions
+                            </Typography>
+                            />
+                            )}
                         />
-                        }                        
-                        label="I agree to the Terms and Conditions"
-                    />
-                    )}
-                />
+                        {errors.agreeToTerms && (
+                            <Typography variant='caption' sx={{  mb: 3, color: "red !important", display: "flex"}}>
+                                Please accept the terms and conditions.
+                            </Typography>
+                        )}
+                    </Box>
                 </Grid>
             </Grid>
             </form>
