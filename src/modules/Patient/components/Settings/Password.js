@@ -19,6 +19,7 @@ import { useAlert } from "../../../../context/NotificationProvider";
 import { useQueryClient } from "react-query";
 
 const formStyles = {
+  marginTop: {xs: "10px", md: 0},
   color: "black !important",
   background: "#F5F5F6",
   borderRadius: "5px",
@@ -88,9 +89,24 @@ const Password = () => {
 
   const { mutate, isLoading: submitLoading } = useMutation(passwordChange, {
     onError: (error) => {
-      showNotification?.(error.response?.data?.message || error.message, {
-        type: "error",
-      });
+      if (error.response && (error.response.status === 500 || error.response.status === 400)) {
+        // Handle the 500 error here
+        showNotification?.(error.response.data.message || "Internal Server Error" , {
+          type: "error",
+        });
+      } else {
+        // Handle other errors
+        console.log(error);
+        showNotification?.(
+          error.response.data.errors[0] || error.response.data.message ||
+            error.message ||
+            error.error ||
+            "An error occurred",
+          {
+            type: "error",
+          }
+        );
+      }
     },
     onSuccess: (data) => {
       showNotification?.(data.message, { type: "success" });

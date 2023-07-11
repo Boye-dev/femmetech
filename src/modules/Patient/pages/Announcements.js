@@ -25,10 +25,32 @@ const Announcements = () => {
   const { isMobile } = useWidth();
   const queryClient = useQueryClient();
   const decodedUser = getDecodedJwt();
-  const patientId = decodedUser.id;
+  const patientId = decodedUser?.id;
   // const { dbAnnouncements, setDbAnnouncements } = useState([])
 
   const { showNotification } = useAlert();
+
+  const handleErrors = (error) => {
+    
+		if (error.response && (error.response.status === 500 || error.response.status === 400)) {
+		  // Handle the 500 error here
+		  showNotification?.(error?.response?.data?.message || "Internal Server Error" , {
+			type: "error",
+		  });
+		} else {
+		  // Handle other errors
+		  console.log(error);
+		  showNotification?.(
+			error?.response?.data?.errors[0] || error?.response?.data?.message ||
+			  error?.message ||
+			  error?.error ||
+			  "An error occurred",
+			{
+			  type: "error",
+			}
+		  );
+		}
+	}
 
   const { isLoading, data } = useQuery(
     ["announcements", { patientId: patientId }],
@@ -36,9 +58,7 @@ const Announcements = () => {
     {
       enabled: patientId !== null || patientId !== undefined,
       onError: (error) => {
-        showNotification?.(error.response?.data?.message || error.message, {
-          type: "error",
-        });
+        handleErrors(error)
       },
     }
   );
@@ -46,7 +66,7 @@ const Announcements = () => {
   // Update to read
   const mutation = useMutation(updateStatusToRead, {
     onError: (error) => {
-      showNotification?.(error.response.data?.message, { type: "error" });
+      handleErrors(error)
     },
 
     onSuccess: (data) => {
@@ -74,10 +94,10 @@ const Announcements = () => {
   const sortedAnnouncements = isLoading
     ? []
     : data?.data?.sort((a, b) => {
-        const timestampA = new Date(a.timestamp).getTime();
-        const timestampB = new Date(b.timestamp).getTime();
-        const announcementDateA = new Date(a.timestamp).toLocaleDateString();
-        const announcementDateB = new Date(b.timestamp).toLocaleDateString();
+        const timestampA = new Date(a?.timestamp).getTime();
+        const timestampB = new Date(b?.timestamp).getTime();
+        const announcementDateA = new Date(a?.timestamp).toLocaleDateString();
+        const announcementDateB = new Date(b?.timestamp).toLocaleDateString();
 
         if (announcementDateA === announcementDateB) {
           // Sort based on the latest announcement within the same date
@@ -85,13 +105,13 @@ const Announcements = () => {
         }
 
         // Sort based on the date in descending order
-        const dateA = new Date(a.timestamp).getTime();
-        const dateB = new Date(b.timestamp).getTime();
+        const dateA = new Date(a?.timestamp).getTime();
+        const dateB = new Date(b?.timestamp).getTime();
         return dateB - dateA;
       });
 
   const announcementSections = sortedAnnouncements?.reduce((sections, item) => {
-    const section = getAnnouncementSection(item.timestamp);
+    const section = getAnnouncementSection(item?.timestamp);
     if (!sections[section]) {
       sections[section] = [];
     }
@@ -102,8 +122,8 @@ const Announcements = () => {
   const unreadAnnouncements = isLoading
     ? []
     : data?.data?.filter((item) => {
-        return item.patientStatus.some((stat) => {
-          return stat.status === "unread" && stat.patientId === patientId;
+        return item?.patientStatus?.some((stat) => {
+          return stat?.status === "unread" && stat?.patientId === patientId;
         });
       });
 
@@ -111,7 +131,7 @@ const Announcements = () => {
 
   const handleShowMoreClick = (announcement) => {
     setSelectedAnnouncement(announcement);
-    const announcementId = announcement._id; // Replace with the actual announcementId
+    const announcementId = announcement?._id; // Replace with the actual announcementId
     const queryKey = ["updateStatus", { patientId, announcementId }];
     mutation.mutate({ queryKey });
   };
@@ -194,10 +214,10 @@ const Announcements = () => {
                     key={pos}
                     sx={{
                       position: "relative",
-                      background: item.patientStatus?.some(
+                      background: item?.patientStatus?.some(
                         (status) =>
-                          status.patientId === patientId &&
-                          status.status === "read"
+                          status?.patientId === patientId &&
+                          status?.status === "read"
                       )
                         ? "#fff"
                         : "#E2E5FB",

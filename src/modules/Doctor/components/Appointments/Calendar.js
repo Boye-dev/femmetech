@@ -97,9 +97,24 @@ function Calendar(props) {
     {
       enabled: doctorId !== null || doctorId !== undefined,
       onError: (error) => {
-        showNotification?.(error.response?.data?.message || error.message, {
-          type: "error",
-        });
+        if (error.response && (error.response.status === 500 || error.response.status === 400)) {
+          // Handle the 500 error here
+          showNotification?.(error.response.data.message || "Internal Server Error" , {
+            type: "error",
+          });
+        } else {
+          // Handle other errors
+          console.log(error);
+          showNotification?.(
+            error.response.data.errors[0] || error.response.data.message ||
+              error.message ||
+              error.error ||
+              "An error occurred",
+            {
+              type: "error",
+            }
+          );
+        }
       },
     }
   );

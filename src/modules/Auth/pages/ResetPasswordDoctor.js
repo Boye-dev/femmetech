@@ -25,10 +25,24 @@ const ResetPasswordDoctor = () => {
 
   const { mutate, isLoading } = useMutation(resetPasswordDoctor, {
     onError: (error) => {
-      showNotification?.(error.response.data.errors[0] || error.message, {
-        type: "error",
-      });
-      setmessage(error.message);
+      if (error.response && (error.response.status === 500 || error.response.status === 400)) {
+        // Handle the 500 error here
+        showNotification?.(error.response.data.message || "Internal Server Error" , {
+          type: "error",
+        });
+      } else {
+        // Handle other errors
+        console.log(error);
+        showNotification?.(
+          error.response.data.errors[0] || error.response.data.message ||
+            error.message ||
+            error.error ||
+            "An error occurred",
+          {
+            type: "error",
+          }
+        );
+      }
     },
     onSuccess: (data) => {
       setActiveStep(1);
@@ -106,7 +120,7 @@ const ResetPasswordDoctor = () => {
               <Box
                 sx={{
                   margin: "auto",
-                  width: { xs: "80%", md: "80%" },
+                  width: { xs: "80%", md: "60%" },
                 }}
               >
                 {activeStep === 0 ? <ResetPasswordDoctorStep1 /> : ""}

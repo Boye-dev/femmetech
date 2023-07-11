@@ -41,9 +41,24 @@ const Book = (props) => {
   const { specialty, title } = watch();
   const { mutate, isLoading } = useMutation(book, {
     onError: (error) => {
-      showNotification?.(error.response.data.errors[0] || error.message, {
-        type: "error",
-      });
+      if (error.response && (error.response.status === 500 || error.response.status === 400)) {
+        // Handle the 500 error here
+        showNotification?.(error.response.data.message || "Internal Server Error" , {
+          type: "error",
+        });
+      } else {
+        // Handle other errors
+        console.log(error);
+        showNotification?.(
+          error.response.data.errors[0] || error.response.data.message ||
+            error.message ||
+            error.error ||
+            "An error occurred",
+          {
+            type: "error",
+          }
+        );
+      }
     },
     onSuccess: (data) => {
       reset();
@@ -144,7 +159,7 @@ const Book = (props) => {
                       <Typography
                         color="black"
                         variant="h6"
-                        sx={{ fontSize: "10px !important" }}
+                        sx={{ fontSize: "12px !important" }}
                       >
                         Please Select the speciality you need service from
                       </Typography>
@@ -158,7 +173,7 @@ const Book = (props) => {
                           <Autocomplete
                             disablePortal
                             id="combo-box-demo"
-                            options={["Dentistry", "Opthamology"]}
+                            options={["Dentistry", "Opthamology", "ENT"]}
                             onChange={(event, newValue) => {
                               onChange(newValue);
                             }}
@@ -181,6 +196,7 @@ const Book = (props) => {
                                     color: "#000 !important",
                                   },
                                 }}
+                                size="small"
                                 InputLabelProps={{
                                   style: {
                                     fontSize: "12px !important",
@@ -188,6 +204,7 @@ const Book = (props) => {
                                   },
                                 }}
                                 sx={{
+                                  mt: 2,
                                   "& .MuiInputBase-input": {
                                     outline: "none",
                                     borderRadius: "3px",
@@ -226,7 +243,7 @@ const Book = (props) => {
                                 }}
                                 variant="outlined"
                                 inputRef={ref}
-                                label="Select Specialty"
+                                // label="Select Specialty"
                                 {...params}
                                 error={Boolean(error?.message)}
                                 helperText={error?.message}
@@ -271,7 +288,7 @@ const Book = (props) => {
                       <Typography
                         color="black"
                         variant="h6"
-                        sx={{ fontSize: "10px !important" }}
+                        sx={{ fontSize: "12px !important" }}
                       >
                         Please enter a title
                       </Typography>
@@ -334,7 +351,7 @@ const Book = (props) => {
                                 },
                               },
                             }}
-                            label="Title"
+                            // label="Title"
                             fullWidth
                             {...fields}
                             inputRef={ref}
@@ -380,7 +397,7 @@ const Book = (props) => {
                       <Typography
                         color="black"
                         variant="h6"
-                        sx={{ fontSize: "10px !important" }}
+                        sx={{ fontSize: "12px !important" }}
                       >
                         Please enter additional information
                       </Typography>
@@ -447,7 +464,7 @@ const Book = (props) => {
                             }}
                             multiline
                             rows={5}
-                            label="Additional Information"
+                            // label="Additional Information"
                             fullWidth
                             {...fields}
                             inputRef={ref}

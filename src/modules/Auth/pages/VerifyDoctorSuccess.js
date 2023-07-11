@@ -33,19 +33,35 @@ const VerifyPatientSuccess = () => {
     verifyDoctor,
     {
       enabled: true,
-      onError: (error) => {
-        showNotification?.(error.response?.data?.message || error.message, {
+      
+    onError: (error) => {
+      if (error.response && (error.response.status === 500 || error.response.status === 400)) {
+        // Handle the 500 error here
+        showNotification?.(error.response.data.message || "Internal Server Error" , {
           type: "error",
         });
-        setMessage(error.response?.data?.message);
-      },
+      } else {
+        // Handle other errors
+        console.log(error);
+        showNotification?.(
+          error.response.data.errors[0] || error.response.data.message ||
+            error.message ||
+            error.error ||
+            "An error occurred",
+          {
+            type: "error",
+          }
+        );
+      }
+      setMessage(error.response?.data?.message);
+    },
       onSuccess: (data) => {
         setMessage(data.message);
       },
     }
   );
   const onSubmit = () => {
-    navigate("/doctorsignin");
+    navigate("/signin-doctor");
   };
 
   useEffect(() => {
