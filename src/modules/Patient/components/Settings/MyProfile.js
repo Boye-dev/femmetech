@@ -21,7 +21,7 @@ import { useAlert } from "../../../../context/NotificationProvider";
 import { useQueryClient } from "react-query";
 
 const formStyles = {
-  // marginBottom: "20px",
+  marginBottom: {xs: "20px", md: 0},
   color: "black !important",
   background: "#F5F5F6",
   borderRadius: "5px",
@@ -120,11 +120,27 @@ const MyProfile = () => {
 
   const { mutate, isLoading: submitLoading } = useMutation(profileUpdate, {
     onError: (error) => {
-      showNotification?.(error.response.data.errors[0] || error.message, {
-        type: "error",
-      });
+      if (error.response && (error.response.status === 500 || error.response.status === 400)) {
+        // Handle the 500 error here
+        showNotification?.(error.response.data.message || "Internal Server Error" , {
+          type: "error",
+        });
+      } else {
+        // Handle other errors
+        console.log(error);
+        showNotification?.(
+          error.response.data.errors[0] || error.response.data.message ||
+            error.message ||
+            error.error ||
+            "An error occurred",
+          {
+            type: "error",
+          }
+        );
+      }
     },
     onSuccess: (data) => {
+      showNotification?.(data.message, { type: "success" });
       queryClient.refetchQueries("patient_by_id");
     },
   });
@@ -237,7 +253,7 @@ const MyProfile = () => {
                   <Typography
                     variant="h6"
                     color="black"
-                    sx={{ alignSelf: "start" }}
+                    sx={{ alignSelf: "start", mb: 3  }}
                   >
                     Name
                   </Typography>
@@ -340,7 +356,7 @@ const MyProfile = () => {
                   <Typography
                     variant="h6"
                     color="black"
-                    sx={{ alignSelf: "start" }}
+                    sx={{ alignSelf: "start", mb: 3  }}
                   >
                     Email
                   </Typography>
@@ -398,7 +414,7 @@ const MyProfile = () => {
                   item
                   xs={12}
                   md={5}
-                  sx={{ display: "flex", alignItems: "center" }}
+                  sx={{ display: "flex", alignItems: "center", mb: 5 }}
                 >
                   <Box sx={{ alignSelf: "start" }}>
                     <Typography variant="h6" sx={{ color: "black" }}>
@@ -514,7 +530,7 @@ const MyProfile = () => {
                   <Typography
                     variant="h6"
                     color="black"
-                    sx={{ alignSelf: "start" }}
+                    sx={{ alignSelf: "start", mb: 3  }}
                   >
                     Role
                   </Typography>
@@ -577,7 +593,7 @@ const MyProfile = () => {
                   <Typography
                     variant="h6"
                     color="black"
-                    sx={{ alignSelf: "start" }}
+                    sx={{ alignSelf: "start", mb: 3  }}
                   >
                     Contact Details
                   </Typography>
@@ -681,7 +697,7 @@ const MyProfile = () => {
                   <Typography
                     variant="h6"
                     color="black"
-                    sx={{ alignSelf: "start" }}
+                    sx={{ alignSelf: "start", mb: 3  }}
                   >
                     Emergency Contact Details
                   </Typography>

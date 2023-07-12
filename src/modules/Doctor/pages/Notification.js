@@ -109,6 +109,8 @@ const Notification = () => {
         backgroundColor: "#F5F5F5",
         width: "100%",
         minHeight: "100vh",
+        boxSizing: "border-box",
+        pb: 10
       }}
     >
       <Box

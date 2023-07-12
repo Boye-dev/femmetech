@@ -26,9 +26,24 @@ const ProfileSidebar = (props) => {
     {
       enabled: isLoading === false,
       onError: (error) => {
-        showNotification?.(error.response?.data?.message || error.message, {
-          type: "error",
+        if (error.response && (error.response.status === 500 || error.response.status === 400)) {
+        // Handle the 500 error here
+        showNotification?.(error?.response?.data?.message || "Internal Server Error" , {
+        type: "error",
         });
+      } else {
+        // Handle other errors
+        console.log(error);
+        showNotification?.(
+        error?.response?.data?.errors[0] || error?.response?.data?.message ||
+          error?.message ||
+          error?.error ||
+          "An error occurred",
+        {
+          type: "error",
+        }
+        );
+      }
       },
     }
   );
@@ -195,7 +210,22 @@ const ProfileSidebar = (props) => {
                     <Typography variant="h6" color="black">
                       Email:
                     </Typography>
-                    <Typography variant="caption" color="#787878">
+                    <Typography
+                      variant="caption"
+                      color="#787878"
+                      sx={{
+                        textAlign: "right",
+                        wordWrap: "break-word",
+                        textOverflow: "ellipsis",
+                        overflow: "hidden",
+                        hyphens: "auto",
+                        wordBreak: "break-all",
+                        width: "70%",
+                        display: "-webkit-box",
+                        WebkitLineClamp: 1,
+                        WebkitBoxOrient: "vertical",
+                      }}
+                    >
                       {userDetails?.data?.email || "--"}
                     </Typography>
                   </Box>
