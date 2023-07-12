@@ -12,7 +12,7 @@ const Appointments = () => {
       sx={{
         backgroundColor: "#F5F5F5",
         width: "100%",
-        height: "100vh",
+        minHeight: "100vh",
       }}
     >
       <Box sx={{ width: "100%", backgroundColor: "#F5F5F5", pb: 4 }}>

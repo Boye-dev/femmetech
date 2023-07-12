@@ -21,12 +21,33 @@ import { LoadingButton } from "@mui/lab";
 const Signin = () => {
   const navigate = useNavigate();
 
+
   const { showNotification } = useAlert();
+
+  const handleErrors = (error) => {
+    
+		if (error.response && (error.response.status === 500 || error.response.status === 400)) {
+		  // Handle the 500 error here
+		  showNotification?.(error?.response?.data?.message || error?.response?.data?.errors[0] || "Internal Server Error" , {
+			type: "error",
+		  });
+		} else {
+		  // Handle other errors
+		  console.log(error);
+		  showNotification?.(
+			error?.response?.data?.errors[0] || error?.response?.data?.message ||
+			  error?.message ||
+			  error?.error ||
+			  "An error occurred",
+			{
+			  type: "error",
+			}
+		  );
+		}
+	}
   const { mutate, isLoading } = useMutation(login, {
     onError: (error) => {
-      showNotification?.(error.response.data.errors[0] || error.message, {
-        type: "error",
-      });
+      handleErrors(error)
     },
     onSuccess: (data) => {
       if (data.data.verified) {

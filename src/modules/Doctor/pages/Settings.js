@@ -59,10 +59,10 @@ export default function Settings() {
       <Box sx={{ width: "100%", backgroundColor: "#F1F3F9", pb: 4, }}>
         <Box
           sx={{
-            pt: 10,
+            pt: {xs: 5, md: 10},
             pl: 10,
             pr: 10,
-            pb: 10,
+            pb: {xs: 5, md: 10},
             display: "flex",
             alignItems: "center",
             border: "1px solid lightgray",

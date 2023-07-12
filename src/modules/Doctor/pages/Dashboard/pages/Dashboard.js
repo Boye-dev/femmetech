@@ -25,6 +25,28 @@ const Dashboard = () => {
   const doctorId = decodedUser.id;
   const [open, setOpen] = useState(false);
 
+  const handleErrors = (error) => {
+    
+    if (error.response && (error.response.status === 500 || error.response.status === 400)) {
+      // Handle the 500 error here
+      showNotification?.(error.response.data.message || "Internal Server Error" , {
+        type: "error",
+      });
+    } else {
+      // Handle other errors
+      console.log(error);
+      showNotification?.(
+        error.response.data.errors[0] || error.response.data.message ||
+          error.message ||
+          error.error ||
+          "An error occurred",
+        {
+          type: "error",
+        }
+      );
+    }
+  }
+
   const { isLoading: isAppointmentLoading, data: pendingApp } = useQuery(
     [
       "appointments",
@@ -37,9 +59,7 @@ const Dashboard = () => {
     {
       enabled: doctorId !== null || doctorId !== undefined,
       onError: (error) => {
-        showNotification?.(error.response?.data?.message || error.message, {
-          type: "error",
-        });
+        handleErrors(error)
       },
     }
   );
@@ -50,9 +70,7 @@ const Dashboard = () => {
       enabled: doctorId !== null || doctorId !== undefined,
 
       onError: (error) => {
-        showNotification?.(error.response?.data?.message || error.message, {
-          type: "error",
-        });
+        handleErrors(error)
       },
     }
   );
@@ -61,11 +79,8 @@ const Dashboard = () => {
     fetchUpcoming,
     {
       enabled: doctorId !== null || doctorId !== undefined,
-
       onError: (error) => {
-        showNotification?.(error.response?.data?.message || error.message, {
-          type: "error",
-        });
+        handleErrors(error)
       },
     }
   );
@@ -91,15 +106,16 @@ const Dashboard = () => {
               backgroundColor: "#F5F5F5",
               width: { xs: "100%", md: "calc(100% - 250px)" },
               minHeight: "100vh",
+              boxSizing: "border-box",
               display: "flex",
-              pb: 10,
+              pb: 10, pt: 10,
               justifyContent: "space-between",
             }}
           >
             <Box
-              sx={{ width: "100%", pl: 8, pr: 8, backgroundColor: "#F5F5F5" }}
+              sx={{ width: "100%", pl: 8, pr: 8, boxSizing: "border-box", backgroundColor: "#F5F5F5" }}
             >
-              <Box sx={{ pt: 10, pl: 4 }}>
+              <Box sx={{ pl: 4 }}>
                 <Typography variant="h3" sx={{ color: "black" }}>
                   Dashboard
                 </Typography>
@@ -159,7 +175,8 @@ const Dashboard = () => {
                 <Grid item xs={12} sx={{}}>
                   <Box
                     sx={{
-                      height: "340px",
+                      boxSizing: "border-box",
+                      height: "calc(100vh - 300px)",
                       borderRadius: "10px",
                       backgroundColor: "white",
                       pl: 5,
