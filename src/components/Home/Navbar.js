@@ -1,14 +1,17 @@
 import React from "react";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Menu, MenuItem, Typography } from "@mui/material";
 import { ReactComponent as Logo } from "../../assets/svgs/logo.svg";
+import { ReactComponent as Doctor } from "../../assets/svgs/doctorIcon.svg";
 import {
   // KeyboardArrowLeft,
   KeyboardArrowRight,
+  Logout,
   Person,
+  SettingsOutlined,
 } from "@mui/icons-material";
 import {  List, ListItemButton, Divider, SwipeableDrawer, } from "@mui/material";
 import { Fragment, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import MenuIcon from '@mui/icons-material/Menu';
 // import LayersIcon from '@mui/icons-material/Layers';
 
@@ -19,6 +22,28 @@ const Navbar = () => {
     bottom: false,
     right: false,
   });
+
+  
+  const navigate = useNavigate();
+
+  const [anchorElSignup, setAnchorElSignup] = React.useState(null);
+  const openSignup = Boolean(anchorElSignup);
+  const handleSignupClick = (event) => {
+    setAnchorElSignup(event.currentTarget);
+  };
+  const handleSignupClose = () => {
+    setAnchorElSignup(null);
+    toggleDrawer("left", false)
+  };
+  const [anchorElSignin, setAnchorElSignin] = React.useState(null);
+  const openSignin = Boolean(anchorElSignin);
+  const handleSigninClick = (event) => {
+    setAnchorElSignin(event.currentTarget);
+  };
+  const handleSigninClose = () => {
+    setAnchorElSignin(null);
+    toggleDrawer("left", false)
+  };
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (
@@ -31,8 +56,21 @@ const Navbar = () => {
 
     setState({ ...state, [anchor]: open });
   };
+
+  const scrollToSection = (event, sectionId) => {
+    event.preventDefault();
+    const navbarHeight = document.getElementById('navbar').clientHeight; // Adjust this to match your navbar's ID
+    const section = document.getElementById(sectionId);
+    const offsetTop = section.offsetTop - navbarHeight;
+    window.scrollTo({
+      top: offsetTop,
+      behavior: 'smooth',
+    });
+  };
+
   return (
     <Box
+      id="navbar"
       sx={{
         backgroundColor: "#F8F9FA",
         height: "96px",
@@ -55,19 +93,21 @@ const Navbar = () => {
           sx={{
             display: { xs: "none", md: "flex" },
             justifyContent: "space-around",
-            width: "50%",
+            width: "30%",
           }}
         >
-          {["Home", "Dashboard", "Patients", "About Us", "Contact"].map(
+          {[{link: "#", text: "Home", id: "home"},  {link: "#about", text: "About Us", id: "about"}, {link: "#contact", text: "Contact", id: "contact"}, ].map(
             (item) => {
               return (
-                <Typography
-                  color="text.primary"
-                  variant="caption"
-                  sx={{ fontWeight: 500, cursor: "pointer" }}
-                >
-                  {item}
-                </Typography>
+                <Link to={item.link} onClick={(e) => scrollToSection(e, item.id)} style={{textDecoration: "none"}}>
+                  <Typography
+                    color="text.primary"
+                    variant="caption"
+                    sx={{ fontWeight: 500, cursor: "pointer" }}
+                  >
+                    {item.text}
+                  </Typography>
+                </Link>
               );
             }
           )}
@@ -76,13 +116,67 @@ const Navbar = () => {
         <Box
           sx={{
             display: { xs: "none", md: "flex" },
-            justifyContent: "space-around",
-            width: "30%",
+            justifyContent: "center",
+            // width: "30%",
           }}
         >
-          <Button startIcon={<Person />}>Login</Button>
+          <Box>
+            <Button onClick={handleSigninClick} variant="body1" startIcon={<Person />}>Login</Button>
+            <Menu
+              id="basic-menu"
+              anchorEl={anchorElSignin}
+              open={openSignin}
+              sx={{ width: 200, zIndex: "9999", marginTop: "12px" }}
+              onClose={handleSigninClose}
+              MenuListProps={{
+                "aria-labelledby": "basic-button",
+              }}
+            >
+              <MenuItem
+                color="black"
+                // sx={{ width: "220px" }}
+                onClick={
+                  () => {
+                    handleSigninClose();
+                    navigate("/signin");
+                  }
+                }
+              >
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  {/* <SettingsOutlined sx={{ color: "black" }} /> */}
+                  <Typography
+                    color="black"
+                    variant="h6"
+                    sx={{ marginLeft: "10px" }}
+                  >
+                    Patient
+                  </Typography>
+                </Box>
+              </MenuItem>
+              <MenuItem
+                color="black"
+                onClick={() => {
+                  handleSigninClose();
+                  navigate("/signin-doctor");
+                }}
+              >
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  {/* <Doctor style={{ height: "20px", width: "20px", }} /> */}
+                  <Typography
+                    color="black"
+                    variant="h6"
+                    sx={{ marginLeft: "10px" }}
+                  >
+                    Doctor
+                  </Typography>
+                </Box>
+              </MenuItem>
+            </Menu>
+          </Box>          
           <Box
+            onClick={handleSignupClick}
             sx={{
+              ml: 2,
               borderRadius: "50px",
               padding: "5px 10px",
               backgroundColor: (theme) => theme.palette.primary.main,
@@ -92,11 +186,43 @@ const Navbar = () => {
               cursor: "pointer",
             }}
           >
-            <Typography sx={{ color: "white" }} variant="caption">
-              Book Appointment
+            <Typography sx={{ color: "white" }} variant="body2">
+              Sign Up
             </Typography>
             <KeyboardArrowRight sx={{ color: "white" }} />
           </Box>
+          <Menu
+            id="basic-menu"
+            anchorEl={anchorElSignup}
+            open={openSignup}
+            sx={{ width: 200, zIndex: "9999", marginTop: "12px" }}
+            onClose={handleSignupClose}
+            MenuListProps={{
+              "aria-labelledby": "basic-button",
+            }}
+          >
+            <MenuItem
+              color="black"
+              // sx={{ width: "220px" }}
+              onClick={
+                () => {
+                  handleSignupClose();
+                  navigate("/signup");
+                }
+              }
+            >
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                {/* <SettingsOutlined sx={{ color: "black" }} /> */}
+                <Typography
+                  color="black"
+                  variant="h6"
+                  sx={{ marginLeft: "10px" }}
+                >
+                  Patient
+                </Typography>
+              </Box>
+            </MenuItem>
+          </Menu>
         </Box>
         <Fragment>
           <Button
@@ -113,6 +239,7 @@ const Navbar = () => {
             />
           </Button>
           <SwipeableDrawer
+            sx={{ display: { xs: "block", md: "none" } }}
             anchor="left"
             open={state["left"]}
             onClose={toggleDrawer("left", false)}
@@ -130,83 +257,162 @@ const Navbar = () => {
                     marginTop: "96px",
                   }}
                 >
-                  {/* <Box sx={{ width: '100%', fontSize: "20px", }} onClick={toggleDrawer("left", false)} onKeyDown={toggleDrawer("left", false)}> */}
-                  <Box sx={{ width: "100%", fontSize: "20px" }}>
-                    <List component="nav" aria-label="main mailbox folders">
-                      {[
-                        "Home",
-                        "Dashboard",
-                        "Patients",
-                        "About Us",
-                        "Contact",
-                      ].map((item) => {
+                  <Box sx={{ width: "100%", fontSize: "20px" }}  >
+                    <List component="nav" aria-label="main mailbox folders" onClick={toggleDrawer("left", false)}>
+                      {[{link: "#", text: "Home", id: "home"},  {link: "#about", text: "About Us", id: "about"}, {link: "#contact", text: "Contact", id: "contact"}, ].map((item) => {
                         return (
-                          <Link
-                            style={{
+                          <Box
+                            sx={{
                               marginBottom: "20px",
                               textDecoration: "none",
                               color: "inherit",
                             }}
-                            to={"/"}
                           >
-                            <ListItemButton
-                              sx={{ marginBottom: "20px", borderRadius: "6px" }}
-                            >
-                              {/* <ListItemIcon>
-                                      <LayersIcon sx={{fontSize: '24px'}}/>
-                                  </ListItemIcon> */}
-                              <Typography
-                                color="text.primary"
-                                variant="caption"
-                                sx={{
-                                  fontWeight: 500,
-                                  fontSize: "30px",
-                                  cursor: "pointer",
-                                }}
+                            <Link style={{textDecoration: "none"}} to={item.link} onClick={(e) => scrollToSection(e, item.id)}>
+                              <ListItemButton
+                                sx={{ marginBottom: "20px", borderRadius: "6px" }}
                               >
-                                {item}
-                              </Typography>
-                            </ListItemButton>
-                          </Link>
+                                <Typography
+                                  color="text.primary"
+                                  variant="caption"
+                                  sx={{
+                                    fontWeight: 500,
+                                    fontSize: "30px",
+                                    cursor: "pointer",
+                                  }}
+                                >
+                                  {item.text}
+                                </Typography>
+                              </ListItemButton>
+                            </Link>
+                          </Box>
                         );
                       })}
                     </List>
                     <Divider />
 
-                    <ListItemButton
-                      sx={{ borderRadius: "6px", marginTop: "20px" }}
-                    >
-                      <Button
-                        sx={{
-                          width: "100%",
-                          border: "1px solid",
-                          borderRadius: "50px",
-                        }}
-                        startIcon={<Person />}
-                      >
-                        Login
-                      </Button>
-                    </ListItemButton>
-                    <ListItemButton sx={{ borderRadius: "6px" }}>
+                    <Box>
                       <Box
-                        sx={{
-                          borderRadius: "50px",
-                          padding: "5px 10px",
-                          backgroundColor: (theme) =>
-                            theme.palette.primary.main,
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          cursor: "pointer",
-                          width: "100%",
-                        }}
+                        sx={{ borderRadius: "6px", width: "80%", margin: "auto", marginTop: "20px"}}
                       >
-                        <Typography sx={{ color: "white" }} variant="caption">
-                          Book Appointment
-                        </Typography>
-                        <KeyboardArrowRight sx={{ color: "white" }} />
+                        <Button
+                          sx={{
+                            width: "100%",
+                            border: "1px solid",
+                            borderRadius: "50px",
+                          }}
+                          startIcon={<Person />}
+                          onClick={handleSigninClick}
+                        >
+                          <Typography variant="body1">Login</Typography>
+                        </Button>
+                        <Menu
+                          id="basic-menu"
+                          anchorEl={anchorElSignin}
+                          open={openSignin}
+                          sx={{ width: 200, zIndex: "9999", marginTop: "12px" }}
+                          onClose={handleSigninClose}
+                          MenuListProps={{
+                            "aria-labelledby": "basic-button",
+                          }}
+                        >
+                          <MenuItem
+                            color="black"
+                            sx={{ width: "220px" }}
+                            onClick={
+                              () => {
+                                handleSigninClose();
+                                navigate("/signin");
+                              }
+                            }
+                          >
+                            <Box sx={{ display: "flex", alignItems: "center" }}>
+                              {/* <SettingsOutlined sx={{ color: "black" }} /> */}
+                              <Typography
+                                color="black"
+                                variant="h6"
+                                sx={{ marginLeft: "10px" }}
+                              >
+                                Patient
+                              </Typography>
+                            </Box>
+                          </MenuItem>
+                          <MenuItem
+                            color="black"
+                            onClick={() => {
+                              handleSigninClose();
+                              navigate("/signin-doctor");
+                            }}
+                          >
+                            <Box sx={{ display: "flex", alignItems: "center" }}>
+                              {/* <Doctor style={{ height: "20px", width: "20px", }} /> */}
+                              <Typography
+                                color="black"
+                                variant="h6"
+                                sx={{ marginLeft: "10px" }}
+                              >
+                                Doctor
+                              </Typography>
+                            </Box>
+                          </MenuItem>
+                        </Menu>
                       </Box>
-                    </ListItemButton>
+                      <Box sx={{ boxSizing: "border-box", borderRadius: "6px", width: "80%", margin: "auto", marginTop: "20px"}}>
+                        <Box
+                          
+                          onClick={handleSignupClick}
+                          sx={{
+                            borderRadius: "50px",
+                            padding: "5px 10px",
+                            boxSizing: "border-box",
+                            backgroundColor: (theme) =>
+                              theme.palette.primary.main,
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            cursor: "pointer",
+                            width: "100%",
+                          }}
+                        >
+                          <Typography sx={{ color: "white" }} variant="body1">
+                            Sign Up
+                          </Typography>
+                          <KeyboardArrowRight sx={{ color: "white" }} />
+                        </Box>
+                        <Menu
+                          id="basic-menu"
+                          anchorEl={anchorElSignup}
+                          open={openSignup}
+                          sx={{ width: 200, zIndex: "9999", marginTop: "12px" }}
+                          onClose={handleSignupClose}
+                          MenuListProps={{
+                            "aria-labelledby": "basic-button",
+                          }}
+                        >
+                          <MenuItem
+                            color="black"
+                            sx={{ width: "220px" }}
+                            onClick={
+                              () => {
+                                handleSignupClose();
+                                navigate("/signup");
+                              }
+                            }
+                          >
+                            <Box sx={{ display: "flex", alignItems: "center" }}>
+                              {/* <SettingsOutlined sx={{ color: "black" }} /> */}
+                              <Typography
+                                color="black"
+                                variant="h6"
+                                sx={{ marginLeft: "10px" }}
+                              >
+                                Patient
+                              </Typography>
+                            </Box>
+                          </MenuItem>
+                        </Menu>
+                      </Box>
+                    </Box>
                   </Box>
                 </Box>
               </Box>
