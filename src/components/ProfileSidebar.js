@@ -6,7 +6,7 @@ import { useAlert } from "../context/NotificationProvider";
 import { useQuery } from "react-query";
 import { fetchAppointments } from "../modules/Patient/services/patientService";
 import PendingDrawer from "../modules/Patient/components/Dasboard/PendingDrawer";
-import { Link, Navigate } from "react-router-dom";
+import { Link, } from "react-router-dom";
 
 const ProfileSidebar = (props) => {
   const { isLoading, userDetails } = useAuthenticatedUser();

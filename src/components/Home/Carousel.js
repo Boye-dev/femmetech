@@ -74,8 +74,8 @@ const Carousel = ({ items }) => {
             >
               <img
                 src={item}
-                width="100%"
-                height="100%"
+                width="110%"
+                height="110%"
                 alt=""
                 style={{ objectFit: "contain" }}
               />
