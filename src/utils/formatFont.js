@@ -3,5 +3,5 @@ export function remToPx(value) {
 }
 
 export function pxToRem(value) {
-  return `${value / 16}rem`;
+  return `${value / 14}rem`;
 }

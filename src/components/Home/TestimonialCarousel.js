@@ -15,7 +15,7 @@ const TestimonialCarousel = () => {
       setActiveIndex((prevIndex) =>
         prevIndex === testimonials.length - 1 ? 0 : prevIndex + 1
       );
-    }, 6000);
+    }, 15000);
 
     return () => {
       clearInterval(timer);
@@ -87,7 +87,7 @@ const TestimonialCarousel = () => {
                 flexWrap: "wrap",
               }}
             >
-              <Box sx={{ width: { xs: "70%", md: "30%" } }}>
+              <Box sx={{ width: { xs: "70%", md: "25%" } }}>
                 <img src={image} style={{ width: "100%" }} alt="" />
               </Box>
 
@@ -125,7 +125,7 @@ const TestimonialCarousel = () => {
                 />
               </Box>
               <Typography
-                variant="caption"
+                variant="body2"
                 sx={{
                   textAlign: "center",
                   width: "100%",

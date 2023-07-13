@@ -20,27 +20,78 @@ import doctor from "../assets/images/doctor1.png";
 import Badge from "../assets/images/Badge.png";
 import Chat from "../assets/images/Chat.png";
 import Padlock from "../assets/images/Padlock.png";
+import doctor6 from "../assets/images/doctor6.png";
+import doctor7 from "../assets/images/doctor7.png";
+import doctor8 from "../assets/images/doctor8.png";
+import doctor9 from "../assets/images/doctor9.png";
+import doctor10 from "../assets/images/doctor10.png";
 import Person from "../assets/images/Person.png";
 import Subscribe from "../assets/images/Email.png";
 import { Controller, useForm } from "react-hook-form";
 import Footer from "../components/Home/Footer";
 import TestimonialCarousel from "../components/Home/TestimonialCarousel";
 import Carousel from "../components/Home/Carousel";
-const Home = () => {
-  const {
-    trigger,
-    control,
+import { useNavigate } from "react-router-dom";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useAlert } from "../context/NotificationProvider";
+import { useMutation } from "react-query";
+import { LoadingButton } from "@mui/lab";
+import { subscribe } from "../services/homeServices";
 
-    formState: { errors },
-  } = useForm({
-    defaultValues: {
-      email: "",
+
+
+const Home = () => {
+  
+  
+  const schema = yup.object().shape({
+    email: yup.string().required("Email Is Required"),
+    fullname: yup.string().required("Full name Is Required"),
+  });
+
+  const { handleSubmit, trigger, control, formState: { errors }, } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  const { showNotification } = useAlert();
+  const { mutate, isLoading } = useMutation(subscribe, {
+    onError: (error) => {
+      if (error.response && (error.response.status === 500 || error.response.status === 400)) {
+        // Handle the 500 error here
+        showNotification?.(error.response.data.message || error?.response?.data?.errors[0] || "Internal Server Error" , {
+          type: "error",
+        });
+      } else {
+        // Handle other errors
+        console.log(error);
+        showNotification?.(
+          error.response.data.errors[0] || error.response.data.message || error.response.data.error ||
+            error.message ||
+            error.error ||
+            "An error occurred",
+          {
+            type: "error",
+          }
+        );
+      }
+    },
+    onSuccess: (data) => {
+      showNotification?.(data.message, {
+        type: "success",
+      });
     },
   });
+  
+  const onSubmit = (payload) => {
+    mutate(payload);
+  };
+
+  const navigate = useNavigate();
+
   return (
     <Box>
       <Navbar />
-      <Box sx={{ marginTop: "100px" }}>
+      <Box id="home" sx={{ marginTop: "100px" }}>
         <Grid
           container
           sx={{
@@ -117,6 +168,7 @@ const Home = () => {
                 </Typography>
                 <Box>
                   <Box
+                    onClick={() => {navigate("/patient")}}
                     sx={{
                       borderRadius: "50px",
                       padding: "8px 10px",
@@ -168,6 +220,7 @@ const Home = () => {
         </Grid>
       </Box>
       <Box
+        id="contact"
         sx={{
           backgroundColor: "#F1F1F1",
           minHeight: "139px",
@@ -201,6 +254,7 @@ const Home = () => {
                   }}
                 >
                   <Typography
+                    variant="caption"
                     sx={{
                       fontWeight: "600",
                       color: "#666666",
@@ -212,11 +266,11 @@ const Home = () => {
                   </Typography>
                 </Box>
               </Box>
-              <Box>
-                <Typography fontWeight={400} fontSize="16px" color="#121212">
+              <Box sx={{  mt: 1, alignItems: "center" }}>
+                <Typography fontWeight={400} sx={{ fontSize: "15px !important" }} fontSize="16px" color="#121212">
                   Emergency Calls 24/7
                 </Typography>
-                <Typography fontWeight={400} fontSize="16px" color="#121212">
+                <Typography fontWeight={400} sx={{ fontSize: "15px !important" }} fontSize="16px" color="#121212">
                   Appointment booking 24/7
                 </Typography>
               </Box>
@@ -258,6 +312,7 @@ const Home = () => {
                   }}
                 >
                   <Typography
+                    variant="caption" 
                     sx={{
                       fontWeight: "600",
                       color: "#666666",
@@ -269,8 +324,8 @@ const Home = () => {
                   </Typography>
                 </Box>
               </Box>
-              <Box sx={{ display: "flex", mt: 3, alignItems: "center" }}>
-                <Typography fontWeight={400} fontSize="16px" color="#121212">
+              <Box sx={{ display: "flex", mt: 1, alignItems: "center" }}>
+                <Typography fontWeight={400} fontSize="16px" sx={{ fontSize: "15px !important" }} color="#121212">
                   +234 7263284633
                 </Typography>
               </Box>
@@ -312,6 +367,7 @@ const Home = () => {
                   }}
                 >
                   <Typography
+                    variant="caption"
                     sx={{
                       fontWeight: "600",
                       color: "#666666",
@@ -319,13 +375,13 @@ const Home = () => {
                       pl: 3,
                     }}
                   >
-                    Email
+                    Email Us
                   </Typography>
                 </Box>
               </Box>
-              <Box sx={{ display: "flex", mt: 3, alignItems: "center" }}>
-                <Typography fontWeight={400} fontSize="16px" color="#121212">
-                  nexus@gmail.com
+              <Box sx={{ display: "flex", mt: 1, alignItems: "center" }}>
+                <Typography fontWeight={400} fontSize="16px" sx={{ fontSize: "15px !important" }} color="#121212">
+                  info@nexus.com
                 </Typography>
               </Box>
             </Box>
@@ -366,6 +422,7 @@ const Home = () => {
                   }}
                 >
                   <Typography
+                    variant="caption"
                     sx={{
                       fontWeight: "600",
                       color: "#666666",
@@ -377,8 +434,8 @@ const Home = () => {
                   </Typography>
                 </Box>
               </Box>
-              <Box sx={{ display: "flex", mt: 3, alignItems: "center" }}>
-                <Typography fontWeight={400} fontSize="16px" color="#121212">
+              <Box sx={{ display: "flex", mt: 1, alignItems: "center" }}>
+                <Typography fontWeight={400} sx={{ fontSize: "15px !important" }} color="#121212">
                   1 Aguiyi Ironsi Street Abuja, 900001, Nigeria
                 </Typography>
               </Box>
@@ -389,7 +446,7 @@ const Home = () => {
             item
             xs={12}
             md={2.25}
-            sx={{ mb: 2, justifyContent: "center", display: "flex" }}
+            sx={{ mb: 2, justifyContent: "center", display: "flex",  }}
           >
             <Box
               sx={{
@@ -401,8 +458,8 @@ const Home = () => {
               }}
             />
 
-            <Box>
-              <Box sx={{ display: "flex" }}>
+            <Box >
+              <Box sx={{ display: "flex",  }}>
                 <Review />
                 <Box ml={2} display="flex">
                   {[1, 2, 3, 4].map((v, index) => {
@@ -438,6 +495,7 @@ const Home = () => {
                   fontWeight={600}
                   fontSize="18px"
                   color="text.secondary"
+                  sx={{ fontSize: "15px !important" }}
                 >
                   4
                 </Typography>
@@ -454,7 +512,7 @@ const Home = () => {
                   fontWeight={600}
                   fontSize="18px"
                   color="text.secondary"
-                  sx={{ textDecoration: "underline" }}
+                  sx={{ textDecoration: "underline", fontSize: "15px !important"}}
                 >
                   5 Reviews
                 </Typography>
@@ -464,6 +522,7 @@ const Home = () => {
                   fontWeight={600}
                   fontSize="14px"
                   color="text.secondary"
+                  sx={{ fontSize: "15px !important" }}
                 >
                   Based on <span style={{ fontWeight: "700" }}>2489 </span>
                   patient reviews
@@ -478,7 +537,7 @@ const Home = () => {
         <Box display="flex" justifyContent="center" width="100%">
           <Box display="flex" alignItems="center" flexDirection="column">
             <Typography
-              variant="h3"
+              variant="h2"
               color="black"
               fontWeight={600}
               textAlign="center"
@@ -496,7 +555,7 @@ const Home = () => {
               }}
             />
             <Typography
-              variant="caption"
+              variant="body2"
               width="80%"
               textAlign="center"
               color="black"
@@ -552,7 +611,7 @@ const Home = () => {
         </Box>
       </Box>
 
-      <Box sx={{ backgroundColor: "#F3F3F3", pt: 5 }}>
+      <Box id="about" sx={{ backgroundColor: "#F3F3F3", pt: 5 }}>
         <Box display="flex" width="100%">
           <Box sx={{ width: "15%", display: { xs: "none", md: "block" } }}>
             <img src={doctor} alt="" width="100%" height="100%" />
@@ -564,7 +623,7 @@ const Home = () => {
             sx={{ width: { xs: "100%", md: "100%" } }}
           >
             <Typography
-              variant="h3"
+              variant="h2"
               color="black"
               fontWeight={600}
               textAlign="center"
@@ -594,11 +653,11 @@ const Home = () => {
               <Box>
                 <Carousel
                   items={[
-                    Padlock,
-                    Dentistry,
-                    Ophthalmology,
-                    Orthopedic,
-                    Person,
+                    doctor6,
+                    doctor7,
+                    doctor8,
+                    doctor9,
+                    doctor10,
                   ]}
                 />
               </Box>
@@ -618,7 +677,7 @@ const Home = () => {
         >
           <Grid
             item
-            md={7}
+            md={6.5}
             xs={12}
             sx={{ display: { xs: "none", md: "block" } }}
           >
@@ -645,23 +704,24 @@ const Home = () => {
             </Box>
           </Grid>
 
-          <Grid item md={5} xs={12}>
+          <Grid item md={5.5} xs={12}>
             <Box
               sx={{
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
                 height: "100%",
-                ml: 5,
+                ml: {xs: 0, md: 10},
               }}
             >
-              <Box sx={{ position: "relative" }}>
+              <Box sx={{ position: "relative",  }}>
                 <Typography
                   sx={{
                     color: "#061829",
                     fontSize: {
-                      xs: "30px !important",
+                      xs: "40px !important",
                     },
+                    lineHeight: "1 !important",
                     fontWeight: "700",
                   }}
                 >
@@ -671,8 +731,9 @@ const Home = () => {
                   sx={{
                     color: (theme) => theme.palette.primary.main,
                     fontSize: {
-                      xs: "25px !important",
+                      xs: "40px !important",
                     },
+                    lineHeight: "1 !important",
                     fontWeight: "700",
                   }}
                 >
@@ -682,14 +743,16 @@ const Home = () => {
                   sx={{
                     color: "#061829",
                     fontSize: {
-                      xs: "30px !important",
+                      xs: "40px !important",
                     },
+                    lineHeight: "1 !important",
                     fontWeight: "700",
+                    mb: 3,
                   }}
                 >
                   with a doctor
                 </Typography>
-                <Typography color="text.secondary" mb={5}>
+                <Typography variant="body2" color="text.secondary" mb={5}>
                   Our integrated chat system enables users to engage in
                   real-time conversations with doctors, discussing health
                   concerns and determining the best course of action. It
@@ -707,7 +770,7 @@ const Home = () => {
         <Box display="flex" justifyContent="center" width="100%">
           <Box display="flex" alignItems="center" flexDirection="column">
             <Typography
-              variant="h3"
+              variant="h2"
               color="common.white"
               fontWeight={600}
               textAlign="center"
@@ -725,7 +788,7 @@ const Home = () => {
               }}
             />
             <Typography
-              variant="caption"
+              variant="body2"
               width="80%"
               textAlign="center"
               color="common.white"
@@ -750,7 +813,7 @@ const Home = () => {
                     height: "200px",
                     borderRadius: "100%",
                     display: "flex",
-                    justifyContent: "center",
+                    justifyContent: "start",
                     alignItems: "center",
                     flexDirection: "column",
 
@@ -763,8 +826,8 @@ const Home = () => {
                 >
                   <img src={item} alt="" width="40%" height="40%" />
                   <Typography
-                    variant="caption"
-                    fontSize="10px !important"
+                    variant="body2"
+                    // fontSize="10px !important"
                     mt={2}
                   >
                     {item === Badge && "Accredited & Certified"}
@@ -793,7 +856,7 @@ const Home = () => {
         <Box width="100%">
           <Box>
             <Typography
-              variant="h3"
+              variant="h2"
               color="black"
               fontWeight={600}
               textAlign="center"
@@ -872,9 +935,9 @@ const Home = () => {
                   sx={{
                     color: "white",
                     fontSize: {
-                      xs: "25px !important",
+                      xs: "35px !important",
                     },
-                    fontWeight: "700",
+                    fontWeight: "500",
                   }}
                 >
                   Subscribe to the
@@ -883,12 +946,12 @@ const Home = () => {
                   sx={{
                     color: (theme) => theme.palette.primary.main,
                     fontSize: {
-                      xs: "25px !important",
+                      xs: "35px !important",
                     },
                     fontWeight: "700",
                   }}
                 >
-                  NEXUS <span style={{ color: "white" }}>newsletter</span>
+                  NEXUS <span style={{ fontWeight: "500", color: "white" }}>newsletter</span>
                 </Typography>
 
                 <Controller
@@ -920,6 +983,8 @@ const Home = () => {
                           outline: "none",
                           borderRadius: "5px",
                           color: "white",
+                          paddingTop: "10px",
+                          paddingBottom: "10px",
                         },
                         "& .MuiInputBase-input:hover": {
                           border: "1px solid white",
@@ -977,6 +1042,8 @@ const Home = () => {
                           outline: "none",
                           borderRadius: "5px",
                           color: "white",
+                          paddingTop: "10px",
+                          paddingBottom: "10px",
                         },
                         "& .MuiInputBase-input:hover": {
                           border: "1px solid white",
@@ -1009,9 +1076,18 @@ const Home = () => {
                     />
                   )}
                 />
-                <Button sx={{ width: "80%", mt: 3 }} variant="contained">
-                  Subscribe
-                </Button>
+                <LoadingButton
+                  fullWidth
+                  size="small"
+                  loading={isLoading}
+                  onClick={handleSubmit(onSubmit)}
+                  // endIcon={<SendIcon />}
+                  loadingPosition="end"
+                  variant="contained"
+                  sx={{ width: "80%", mt: 5, pt: "10px", pb: "10px" }}
+                >
+                  <Typography sx={{ fontSize: "16px", color: "white !important", }}>Subscribe</Typography>
+                </LoadingButton>
               </Box>
             </Box>
           </Grid>
