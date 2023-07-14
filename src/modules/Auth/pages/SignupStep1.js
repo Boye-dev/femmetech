@@ -59,6 +59,9 @@ const SignupStep1 = () => {
       showPassword2: !values.showPassword2,
     });
   };
+  const handleChange = (e) => {
+    e.preventDefault();
+  };
 
   const [values, setValues] = useState({
     vertical: "bottom",
@@ -210,6 +213,9 @@ const SignupStep1 = () => {
                 <TextField
                   variant="outlined"
                   size="small"
+                  onCut={handleChange}
+                  onCopy={handleChange}
+                  onPaste={handleChange}
                   type={values.showPassword ? "text" : "password"}
                   InputProps={{
                     style: {
@@ -255,6 +261,9 @@ const SignupStep1 = () => {
                 fieldState: { error },
               }) => (
                 <TextField
+                  onCut={handleChange}
+                  onCopy={handleChange}
+                  onPaste={handleChange}
                   variant="outlined"
                   size="small"
                   type={values.showPassword2 ? "text" : "password"}

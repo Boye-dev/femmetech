@@ -48,7 +48,11 @@ export const fetchPastAppointmentsDoctor = async ({ queryKey }) => {
   );
 };
 export const book = async (payload) => {
-  return Api.post("/appointment/book/", payload).then((res) => res.data);
+  try {
+    return Api.post("/appointment/book/", payload).then((res) => res.data);
+  } catch (error) {
+    return error;
+  }
 };
 export const cancel = async (payload) => {
   return Api.put(

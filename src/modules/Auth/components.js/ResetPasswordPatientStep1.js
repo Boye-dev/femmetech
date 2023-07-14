@@ -3,9 +3,9 @@ import { Controller } from "react-hook-form";
 import { useSignupContext } from "../../../context/SignupContext";
 import { TextField } from "@mui/material";
 import logo from "../../../assets/svgs/logosmall.svg";
-import {  Typography, IconButton } from "@mui/material";
+import { Typography, IconButton } from "@mui/material";
 import Box from "@mui/material/Box";
-import {  useState } from "react";
+import { useState } from "react";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
@@ -49,131 +49,135 @@ const formStyles = {
 };
 
 const ResetPasswordPatientStep1 = () => {
-    const { resetPasswordControl, resetPasswordTrigger } = useSignupContext();
-    const [values, setValues] = useState({
-        vertical: "bottom",
-        horizontal: "center",
-        open: false,
-        showPassword: false,
+  const { resetPasswordControl, resetPasswordTrigger } = useSignupContext();
+  const handleClickShowPassword = () => {
+    setValues({
+      ...values,
+      showPassword: !values.showPassword,
     });
-    
-    const handleClickShowPassword = () => {
-        setValues({
-          ...values,
-          showPassword: !values.showPassword,
-        });
-    };
-    return (
-        <Box>
-        <img src={logo} alt="" />
-        <Typography
-            variant="h6"
-            color="inherit"
-            component="div"
-            sx={{
-            marginBottom: "30px",
-            fontWeight: 700,
-            fontSize: "28px !important",
-            color: "#252B33"
-            }}
-        >
-            Set New Password
-        </Typography>
-        <form>
-            
+  };
+  const handleChange = (e) => {
+    e.preventDefault();
+  };
+  const handleClickShowPassword2 = () => {
+    setValues({
+      ...values,
+      showPassword2: !values.showPassword2,
+    });
+  };
 
-            <Controller
-                name="newPassword"
-                control={resetPasswordControl}
-                defaultValue=""
-                render={({
-                  field: { ref, ...fields },
-                  fieldState: { error },
-                }) => (
-                  <TextField
-                    variant="outlined"
-                    sx={formStyles}
-                    label="New Password"
-                    fullWidth
-                    size="small"
-                    {...fields}
-                    type={values.showPassword ? "text" : "password"}
-                    InputLabelProps={{
-                      style: {
-                        color: "black",
-                      },
-                    }}
-                    InputProps={{
-                      endAdornment: (
-                        <IconButton onClick={handleClickShowPassword}>
-                          {values.showPassword === true ? (
-                            <Visibility />
-                          ) : (
-                            <VisibilityOff />
-                          )}
-                        </IconButton>
-                      ),
-                      style: {
-                        fontSize: "16px",
-                      },
-                    }}
-                    inputRef={ref}
-                    error={Boolean(error?.message)}
-                    helperText={error?.message}
-                    onKeyUp={() => {
-                      resetPasswordTrigger("newPassword");
-                    }}
-                  />
-                )}
-             
+  const [values, setValues] = useState({
+    vertical: "bottom",
+    horizontal: "center",
+    open: false,
+    showPassword: false,
+    showPassword2: false,
+  });
+
+  return (
+    <Box>
+      <img src={logo} alt="" />
+      <Typography
+        variant="h6"
+        color="inherit"
+        component="div"
+        sx={{
+          marginBottom: "30px",
+          fontWeight: 700,
+          fontSize: "28px !important",
+          color: "#252B33",
+        }}
+      >
+        Set New Password
+      </Typography>
+      <form>
+        <Controller
+          name="newPassword"
+          control={resetPasswordControl}
+          defaultValue=""
+          render={({ field: { ref, ...fields }, fieldState: { error } }) => (
+            <TextField
+              variant="outlined"
+              sx={formStyles}
+              label="New Password"
+              fullWidth
+              size="small"
+              {...fields}
+              type={values.showPassword ? "text" : "password"}
+              InputLabelProps={{
+                style: {
+                  color: "black",
+                },
+              }}
+              InputProps={{
+                endAdornment: (
+                  <IconButton onClick={handleClickShowPassword}>
+                    {values.showPassword === true ? (
+                      <Visibility />
+                    ) : (
+                      <VisibilityOff />
+                    )}
+                  </IconButton>
+                ),
+                style: {
+                  fontSize: "16px",
+                },
+              }}
+              inputRef={ref}
+              error={Boolean(error?.message)}
+              helperText={error?.message}
+              onKeyUp={() => {
+                resetPasswordTrigger("newPassword");
+              }}
             />
-            <Controller
-                name="confirmPassword"
-                control={resetPasswordControl}
-                defaultValue=""
-                render={({
-                  field: { ref, ...fields },
-                  fieldState: { error },
-                }) => (
-                  <TextField
-                    variant="outlined"
-                    sx={formStyles}
-                    label="Confirm Password"
-                    fullWidth
-                    size="small"
-                    {...fields}
-                    type={values.showPassword ? "text" : "password"}
-                    InputLabelProps={{
-                      style: {
-                        color: "black",
-                      },
-                    }}
-                    InputProps={{
-                      endAdornment: (
-                        <IconButton onClick={handleClickShowPassword}>
-                          {values.showPassword === true ? (
-                            <Visibility />
-                          ) : (
-                            <VisibilityOff />
-                          )}
-                        </IconButton>
-                      ),
-                      style: {
-                        fontSize: "16px",
-                      },
-                    }}
-                    inputRef={ref}
-                    error={Boolean(error?.message)}
-                    helperText={error?.message}
-                    onKeyUp={() => {
-                      resetPasswordTrigger("confirmPassword");
-                    }}
-                  />
-                )}
-             
+          )}
+        />
+        <Controller
+          name="confirmPassword"
+          control={resetPasswordControl}
+          defaultValue=""
+          render={({ field: { ref, ...fields }, fieldState: { error } }) => (
+            <TextField
+              onCut={handleChange}
+              onCopy={handleChange}
+              onPaste={handleChange}
+              variant="outlined"
+              sx={formStyles}
+              label="Confirm Password"
+              fullWidth
+              size="small"
+              {...fields}
+              type={values.showPassword2 ? "text" : "password"}
+              InputLabelProps={{
+                style: {
+                  color: "black",
+                },
+              }}
+              InputProps={{
+                endAdornment: (
+                  <IconButton onClick={handleClickShowPassword2}>
+                    {values.showPassword2 === true ? (
+                      <Visibility />
+                    ) : (
+                      <VisibilityOff />
+                    )}
+                  </IconButton>
+                ),
+                style: {
+                  fontSize: "16px",
+                },
+              }}
+              inputRef={ref}
+              error={Boolean(error?.message)}
+              helperText={error?.message}
+              onKeyUp={() => {
+                resetPasswordTrigger("confirmPassword");
+              }}
             />
-            </form>
-            {/* <Typography
+          )}
+        />
+      </form>
+      {/* <Typography
                 sx={{
                 textAlign: "left",
                 marginTop: "10px",
@@ -188,8 +192,8 @@ const ResetPasswordPatientStep1 = () => {
                 Sign in
                 </Link>
             </Typography> */}
-        </Box>
-    );
+    </Box>
+  );
 };
 
 export default ResetPasswordPatientStep1;

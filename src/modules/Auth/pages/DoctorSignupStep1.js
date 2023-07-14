@@ -67,7 +67,9 @@ const DoctorSignupStep1 = () => {
     showPassword: false,
     showPassword2: false,
   });
-
+  const handleChange = (e) => {
+    e.preventDefault();
+  };
   const { doctorControl, doctorTrigger } = useSignupContext();
 
   return (
@@ -210,6 +212,9 @@ const DoctorSignupStep1 = () => {
                 <TextField
                   variant="outlined"
                   size="small"
+                  onCut={handleChange}
+                  onCopy={handleChange}
+                  onPaste={handleChange}
                   type={values.showPassword ? "text" : "password"}
                   InputProps={{
                     style: {
@@ -257,6 +262,9 @@ const DoctorSignupStep1 = () => {
                 <TextField
                   variant="outlined"
                   size="small"
+                  onCut={handleChange}
+                  onCopy={handleChange}
+                  onPaste={handleChange}
                   type={values.showPassword2 ? "text" : "password"}
                   InputProps={{
                     style: {
