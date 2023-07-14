@@ -2,6 +2,7 @@ import { Box } from "@mui/material";
 import React, { useState } from "react";
 import "../../styles/home.css";
 import { ArrowBack, ArrowForward } from "@mui/icons-material";
+import { useEffect } from "react";
 const Carousel = ({ items }) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -10,11 +11,14 @@ const Carousel = ({ items }) => {
       prevIndex === 0 ? items.length - 1 : prevIndex - 1
     );
   };
-  setTimeout(() => {
-    setActiveIndex((prevIndex) =>
-      prevIndex === items.length - 1 ? 0 : prevIndex + 1
-    );
-  }, 5000);
+
+  React.useEffect(() => {
+    setInterval(() => {
+      setActiveIndex((prevIndex) =>
+        prevIndex === items.length - 1 ? 0 : prevIndex + 1
+      );
+    }, 10000);
+  }, []);
   const moveRight = () => {
     setActiveIndex((prevIndex) =>
       prevIndex === items.length - 1 ? 0 : prevIndex + 1

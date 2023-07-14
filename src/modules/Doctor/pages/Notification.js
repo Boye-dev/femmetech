@@ -110,7 +110,7 @@ const Notification = () => {
         width: "100%",
         minHeight: "100vh",
         boxSizing: "border-box",
-        pb: 10
+        pb: 10,
       }}
     >
       <Box
@@ -215,7 +215,7 @@ const Notification = () => {
           <Box
             onClick={markRead}
             sx={{
-              width: "100px",
+              width: "120px",
               cursor: "pointer",
               backgroundColor: "#ED2228",
 

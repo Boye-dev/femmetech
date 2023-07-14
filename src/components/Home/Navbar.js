@@ -9,10 +9,10 @@ import {
   Person,
   SettingsOutlined,
 } from "@mui/icons-material";
-import {  List, ListItemButton, Divider, SwipeableDrawer, } from "@mui/material";
+import { List, ListItemButton, Divider, SwipeableDrawer } from "@mui/material";
 import { Fragment, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import MenuIcon from '@mui/icons-material/Menu';
+import MenuIcon from "@mui/icons-material/Menu";
 // import LayersIcon from '@mui/icons-material/Layers';
 
 const Navbar = () => {
@@ -23,7 +23,6 @@ const Navbar = () => {
     right: false,
   });
 
-  
   const navigate = useNavigate();
 
   const [anchorElSignup, setAnchorElSignup] = React.useState(null);
@@ -33,7 +32,7 @@ const Navbar = () => {
   };
   const handleSignupClose = () => {
     setAnchorElSignup(null);
-    toggleDrawer("left", false)
+    toggleDrawer("left", false);
   };
   const [anchorElSignin, setAnchorElSignin] = React.useState(null);
   const openSignin = Boolean(anchorElSignin);
@@ -42,7 +41,7 @@ const Navbar = () => {
   };
   const handleSigninClose = () => {
     setAnchorElSignin(null);
-    toggleDrawer("left", false)
+    toggleDrawer("left", false);
   };
 
   const toggleDrawer = (anchor, open) => (event) => {
@@ -58,13 +57,14 @@ const Navbar = () => {
   };
 
   const scrollToSection = (event, sectionId) => {
+    navigate("/home");
     event.preventDefault();
-    const navbarHeight = document.getElementById('navbar').clientHeight; // Adjust this to match your navbar's ID
+    const navbarHeight = document.getElementById("navbar").clientHeight; // Adjust this to match your navbar's ID
     const section = document.getElementById(sectionId);
-    const offsetTop = section.offsetTop - navbarHeight;
+    const offsetTop = section?.offsetTop - navbarHeight;
     window.scrollTo({
       top: offsetTop,
-      behavior: 'smooth',
+      behavior: "smooth",
     });
   };
 
@@ -96,21 +96,27 @@ const Navbar = () => {
             width: "30%",
           }}
         >
-          {[{link: "#", text: "Home", id: "home"},  {link: "#about", text: "About Us", id: "about"}, {link: "#contact", text: "Contact", id: "contact"}, ].map(
-            (item) => {
-              return (
-                <Link to={item.link} onClick={(e) => scrollToSection(e, item.id)} style={{textDecoration: "none"}}>
-                  <Typography
-                    color="text.primary"
-                    variant="caption"
-                    sx={{ fontWeight: 500, cursor: "pointer" }}
-                  >
-                    {item.text}
-                  </Typography>
-                </Link>
-              );
-            }
-          )}
+          {[
+            { link: "#", text: "Home", id: "home" },
+            { link: "#about", text: "About Us", id: "about" },
+            { link: "#contact", text: "Contact", id: "contact" },
+          ].map((item) => {
+            return (
+              <Link
+                to={item.link}
+                onClick={(e) => scrollToSection(e, item.id)}
+                style={{ textDecoration: "none" }}
+              >
+                <Typography
+                  color="text.primary"
+                  variant="caption"
+                  sx={{ fontWeight: 500, cursor: "pointer" }}
+                >
+                  {item.text}
+                </Typography>
+              </Link>
+            );
+          })}
         </Box>
 
         <Box
@@ -121,7 +127,13 @@ const Navbar = () => {
           }}
         >
           <Box>
-            <Button onClick={handleSigninClick} variant="body1" startIcon={<Person />}>Login</Button>
+            <Button
+              onClick={handleSigninClick}
+              variant="body1"
+              startIcon={<Person />}
+            >
+              Login
+            </Button>
             <Menu
               id="basic-menu"
               anchorEl={anchorElSignin}
@@ -135,12 +147,10 @@ const Navbar = () => {
               <MenuItem
                 color="black"
                 // sx={{ width: "220px" }}
-                onClick={
-                  () => {
-                    handleSigninClose();
-                    navigate("/signin");
-                  }
-                }
+                onClick={() => {
+                  handleSigninClose();
+                  navigate("/signin");
+                }}
               >
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                   {/* <SettingsOutlined sx={{ color: "black" }} /> */}
@@ -172,7 +182,7 @@ const Navbar = () => {
                 </Box>
               </MenuItem>
             </Menu>
-          </Box>          
+          </Box>
           <Box
             onClick={handleSignupClick}
             sx={{
@@ -204,12 +214,10 @@ const Navbar = () => {
             <MenuItem
               color="black"
               // sx={{ width: "220px" }}
-              onClick={
-                () => {
-                  handleSignupClose();
-                  navigate("/signup");
-                }
-              }
+              onClick={() => {
+                handleSignupClose();
+                navigate("/signup");
+              }}
             >
               <Box sx={{ display: "flex", alignItems: "center" }}>
                 {/* <SettingsOutlined sx={{ color: "black" }} /> */}
@@ -257,9 +265,17 @@ const Navbar = () => {
                     marginTop: "96px",
                   }}
                 >
-                  <Box sx={{ width: "100%", fontSize: "20px" }}  >
-                    <List component="nav" aria-label="main mailbox folders" onClick={toggleDrawer("left", false)}>
-                      {[{link: "#", text: "Home", id: "home"},  {link: "#about", text: "About Us", id: "about"}, {link: "#contact", text: "Contact", id: "contact"}, ].map((item) => {
+                  <Box sx={{ width: "100%", fontSize: "20px" }}>
+                    <List
+                      component="nav"
+                      aria-label="main mailbox folders"
+                      onClick={toggleDrawer("left", false)}
+                    >
+                      {[
+                        { link: "#", text: "Home", id: "home" },
+                        { link: "#about", text: "About Us", id: "about" },
+                        { link: "#contact", text: "Contact", id: "contact" },
+                      ].map((item) => {
                         return (
                           <Box
                             sx={{
@@ -268,9 +284,16 @@ const Navbar = () => {
                               color: "inherit",
                             }}
                           >
-                            <Link style={{textDecoration: "none"}} to={item.link} onClick={(e) => scrollToSection(e, item.id)}>
+                            <Link
+                              style={{ textDecoration: "none" }}
+                              to={item.link}
+                              onClick={(e) => scrollToSection(e, item.id)}
+                            >
                               <ListItemButton
-                                sx={{ marginBottom: "20px", borderRadius: "6px" }}
+                                sx={{
+                                  marginBottom: "20px",
+                                  borderRadius: "6px",
+                                }}
                               >
                                 <Typography
                                   color="text.primary"
@@ -293,7 +316,12 @@ const Navbar = () => {
 
                     <Box>
                       <Box
-                        sx={{ borderRadius: "6px", width: "80%", margin: "auto", marginTop: "20px"}}
+                        sx={{
+                          borderRadius: "6px",
+                          width: "80%",
+                          margin: "auto",
+                          marginTop: "20px",
+                        }}
                       >
                         <Button
                           sx={{
@@ -319,12 +347,10 @@ const Navbar = () => {
                           <MenuItem
                             color="black"
                             sx={{ width: "220px" }}
-                            onClick={
-                              () => {
-                                handleSigninClose();
-                                navigate("/signin");
-                              }
-                            }
+                            onClick={() => {
+                              handleSigninClose();
+                              navigate("/signin");
+                            }}
                           >
                             <Box sx={{ display: "flex", alignItems: "center" }}>
                               {/* <SettingsOutlined sx={{ color: "black" }} /> */}
@@ -357,9 +383,16 @@ const Navbar = () => {
                           </MenuItem>
                         </Menu>
                       </Box>
-                      <Box sx={{ boxSizing: "border-box", borderRadius: "6px", width: "80%", margin: "auto", marginTop: "20px"}}>
+                      <Box
+                        sx={{
+                          boxSizing: "border-box",
+                          borderRadius: "6px",
+                          width: "80%",
+                          margin: "auto",
+                          marginTop: "20px",
+                        }}
+                      >
                         <Box
-                          
                           onClick={handleSignupClick}
                           sx={{
                             borderRadius: "50px",
@@ -392,12 +425,10 @@ const Navbar = () => {
                           <MenuItem
                             color="black"
                             sx={{ width: "220px" }}
-                            onClick={
-                              () => {
-                                handleSignupClose();
-                                navigate("/signup");
-                              }
-                            }
+                            onClick={() => {
+                              handleSignupClose();
+                              navigate("/signup");
+                            }}
                           >
                             <Box sx={{ display: "flex", alignItems: "center" }}>
                               {/* <SettingsOutlined sx={{ color: "black" }} /> */}

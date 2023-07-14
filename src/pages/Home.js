@@ -10,6 +10,8 @@ import {
   KeyboardArrowRight,
   Phone,
 } from "@mui/icons-material";
+import AOS from "aos";
+import "aos/dist/aos.css";
 import { ReactComponent as Review } from "../assets/svgs/reviews.svg";
 import Dentistry from "../assets/svgs/Departments/Clean.png";
 import Neurology from "../assets/svgs/Departments/Brain.png";
@@ -39,33 +41,47 @@ import { useMutation } from "react-query";
 import { LoadingButton } from "@mui/lab";
 import { subscribe } from "../services/homeServices";
 
-
-
 const Home = () => {
-  
-  
   const schema = yup.object().shape({
     email: yup.string().required("Email Is Required"),
     fullname: yup.string().required("Full name Is Required"),
   });
+  React.useEffect(() => {
+    AOS.init({ duration: 1000 });
+  }, []);
 
-  const { handleSubmit, trigger, control, formState: { errors }, } = useForm({
+  const {
+    handleSubmit,
+    trigger,
+    control,
+    formState: { errors },
+  } = useForm({
     resolver: yupResolver(schema),
   });
 
   const { showNotification } = useAlert();
   const { mutate, isLoading } = useMutation(subscribe, {
     onError: (error) => {
-      if (error.response && (error.response.status === 500 || error.response.status === 400)) {
+      if (
+        error.response &&
+        (error.response.status === 500 || error.response.status === 400)
+      ) {
         // Handle the 500 error here
-        showNotification?.(error.response.data.message || error?.response?.data?.errors[0] || "Internal Server Error" , {
-          type: "error",
-        });
+        showNotification?.(
+          error.response.data.message ||
+            error?.response?.data?.errors[0] ||
+            "Internal Server Error",
+          {
+            type: "error",
+          }
+        );
       } else {
         // Handle other errors
         console.log(error);
         showNotification?.(
-          error.response.data.errors[0] || error.response.data.message || error.response.data.error ||
+          error.response.data.errors[0] ||
+            error.response.data.message ||
+            error.response.data.error ||
             error.message ||
             error.error ||
             "An error occurred",
@@ -81,7 +97,7 @@ const Home = () => {
       });
     },
   });
-  
+
   const onSubmit = (payload) => {
     mutate(payload);
   };
@@ -91,7 +107,7 @@ const Home = () => {
   return (
     <Box>
       <Navbar />
-      <Box id="home" sx={{ marginTop: "100px" }}>
+      <Box id="home" sx={{ marginTop: "100px" }} data-aos="fade-right">
         <Grid
           container
           sx={{
@@ -99,7 +115,7 @@ const Home = () => {
             height: "90vh",
           }}
         >
-          <Grid item md={7} xs={12}>
+          <Grid item md={7} xs={12} data-aos="fade-right">
             <Box
               sx={{
                 display: "flex",
@@ -168,7 +184,9 @@ const Home = () => {
                 </Typography>
                 <Box>
                   <Box
-                    onClick={() => {navigate("/patient")}}
+                    onClick={() => {
+                      navigate("/patient");
+                    }}
                     sx={{
                       borderRadius: "50px",
                       padding: "8px 10px",
@@ -190,6 +208,7 @@ const Home = () => {
             </Box>
           </Grid>
           <Grid
+            data-aos="fade-down-left"
             item
             md={5}
             xs={12}
@@ -219,7 +238,9 @@ const Home = () => {
           </Grid>
         </Grid>
       </Box>
+
       <Box
+        data-aos="fade-up"
         id="contact"
         sx={{
           backgroundColor: "#F1F1F1",
@@ -266,11 +287,21 @@ const Home = () => {
                   </Typography>
                 </Box>
               </Box>
-              <Box sx={{  mt: 1, alignItems: "center" }}>
-                <Typography fontWeight={400} sx={{ fontSize: "15px !important" }} fontSize="16px" color="#121212">
+              <Box sx={{ mt: 1, alignItems: "center" }}>
+                <Typography
+                  fontWeight={400}
+                  sx={{ fontSize: "15px !important" }}
+                  fontSize="16px"
+                  color="#121212"
+                >
                   Emergency Calls 24/7
                 </Typography>
-                <Typography fontWeight={400} sx={{ fontSize: "15px !important" }} fontSize="16px" color="#121212">
+                <Typography
+                  fontWeight={400}
+                  sx={{ fontSize: "15px !important" }}
+                  fontSize="16px"
+                  color="#121212"
+                >
                   Appointment booking 24/7
                 </Typography>
               </Box>
@@ -312,7 +343,7 @@ const Home = () => {
                   }}
                 >
                   <Typography
-                    variant="caption" 
+                    variant="caption"
                     sx={{
                       fontWeight: "600",
                       color: "#666666",
@@ -325,7 +356,12 @@ const Home = () => {
                 </Box>
               </Box>
               <Box sx={{ display: "flex", mt: 1, alignItems: "center" }}>
-                <Typography fontWeight={400} fontSize="16px" sx={{ fontSize: "15px !important" }} color="#121212">
+                <Typography
+                  fontWeight={400}
+                  fontSize="16px"
+                  sx={{ fontSize: "15px !important" }}
+                  color="#121212"
+                >
                   +234 7263284633
                 </Typography>
               </Box>
@@ -380,7 +416,12 @@ const Home = () => {
                 </Box>
               </Box>
               <Box sx={{ display: "flex", mt: 1, alignItems: "center" }}>
-                <Typography fontWeight={400} fontSize="16px" sx={{ fontSize: "15px !important" }} color="#121212">
+                <Typography
+                  fontWeight={400}
+                  fontSize="16px"
+                  sx={{ fontSize: "15px !important" }}
+                  color="#121212"
+                >
                   info@nexus.com
                 </Typography>
               </Box>
@@ -435,7 +476,11 @@ const Home = () => {
                 </Box>
               </Box>
               <Box sx={{ display: "flex", mt: 1, alignItems: "center" }}>
-                <Typography fontWeight={400} sx={{ fontSize: "15px !important" }} color="#121212">
+                <Typography
+                  fontWeight={400}
+                  sx={{ fontSize: "15px !important" }}
+                  color="#121212"
+                >
                   1 Aguiyi Ironsi Street Abuja, 900001, Nigeria
                 </Typography>
               </Box>
@@ -446,7 +491,7 @@ const Home = () => {
             item
             xs={12}
             md={2.25}
-            sx={{ mb: 2, justifyContent: "center", display: "flex",  }}
+            sx={{ mb: 2, justifyContent: "center", display: "flex" }}
           >
             <Box
               sx={{
@@ -458,8 +503,8 @@ const Home = () => {
               }}
             />
 
-            <Box >
-              <Box sx={{ display: "flex",  }}>
+            <Box>
+              <Box sx={{ display: "flex" }}>
                 <Review />
                 <Box ml={2} display="flex">
                   {[1, 2, 3, 4].map((v, index) => {
@@ -512,7 +557,10 @@ const Home = () => {
                   fontWeight={600}
                   fontSize="18px"
                   color="text.secondary"
-                  sx={{ textDecoration: "underline", fontSize: "15px !important"}}
+                  sx={{
+                    textDecoration: "underline",
+                    fontSize: "15px !important",
+                  }}
                 >
                   5 Reviews
                 </Typography>
@@ -555,6 +603,7 @@ const Home = () => {
               }}
             />
             <Typography
+              data-aos="fade-right"
               variant="body2"
               width="80%"
               textAlign="center"
@@ -576,7 +625,7 @@ const Home = () => {
           {[Dentistry, Neurology, Cardiology, Orthopedic, Ophthalmology].map(
             (item) => {
               return (
-                <Box textAlign="center">
+                <Box data-aos="flip-right" textAlign="center">
                   <Box
                     sx={{
                       width: "100px",
@@ -611,7 +660,11 @@ const Home = () => {
         </Box>
       </Box>
 
-      <Box id="about" sx={{ backgroundColor: "#F3F3F3", pt: 5 }}>
+      <Box
+        id="about"
+        sx={{ backgroundColor: "#F3F3F3", pt: 5 }}
+        data-aos="fade-up"
+      >
         <Box display="flex" width="100%">
           <Box sx={{ width: "15%", display: { xs: "none", md: "block" } }}>
             <img src={doctor} alt="" width="100%" height="100%" />
@@ -652,13 +705,7 @@ const Home = () => {
             >
               <Box>
                 <Carousel
-                  items={[
-                    doctor6,
-                    doctor7,
-                    doctor8,
-                    doctor9,
-                    doctor10,
-                  ]}
+                  items={[doctor6, doctor7, doctor8, doctor9, doctor10]}
                 />
               </Box>
             </Box>
@@ -676,6 +723,7 @@ const Home = () => {
           }}
         >
           <Grid
+            data-aos="slide-right"
             item
             md={6.5}
             xs={12}
@@ -704,17 +752,17 @@ const Home = () => {
             </Box>
           </Grid>
 
-          <Grid item md={5.5} xs={12}>
+          <Grid data-aos="fade-left" item md={5.5} xs={12}>
             <Box
               sx={{
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
                 height: "100%",
-                ml: {xs: 0, md: 10},
+                ml: { xs: 0, md: 10 },
               }}
             >
-              <Box sx={{ position: "relative",  }}>
+              <Box sx={{ position: "relative" }}>
                 <Typography
                   sx={{
                     color: "#061829",
@@ -767,7 +815,12 @@ const Home = () => {
       </Box>
 
       <Box sx={{ padding: "5%", mt: 10, backgroundColor: "#1D272C" }}>
-        <Box display="flex" justifyContent="center" width="100%">
+        <Box
+          display="flex"
+          justifyContent="center"
+          width="100%"
+          data-aos="fade-up"
+        >
           <Box display="flex" alignItems="center" flexDirection="column">
             <Typography
               variant="h2"
@@ -806,7 +859,7 @@ const Home = () => {
         >
           {[Badge, Padlock, Chat, Person].map((item, index) => {
             return (
-              <Box key={index} textAlign="center">
+              <Box key={index} textAlign="center" data-aos="zoom-in">
                 <Box
                   sx={{
                     width: "200px",
@@ -852,7 +905,7 @@ const Home = () => {
         </Box>
       </Box>
 
-      <Box sx={{ margin: "5%" }}>
+      <Box sx={{ margin: "5%" }} data-aos="fade-up">
         <Box width="100%">
           <Box>
             <Typography
@@ -898,6 +951,7 @@ const Home = () => {
       <Box sx={{ padding: "8%", backgroundColor: "#1D272C" }}>
         <Grid
           container
+          data-aos="zoom-in"
           sx={{
             width: "100%",
             height: "100%",
@@ -951,7 +1005,10 @@ const Home = () => {
                     fontWeight: "700",
                   }}
                 >
-                  NEXUS <span style={{ fontWeight: "500", color: "white" }}>newsletter</span>
+                  NEXUS{" "}
+                  <span style={{ fontWeight: "500", color: "white" }}>
+                    newsletter
+                  </span>
                 </Typography>
 
                 <Controller
@@ -1086,7 +1143,11 @@ const Home = () => {
                   variant="contained"
                   sx={{ width: "80%", mt: 5, pt: "10px", pb: "10px" }}
                 >
-                  <Typography sx={{ fontSize: "16px", color: "white !important", }}>Subscribe</Typography>
+                  <Typography
+                    sx={{ fontSize: "16px", color: "white !important" }}
+                  >
+                    Subscribe
+                  </Typography>
                 </LoadingButton>
               </Box>
             </Box>

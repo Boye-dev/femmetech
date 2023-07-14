@@ -41,16 +41,23 @@ const Book = (props) => {
   const { specialty, title } = watch();
   const { mutate, isLoading } = useMutation(book, {
     onError: (error) => {
-      if (error.response && (error.response.status === 500 || error.response.status === 400)) {
+      if (
+        error.response &&
+        (error.response.status === 500 || error.response.status === 400)
+      ) {
         // Handle the 500 error here
-        showNotification?.(error.response.data.message || "Internal Server Error" , {
-          type: "error",
-        });
+        showNotification?.(
+          error.response.data.message || "Internal Server Error",
+          {
+            type: "error",
+          }
+        );
       } else {
         // Handle other errors
         console.log(error);
         showNotification?.(
-          error.response.data.errors[0] || error.response.data.message ||
+          error.response.data.errors[0] ||
+            error.response.data.message ||
             error.message ||
             error.error ||
             "An error occurred",
@@ -66,6 +73,7 @@ const Book = (props) => {
       showNotification?.(data.message, { type: "success" });
     },
   });
+  console.log(isLoading);
   const onSubmit = (payload) => {
     payload.patientId = patientId;
     mutate(payload);

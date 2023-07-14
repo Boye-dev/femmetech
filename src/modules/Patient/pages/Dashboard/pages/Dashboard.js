@@ -23,26 +23,32 @@ const Dashboard = () => {
   const [open, setOpen] = useState(false);
 
   const handleErrors = (error) => {
-    
-		if (error.response && (error.response.status === 500 || error.response.status === 400)) {
-		  // Handle the 500 error here
-		  showNotification?.(error?.response?.data?.message || "Internal Server Error" , {
-			type: "error",
-		  });
-		} else {
-		  // Handle other errors
-		  console.log(error);
-		  showNotification?.(
-			error?.response?.data?.errors[0] || error?.response?.data?.message ||
-			  error?.message ||
-			  error?.error ||
-			  "An error occurred",
-			{
-			  type: "error",
-			}
-		  );
-		}
-	}
+    if (
+      error.response &&
+      (error.response.status === 500 || error.response.status === 400)
+    ) {
+      // Handle the 500 error here
+      showNotification?.(
+        error?.response?.data?.message || "Internal Server Error",
+        {
+          type: "error",
+        }
+      );
+    } else {
+      // Handle other errors
+      console.log(error);
+      showNotification?.(
+        error?.response?.data?.errors[0] ||
+          error?.response?.data?.message ||
+          error?.message ||
+          error?.error ||
+          "An error occurred",
+        {
+          type: "error",
+        }
+      );
+    }
+  };
 
   const { isLoading: isAppointmentLoading, data: pendingApp } = useQuery(
     [
@@ -56,7 +62,7 @@ const Dashboard = () => {
     {
       enabled: patientId !== null || patientId !== undefined,
       onError: (error) => {
-        handleErrors(error)
+        handleErrors(error);
       },
     }
   );
@@ -67,7 +73,7 @@ const Dashboard = () => {
       enabled: patientId !== null || patientId !== undefined,
 
       onError: (error) => {
-        handleErrors(error)
+        handleErrors(error);
       },
     }
   );
@@ -78,7 +84,7 @@ const Dashboard = () => {
       enabled: patientId !== null || patientId !== undefined,
 
       onError: (error) => {
-        handleErrors(error)
+        handleErrors(error);
       },
     }
   );
@@ -110,7 +116,12 @@ const Dashboard = () => {
             }}
           >
             <Box
-              sx={{ width: "100%", pl: {xs: 4, md: 8}, pr: {xs: 4, md: 8}, backgroundColor: "#F5F5F5" }}
+              sx={{
+                width: "100%",
+                pl: { xs: 4, md: 8 },
+                pr: { xs: 4, md: 8 },
+                backgroundColor: "#F5F5F5",
+              }}
             >
               <Box sx={{ pt: 10, pl: 4 }}>
                 <Typography variant="h3" sx={{ color: "black" }}>
@@ -173,7 +184,7 @@ const Dashboard = () => {
                   <Box
                     sx={{
                       boxSizing: "border-box",
-                      height: "calc(100vh - 300px)",
+                      minHeight: "calc(100vh - 300px)",
                       borderRadius: "10px",
                       backgroundColor: "white",
                       pl: 5,

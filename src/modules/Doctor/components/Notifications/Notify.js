@@ -1,7 +1,7 @@
 import { Close } from "@mui/icons-material";
 import { Box, Divider, Typography } from "@mui/material";
 import React from "react";
-import { formatDateTime,  } from "../../../../utils/formatDate";
+import { formatDateTime } from "../../../../utils/formatDate";
 
 const Notify = ({ notification }) => {
   return (
@@ -29,7 +29,7 @@ const Notify = ({ notification }) => {
               width: "100px",
               height: "23px",
               borderRadius: "3px",
-              p: 1,
+              p: 2,
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
