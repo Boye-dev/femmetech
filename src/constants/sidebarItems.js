@@ -4,18 +4,23 @@ import { Roles } from "./roles";
 import CampaignIcon from "@mui/icons-material/Campaign";
 import {
   CalendarMonth,
+  Campaign,
   Dashboard,
+  Group,
   History,
   Message,
+  Note,
+  NoteAdd,
   Notifications,
+  Speaker,
   Subject,
 } from "@mui/icons-material";
 
 export const PATIENT_NAV_ITEMS = [
   {
-    name: "Dashboard",
-    url: PatientPaths.PATIENT_DASHBOARD,
-    icon: <Dashboard />,
+    name: "Feeds",
+    url: PatientPaths.PATIENT_FEED,
+    icon: <Campaign />,
     role: Roles.PATIENT,
     bottom: false,
   },
@@ -27,16 +32,9 @@ export const PATIENT_NAV_ITEMS = [
     bottom: false,
   },
   {
-    name: "History",
-    url: PatientPaths.PATIENT_HISTORY,
-    icon: <History />,
-    role: Roles.PATIENT,
-    bottom: false,
-  },
-  {
-    name: "Announcements",
-    url: PatientPaths.PATIENT_ANNOUNCEMENTS,
-    icon: <CampaignIcon />,
+    name: "Groups",
+    url: PatientPaths.PATIENT_GROUPS,
+    icon: <Group />,
     role: Roles.PATIENT,
     bottom: false,
   },
@@ -48,79 +46,14 @@ export const PATIENT_NAV_ITEMS = [
     bottom: false,
   },
   {
-    name: "Notifications",
-    url: PatientPaths.PATIENT_NOTIFICATIONS,
-    icon: <Notifications />,
+    name: "My Journal",
+    url: PatientPaths.PATIENT_JOURNAL,
+    icon: <NoteAdd />,
     role: Roles.PATIENT,
-    bottom: true,
+    bottom: false,
   },
-  // {
-  //   name: "Faq",
-  //   url: PatientPaths.PATIENT_FAQ,
-  //   icon: <Help />,
-  //   role: Roles.PATIENT,
-  //   bottom: true,
-  // },
 ];
-export const DOCTOR_NAV_ITEMS = [
-  {
-    name: "Dashboard",
-    url: DoctorPaths.DOCTOR_DASHBOARD,
-    icon: <Dashboard />,
-    role: Roles.DOCTOR,
-    bottom: false,
-  },
-  {
-    name: "Appointments",
-    url: DoctorPaths.DOCTOR_APPOINTMENT,
-    icon: <CalendarMonth />,
-    role: Roles.DOCTOR,
-    bottom: false,
-  },
-  {
-    name: "Waitlist",
-    url: DoctorPaths.DOCTOR_WAITLIST,
-    icon: <Subject />,
-    role: Roles.DOCTOR,
-    bottom: false,
-  },
-  {
-    name: "History",
-    url: DoctorPaths.DOCTOR_HISTORY,
-    icon: <History />,
-    role: Roles.DOCTOR,
-    bottom: false,
-  },
-  {
-    name: "Announcements",
-    url: DoctorPaths.DOCTOR_ANNOUNCEMENTS,
-    icon: <CampaignIcon />,
-    role: Roles.DOCTOR,
-    bottom: false,
-  },
-  {
-    name: "Messages",
-    url: DoctorPaths.DOCTOR_MESSAGES,
-    icon: <Message />,
-    role: Roles.DOCTOR,
-    bottom: false,
-  },
-  {
-    name: "Notifications",
-    url: DoctorPaths.DOCTOR_NOTIFICATIONS,
-    icon: <Notifications />,
 
-    role: Roles.DOCTOR,
-    bottom: true,
-  },
-  // {
-  //   name: "Faq",
-  //   url: DoctorPaths.DOCTOR_FAQ,
-  //   icon: <Help />,
-  //   role: Roles.DOCTOR,
-  //   bottom: true,
-  // },
-];
 export const LOGOUT_NAV = {
   name: "Logout",
   url: "",

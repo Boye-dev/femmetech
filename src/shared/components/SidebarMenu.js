@@ -14,45 +14,35 @@ const SidebarMenu = (props) => {
         sx={{
           width: "100%",
           display: "flex",
-          height: "50px",
+          height: "30px",
           mt: 2,
           mb: 2,
           justifyContent: "space-between",
           cursor: "pointer",
-          backgroundColor: props.isActive ? "rgba(237, 34, 40, 0.1)" : "white",
 
           alignItems: "center",
         }}
       >
         <Box
           sx={{
-            pl: props.width === 220 ? 10 : 7,
             display: "flex",
             alignItems: "center",
           }}
         >
-          <Box sx={{ color: props.isActive ? "#ED2228" : "#787878" }}>
+          <Box sx={{ color: props.isActive ? "#87B7C7" : "black" }}>
             {props.item?.icon}
           </Box>
-          {props.width === 220 && (
-            <Typography
-              pl={5}
-              variant="subtitle2"
-              sx={{ color: props.isActive ? "#ED2228" : "#787878" }}
-            >
-              {props.item.name}
-            </Typography>
-          )}
+
+          <Typography
+            pl={3}
+            variant={props.isActive ? "h6" : "caption"}
+            sx={{
+              color: props.isActive ? "#87B7C7" : "black",
+            }}
+          >
+            {props.item.name}
+          </Typography>
         </Box>
-        <Box
-          sx={{
-            display: props.isActive ? "block" : "none",
-            // borderRight: "5px solid red",
-            width: "2px",
-            height: "100%",
-            backgroundColor: "#ED2228",
-          }}
-        />
       </Box>
     </>
   );

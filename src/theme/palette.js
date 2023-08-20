@@ -6,7 +6,7 @@ const palette = {
     primaryAccent: "#00B0ED",
   },
   primary: {
-    main: "#CE1E23",
+    main: "#87B7C7",
     light: "#F0F5FF",
     shade: "#80ACFF",
   },
@@ -55,7 +55,7 @@ const palette = {
   },
   text: {
     black: "#000",
-    primary: "#CE1E23",
+    primary: "#87B7C7",
     secondary: "#6B6C7E",
     title: "#272833",
     success: "#15692A",

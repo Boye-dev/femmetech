@@ -6,7 +6,7 @@ import { getDecodedJwt } from "../../../utils/auth";
 
 const AuthHelper = () => {
   const decodedUser = getDecodedJwt();
-  if (decodedUser.role === Roles.PATIENT) {
+  if (true) {
     return <Navigate to={PatientPaths.PATIENT_DASHBOARD} replace />;
   } else {
     return (

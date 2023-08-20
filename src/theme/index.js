@@ -1,11 +1,6 @@
 import { createTheme } from "@mui/material/styles";
-// import Card from './overrides/Card';
-// import Input from './overrides/Input';
 import palette from "./palette";
 import typography, { responsiveFontSizes } from "./typography";
-
-// NB: This is only extending/customizing the material ui theme
-// refer to https://material-ui.com/customization/default-theme/ to see the default theme/props
 
 let themeInstance = createTheme({});
 
@@ -28,31 +23,6 @@ themeInstance = createTheme({
         },
       },
     },
-    MuiAutocomplete: {
-      styleOverrides: {
-        paper: {
-          backgroundColor: "white", // Set the desired background color
-        },
-        option: {
-          '&[aria-selected="true"]': {
-            backgroundColor: "grey", // Set the desired background color
-          },
-          color: "black",
-        },
-      },
-    },
-    MuiInputLabel: {
-      styleOverrides: {
-        root: {
-          color: "black", // Set the label text color
-        },
-        outlined: {
-          "&.Mui-focused": {
-            color: "black", // Set the label text color when focused
-          },
-        },
-      },
-    },
   },
 
   palette,
@@ -69,7 +39,7 @@ themeInstance.typography.h1 = {
     xs: 26,
     theme: themeInstance,
   }),
-  color: themeInstance.palette.text.primary,
+  color: themeInstance.palette.text.black,
 };
 
 themeInstance.typography.h2 = {
@@ -81,7 +51,7 @@ themeInstance.typography.h2 = {
     xs: 20,
     theme: themeInstance,
   }),
-  color: themeInstance.palette.text.primary,
+  color: themeInstance.palette.text.black,
 };
 
 themeInstance.typography.h3 = {
@@ -93,7 +63,7 @@ themeInstance.typography.h3 = {
     xs: 17,
     theme: themeInstance,
   }),
-  color: themeInstance.palette.text.primary,
+  color: themeInstance.palette.text.black,
 };
 
 themeInstance.typography.h4 = {
@@ -105,7 +75,7 @@ themeInstance.typography.h4 = {
     xs: 14,
     theme: themeInstance,
   }),
-  color: themeInstance.palette.text.primary,
+  color: themeInstance.palette.text.black,
 };
 
 themeInstance.typography.h5 = {
@@ -117,7 +87,7 @@ themeInstance.typography.h5 = {
     xs: 12,
     theme: themeInstance,
   }),
-  color: themeInstance.palette.text.primary,
+  color: themeInstance.palette.text.black,
 };
 
 themeInstance.typography.h6 = {
@@ -129,7 +99,7 @@ themeInstance.typography.h6 = {
     xs: 10,
     theme: themeInstance,
   }),
-  color: themeInstance.palette.text.primary,
+  color: themeInstance.palette.text.black,
 };
 
 themeInstance.typography.subtitle1 = {
@@ -141,7 +111,7 @@ themeInstance.typography.subtitle1 = {
     xs: 10,
     theme: themeInstance,
   }),
-  color: themeInstance.palette.text.primary,
+  color: themeInstance.palette.text.black,
 };
 
 themeInstance.typography.subtitle2 = {
@@ -153,7 +123,7 @@ themeInstance.typography.subtitle2 = {
     xs: 10,
     theme: themeInstance,
   }),
-  color: themeInstance.palette.text.primary,
+  color: themeInstance.palette.text.black,
 };
 
 themeInstance.typography.body1 = {
@@ -165,7 +135,7 @@ themeInstance.typography.body1 = {
     xs: 10,
     theme: themeInstance,
   }),
-  color: themeInstance.palette.text.primary,
+  color: themeInstance.palette.text.black,
 };
 
 themeInstance.typography.body2 = {
@@ -177,7 +147,7 @@ themeInstance.typography.body2 = {
     xs: 10,
     theme: themeInstance,
   }),
-  color: themeInstance.palette.text.primary,
+  color: themeInstance.palette.text.black,
 };
 
 themeInstance.typography.caption = {
@@ -189,7 +159,7 @@ themeInstance.typography.caption = {
     xs: 11,
     theme: themeInstance,
   }),
-  color: themeInstance.palette.text.primary,
+  color: themeInstance.palette.text.black,
 };
 
 themeInstance.typography.overline = {
@@ -201,7 +171,7 @@ themeInstance.typography.overline = {
     xs: 10,
     theme: themeInstance,
   }),
-  color: themeInstance.palette.text.primary,
+  color: themeInstance.palette.text.black,
 };
 
 themeInstance.typography.button = {

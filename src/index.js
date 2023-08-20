@@ -7,8 +7,6 @@ import { StyledEngineProvider, ThemeProvider } from "@mui/material";
 import { createRoot } from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { NotificationProvider } from "./context/NotificationProvider";
-import { SignupContextProvider } from "./context/SignupContext";
-import { NexusContextProvider } from "./context/NexusContext";
 
 const container = document.getElementById("root");
 const root = createRoot(container);
@@ -31,13 +29,9 @@ root.render(
         {/* <CssBaseline /> */}
         <QueryClientProvider client={queryClient}>
           <NotificationProvider>
-            <SignupContextProvider>
-              <NexusContextProvider>
-                <BrowserRouter>
-                  <App />
-                </BrowserRouter>
-              </NexusContextProvider>
-            </SignupContextProvider>
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
           </NotificationProvider>
         </QueryClientProvider>
       </ThemeProvider>
