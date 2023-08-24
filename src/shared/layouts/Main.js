@@ -19,14 +19,13 @@ export default function MainLayout({ children }) {
         sx={{ display: "flex", marginTop: "55px", backgroundColor: "#F8F8F8" }}
       >
         <Box sx={{ display: { xs: "none", md: "block" } }}>
-          <UserSidebar width={drawerWidth} />
+          <UserSidebar width={drawerWidth} open={isOpen} setOpen={setOpen} />
         </Box>
 
         <Box
           sx={{
             width: "100%",
             marginLeft: { xs: 0, md: "370px" },
-            marginTop: "20px",
           }}
         >
           <Outlet />

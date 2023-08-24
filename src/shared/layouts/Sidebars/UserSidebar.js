@@ -76,7 +76,7 @@ const UserSidebar = (props) => {
           sx={{
             width: { xs: "100%", md: props.width },
             backgroundColor: "#F5F5F5",
-
+            zIndex: "500",
             position: "fixed",
             left: 0,
             height: "calc(100vh - 60px)",
