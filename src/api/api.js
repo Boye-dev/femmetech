@@ -6,9 +6,9 @@ import { getToken, isAuthenticated, removeToken } from "../utils/auth";
 let refreshed = false;
 
 export const baseUrl =
-  process.env.REACT_APP_API_BASE_URL || "http://localhost:8080/api";
+  process.env.REACT_APP_API_BASE_URL || "http://13.48.194.188/api";
+// "http://localhost:8080/api";
 
-// "http://13.48.194.188/api";
 // "http://localhost:4000/api/v1";
 
 export const subscriber = new BehaviorSubject(0);
