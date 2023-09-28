@@ -11,6 +11,7 @@ import { ReactComponent as Logo } from "../../../assets/svgs/logo.svg";
 import { ReactComponent as LogoSmall } from "../../../assets/svgs/logosmall.svg";
 import SidebarMenu from "../../components/SidebarMenu";
 import {
+  CONSULTANT_NAV_ITEMS,
   DOCTOR_NAV_ITEMS,
   PATIENT_NAV_ITEMS,
 } from "../../../constants/sidebarItems";
@@ -27,48 +28,9 @@ const UserSidebar = (props) => {
   const decodedUser = getDecodedJwt();
   const { showNotification } = useAlert();
   const navigate = useNavigate();
-  // const navItems =
-  //   decodedUser.role === "PATIENT" ? PATIENT_NAV_ITEMS ;
-  const { isLoading, data } = useQuery(
-    ["patient_by_id", { patientId: decodedUser.id }],
-    fetchUser,
-    {
-      enabled:
-        isAuthenticated() &&
-        decodedUser.role === "PATIENT" &&
-        decodedUser.id !== null &&
-        decodedUser.id !== undefined,
-      onError: (error) => {
-        showNotification?.(error.response?.data?.message || error.message, {
-          type: "error",
-        });
-      },
-    }
-  );
-  const { isLoading: isLoadingDoctor, data: doctorDat } = useQuery(
-    ["doctor_by_id", { doctorId: decodedUser.id }],
-    fetchUserDoctor,
-    {
-      enabled:
-        isAuthenticated() &&
-        decodedUser.role === "DOCTOR" &&
-        decodedUser.id !== null &&
-        decodedUser.id !== undefined,
-      onError: (error) => {
-        showNotification?.(error.response?.data?.message || error.message, {
-          type: "error",
-        });
-      },
-    }
-  );
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const navItems =
+    decodedUser?.role === "PATIENT" ? PATIENT_NAV_ITEMS : CONSULTANT_NAV_ITEMS;
+
   return (
     <>
       <Box>
@@ -93,20 +55,32 @@ const UserSidebar = (props) => {
                 sx={{
                   width: "60px",
                   height: "60px",
-                  borderRadius: "100%",
-                  border: "1px solid black",
                 }}
-              ></Box>
+              >
+                {" "}
+                <img
+                  src={decodedUser?.profilePicture}
+                  alt=""
+                  width="60px"
+                  height="60px"
+                  style={{
+                    borderRadius: "100%",
+                  }}
+                />
+              </Box>
 
               <Box ml={3} sx={{ display: "flex", alignItems: "center" }}>
                 <Box>
-                  <Typography variant="h6">Oyelola Adeboye</Typography>
+                  <Typography variant="h6">
+                    {decodedUser.lastname} {decodedUser.firstname}
+                  </Typography>
                   <Typography variant="caption">View Profile</Typography>
                 </Box>
               </Box>
             </Box>
-            {PATIENT_NAV_ITEMS.filter((item) => item.bottom === false).map(
-              (item, index) => {
+            {navItems
+              .filter((item) => item.bottom === false)
+              .map((item, index) => {
                 return (
                   <SidebarMenu
                     collapse={props.collapse}
@@ -118,8 +92,7 @@ const UserSidebar = (props) => {
                     isActive={location.pathname.includes(item.url)}
                   />
                 );
-              }
-            )}
+              })}
           </Box>
         </Box>
       </Box>

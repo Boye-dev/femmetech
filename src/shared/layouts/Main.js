@@ -1,10 +1,10 @@
-import { Box, Button, useMediaQuery, useTheme } from "@mui/material";
-import React, { useEffect } from "react";
+import { Box } from "@mui/material";
+import React from "react";
 import UserSidebar from "./Sidebars/UserSidebar";
 import { useState } from "react";
-import { ArrowBack, ArrowForward } from "@mui/icons-material";
+
 import { Outlet } from "react-router-dom";
-import MenuIcon from "@mui/icons-material/Menu";
+
 import { ReactComponent as Logo } from "../../assets/svgs/logo.svg";
 import Navbar from "./Sidebars/Navbar";
 

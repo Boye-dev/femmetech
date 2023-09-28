@@ -20,8 +20,14 @@ export const formatDate = (dateStr) => {
 
 export const getFormattedTime = (dateTime) => {
   const date = new Date(dateTime);
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
+
+  if (isNaN(date.getTime())) {
+    // Invalid date string; return empty string or handle it as needed
+    return "";
+  }
+
+  const hours = date.getUTCHours();
+  const minutes = date.getUTCMinutes();
 
   const formattedTime = `${hours.toString().padStart(2, "0")}:${minutes
     .toString()

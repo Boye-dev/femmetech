@@ -7,7 +7,7 @@ import { formatDate } from "../../../utils/formatDate";
 import { useContext } from "react";
 import { FemmetechContext } from "../../../context/FemmetechContext";
 
-const Chat = ({ onClick, chat }) => {
+const GroupChat = ({ onClick, chat }) => {
   const decodedUser = getDecodedJwt();
   const { latestMessage, typing } = useContext(FemmetechContext);
   const [user, setUser] = useState({});
@@ -18,6 +18,9 @@ const Chat = ({ onClick, chat }) => {
     const otherUser = chat.members.find(
       (v) => v?.user?._id !== decodedUser._id
     );
+    if (chat.isGroupChat) {
+    }
+
     const mainUser = chat.members.find((v) => v?.user?._id === decodedUser._id);
     setUser(mainUser);
     setOtherUser(otherUser);
@@ -66,7 +69,7 @@ const Chat = ({ onClick, chat }) => {
             </Box>
             <Box ml={2}>
               <Typography variant="h6" color="black">
-                {otherUser?.user?.lastname} {otherUser?.user?.firstname}
+                {chat?.groupName}
               </Typography>
               <Typography
                 sx={{
@@ -91,9 +94,9 @@ const Chat = ({ onClick, chat }) => {
               {formatDate(latestMessage?.createdAt || chat?.updatedAt)}
             </Typography>
             <Typography variant="caption" sx={{}} color="green">
-              {typing?.sender?._id === otherUser?.user?._id &&
+              {typing?.chatId === chat._id &&
                 typing?.typing &&
-                "typing..."}
+                `${typing?.sender.firstname} is typing...`}
             </Typography>
             {user?.unread > 0 && (
               <Box
@@ -124,4 +127,4 @@ const Chat = ({ onClick, chat }) => {
   );
 };
 
-export default Chat;
+export default GroupChat;

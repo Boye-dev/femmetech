@@ -8,9 +8,72 @@ import {
   Tooltip,
   TextField,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import {
+  createChat,
+  fetchMessages,
+  fetchUsers,
+} from "../modules/Patient/services/patientService";
+import { getDecodedJwt } from "../utils/auth";
+import { LoadingButton } from "@mui/lab";
+import { useAlert } from "../context/NotificationProvider";
 
 const JoinMessage = ({ open, onClose }) => {
+  const decodedUser = getDecodedJwt();
+  const queryClient = useQueryClient();
+  const { showNotification } = useAlert();
+
+  const { data: users, isLoading: isLoadingMessages } = useQuery(
+    ["users", { id: decodedUser._id }],
+    fetchUsers,
+    {
+      enabled: open,
+    }
+  );
+  const handleErrors = (error) => {
+    if (
+      error.response &&
+      (error.response.status === 500 || error.response.status === 400)
+    ) {
+      // Handle the 500 error here
+      showNotification?.(
+        error?.response?.data?.message ||
+          error?.response?.data?.errors[0] ||
+          "Internal Server Error",
+        {
+          type: "error",
+        }
+      );
+    } else {
+      // Handle other errors
+      console.log(error);
+      showNotification?.(
+        error?.response?.data?.errors[0] ||
+          error?.response?.data?.message ||
+          error?.message ||
+          error?.error ||
+          "An error occurred",
+        {
+          type: "error",
+        }
+      );
+    }
+  };
+  const { mutate, isLoading } = useMutation(createChat, {
+    onError: (error) => {
+      handleErrors(error);
+    },
+    onSuccess: (data) => {
+      queryClient.resetQueries("chats");
+      queryClient.resetQueries("users");
+      showNotification?.("Chat Created Successfully", {
+        type: "success",
+      });
+
+      onClose();
+    },
+  });
   return (
     <>
       <Dialog
@@ -27,6 +90,7 @@ const JoinMessage = ({ open, onClose }) => {
             width: { xs: "320px", md: "500px" },
             height: "auto",
             pt: 4,
+            pb: 4,
           }}
         >
           <Box
@@ -88,7 +152,7 @@ const JoinMessage = ({ open, onClose }) => {
             }}
           >
             <Box sx={{ pl: 5, pr: 5 }}>
-              {[1, 2, 3, 4, 5, 1, 2, 3, 4, 5].map((item) => {
+              {users?.map((item) => {
                 return (
                   <Box
                     sx={{
@@ -103,10 +167,18 @@ const JoinMessage = ({ open, onClose }) => {
                       sx={{
                         width: "50px",
                         height: "50px",
-                        borderRadius: "100%",
-                        border: "1px solid black",
                       }}
-                    ></Box>
+                    >
+                      <img
+                        src={item?.profilePicture}
+                        alt=""
+                        width="50px"
+                        height="50px"
+                        style={{
+                          borderRadius: "100%",
+                        }}
+                      />
+                    </Box>
                     <Box
                       sx={{
                         ml: 3,
@@ -117,14 +189,28 @@ const JoinMessage = ({ open, onClose }) => {
                       }}
                     >
                       <Typography variant="h6" color="black">
-                        Oyelola Adeboye Samuel
+                        {item.lastname} {item.firstname}
                       </Typography>
-                      <Button
+                      <LoadingButton
+                        loading={isLoading}
+                        onClick={() => {
+                          const payload = {
+                            members: [
+                              {
+                                user: decodedUser._id,
+                              },
+                              {
+                                user: item._id,
+                              },
+                            ],
+                          };
+                          mutate(payload);
+                        }}
                         variant="contained"
                         sx={{ color: "white", height: "25px" }}
                       >
                         Message
-                      </Button>
+                      </LoadingButton>
                     </Box>
                   </Box>
                 );

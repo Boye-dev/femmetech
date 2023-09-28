@@ -1,33 +1,55 @@
-import { Grid, Typography } from "@mui/material";
+import {
+  FormControlLabel,
+  Grid,
+  IconButton,
+  Radio,
+  RadioGroup,
+  TextField,
+  Typography,
+} from "@mui/material";
 import Box from "@mui/material/Box";
 import { useEffect, useState } from "react";
-import loginImg from "../../../assets/images/login.png";
-import SignupStep1 from "./SignupStep1";
-import SignupStep2 from "./SignupStep2";
-import SignupStep3 from "./SignupStep3";
-import { useSignupContext } from "../../../context/SignupContext";
-import { useNavigate } from "react-router-dom";
-import { EastOutlined, West } from "@mui/icons-material";
+
+import { Link, useNavigate } from "react-router-dom";
+import {
+  EastOutlined,
+  Send,
+  Visibility,
+  VisibilityOff,
+  West,
+} from "@mui/icons-material";
 import { useAlert } from "../../../context/NotificationProvider";
 import { useMutation } from "react-query";
 import { signup } from "../services/authServices";
 import { LoadingButton } from "@mui/lab";
+import { Controller, useForm } from "react-hook-form";
+import * as yup from "yup";
+import loginImg from "../../../assets/images/femmetech-logo-removebg-preview.png";
+
+import { yupResolver } from "@hookform/resolvers/yup";
 
 const Signup = () => {
   const navigate = useNavigate();
   const { showNotification } = useAlert();
   const { mutate, isLoading } = useMutation(signup, {
     onError: (error) => {
-      if (error.response && (error.response.status === 500 || error.response.status === 400)) {
+      if (
+        error.response &&
+        (error.response.status === 500 || error.response.status === 400)
+      ) {
         // Handle the 500 error here
-        showNotification?.(error.response.data.message || "Internal Server Error" , {
-          type: "error",
-        });
+        showNotification?.(
+          error.response.data.message || "Internal Server Error",
+          {
+            type: "error",
+          }
+        );
       } else {
         // Handle other errors
         console.log(error);
         showNotification?.(
-          error.response.data.errors[0] || error.response.data.message ||
+          error.response.data.errors[0] ||
+            error.response.data.message ||
             error.message ||
             error.error ||
             "An error occurred",
@@ -43,222 +65,376 @@ const Signup = () => {
   });
   const onSubmit = async (payload) => {
     const formData = new FormData();
-    formData.append("profilePicture", payload.profilePicture);
-    formData.append("lastName", payload.lastName);
-    formData.append("firstName", payload.firstName);
+    formData.append("lastname", payload.lastName);
+    formData.append("firstname", payload.firstName);
     formData.append("email", payload.email);
-    formData.append("dateOfBirth", payload.dateOfBirth);
-    formData.append("relationshipStatus", payload.relationshipStatus);
-    formData.append("emergencyContactName", payload.emergencyContactName);
-    formData.append("emergencyContactNumber", payload.emergencyContactNumber);
-    formData.append("emergencyContactAddress", payload.emergencyContactAddress);
+
+    formData.append("phone", payload.phone);
     formData.append("password", payload.password);
-    formData.append("phoneNumber", payload.phoneNumber);
-    formData.append("address", payload.address);
-    formData.append("gender", payload.gender);
-    formData.append(
-      "existingMedicalConditions",
-      payload.existingMedicalConditions
-    );
-    formData.append("confirmPassword", payload.confirmPassword);
-    formData.append("allergies", payload.allergies);
+    formData.append("role", payload.role);
+
     mutate(formData);
   };
+  const schema = yup.object().shape({
+    email: yup.string().required("Email Is Required"),
+    password: yup.string().required("Password Is Required"),
+    confirmPassword: yup
+      .string()
+      .required("Confrim Password Is Required")
+      .oneOf([yup.ref("password"), null], "Passwords must match"),
+    firstName: yup.string().required("First Name Is Required"),
+    lastName: yup.string().required("Last Name Is Required"),
+    phone: yup.string().required("Phone Number Is Required"),
+    role: yup.string().required("Role Is Required"),
+  });
 
-  const { handleSubmit, watch, trigger } = useSignupContext();
+  const { handleSubmit, trigger, control } = useForm({
+    resolver: yupResolver(schema),
+  });
+  const [values, setValues] = useState({
+    vertical: "bottom",
+    horizontal: "center",
+    open: false,
+    showPassword: false,
+  });
 
-  const { profilePicture, lastName, firstName, email, dateOfBirth, relationshipStatus, emergencyContactName, emergencyContactNumber, emergencyContactAddress, password, phoneNumber, address, gender, allergies, confirmPassword, existingMedicalConditions, } = watch()
-
-  
-  const [activeStep, setActiveStep] = useState(0);
-  
-  const handleErrorField = async () => {
-    await trigger()
-    await trigger()
-    // console.log(errors);
-    if (
-      firstName === "" ||
-      lastName === "" ||
-      email === "" ||
-      password === "" ||
-      confirmPassword === ""
-    ) {
-      setActiveStep(0);
-    } else if (
-      profilePicture === "" ||
-      gender === "" ||
-      relationshipStatus === "" ||
-      dateOfBirth === "" ||
-      allergies === "" ||
-      existingMedicalConditions === ""
-    ) {
-      setActiveStep(1);
-    } else if (
-      emergencyContactAddress === "" ||
-      emergencyContactName === "" ||
-      emergencyContactNumber === "" ||
-      phoneNumber === "" ||
-      address === ""
-      ) {
-        setActiveStep(2);
-      } else {
-        return false
-      }
-      return false
-    };
-    
-    useEffect(() => {
-      window.scrollTo(0, 0);
-      // handleErrorField()
-    }, []);
-  
-
-
-
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  const handleClickShowPassword = () => {
+    setValues({
+      ...values,
+      showPassword: !values.showPassword,
+    });
   };
+  const [values2, setValues2] = useState({
+    vertical: "bottom",
+    horizontal: "center",
+    open: false,
+    showPassword: false,
+  });
 
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  const handleClickShowPassword2 = () => {
+    setValues2({
+      ...values2,
+      showPassword: !values2.showPassword,
+    });
   };
-
-  const handleSlide = (index) => {
-    setActiveStep(index);
-  };
-
   return (
     <Box
       sx={{
         height: "100vh",
       }}
     >
-      <Grid container>
+      <Box
+        sx={{
+          width: "100%",
+
+          textAlign: "center",
+
+          display: "flex",
+          alignItems: "center",
+          height: { xs: "100vh", md: "100vh" },
+        }}
+      >
         <Box
-          md={5}
-          xs={12}
           sx={{
-            position: "fixed",
-            left: 0,
-            width: "40vw",
-            boxShadow: "0 0 5px 0 gray",
-            textAlign: "center",
-            height: "100vh",
-            background: `url(${loginImg})`,
-            backgroundRepeat: "no-repeat",
-            backgroundSize: "cover",
-            display: { xs: "none", md: "block" },
-          }}
-        />
-        <Box
-          md={7}
-          xs={12}
-          sx={{
-            width: { xs: "100%", md: "60%" },
-            marginLeft: { xs: "0", md: "40%" },
-            textAlign: "center",
-            background: { xs: `none`, md: "none" },
-            backgroundRepeat: { xs: "no-repeat", md: "none" },
-            backgroundSize: { xs: "cover", md: "none" },
-            display: "flex",
-            alignItems: "center",
-            height: { xs: "100vh", md: "100vh" },
-            paddingBottom: { xs: "20px", md: "0" },
+            margin: "auto",
+            width: { xs: "80%", md: "35%" },
+            backgroundColor: "#F8F8F8",
+            borderRadius: "10px",
+            padding: "20px 30px",
           }}
         >
           <Box
             sx={{
-              margin: "auto",
-              width: { xs: "80%", md: "70%" },
+              height: "200px",
+              display: "flex",
+              justifyContent: "center",
+              width: "100%",
+              mb: 5,
             }}
           >
-            {activeStep < 1 ? (
-              ""
-            ) : (
-              <Typography
-                variant="h6"
-                color="inherit"
-                component="div"
-                sx={{
-                  textAlign: "left",
-                  marginBottom: "30px",
-                  fontWeight: 700,
-                  fontSize: "28px !important",
-                  display: "flex",
-                  alignItems: "center",
-                  color: "#252B33",
-                }}
-              >
-                <West
-                  onClick={handleBack}
-                  fontSize="large"
-                  sx={{ marginRight: "12px", cursor: "pointer" }}
-                />{" "}
-                Tell us more
-              </Typography>
-            )}
+            <img
+              src={loginImg}
+              alt={"logo"}
+              width="250px"
+              height="250px"
+              style={{ objectFit: "contain" }}
+            />
+          </Box>
+          <Typography
+            variant="h6"
+            color="inherit"
+            component="div"
+            sx={{
+              marginBottom: "12px",
+              fontWeight: 700,
+              // marginTop: "10vh",
+              fontSize: "28px !important",
+            }}
+          >
+            Sign up <span style={{ color: "#87B7C7" }}> FemmeTech</span>
+          </Typography>
 
-            {activeStep === 0 ? <SignupStep1 /> : ""}
-            {activeStep === 1 ? <SignupStep2 /> : ""}
-            {activeStep === 2 ? <SignupStep3 /> : ""}
+          <form action="">
+            <Controller
+              name="firstName"
+              control={control}
+              defaultValue=""
+              render={({
+                field: { ref, ...fields },
+                fieldState: { error },
+              }) => (
+                <TextField
+                  variant="outlined"
+                  size="small"
+                  label="First Name"
+                  fullWidth
+                  {...fields}
+                  inputRef={ref}
+                  sx={{ mt: 5 }}
+                  error={Boolean(error?.message)}
+                  helperText={error?.message}
+                  onKeyUp={() => {
+                    trigger("firstName");
+                  }}
+                />
+              )}
+            />
+            <Controller
+              name="lastName"
+              control={control}
+              defaultValue=""
+              render={({
+                field: { ref, ...fields },
+                fieldState: { error },
+              }) => (
+                <TextField
+                  variant="outlined"
+                  size="small"
+                  label="Last Name"
+                  fullWidth
+                  {...fields}
+                  inputRef={ref}
+                  sx={{ mt: 5 }}
+                  error={Boolean(error?.message)}
+                  helperText={error?.message}
+                  onKeyUp={() => {
+                    trigger("lastName");
+                  }}
+                />
+              )}
+            />
+            <Controller
+              name="email"
+              control={control}
+              defaultValue=""
+              render={({
+                field: { ref, ...fields },
+                fieldState: { error },
+              }) => (
+                <TextField
+                  variant="outlined"
+                  size="small"
+                  label="Email"
+                  sx={{ mt: 5 }}
+                  fullWidth
+                  {...fields}
+                  inputRef={ref}
+                  error={Boolean(error?.message)}
+                  helperText={error?.message}
+                  onKeyUp={() => {
+                    trigger("email");
+                  }}
+                />
+              )}
+            />
+            <Controller
+              name="phone"
+              control={control}
+              defaultValue=""
+              render={({
+                field: { ref, ...fields },
+                fieldState: { error },
+              }) => (
+                <TextField
+                  variant="outlined"
+                  size="small"
+                  label="Phone Number"
+                  fullWidth
+                  {...fields}
+                  inputRef={ref}
+                  sx={{ mt: 5 }}
+                  error={Boolean(error?.message)}
+                  helperText={error?.message}
+                  onKeyUp={() => {
+                    trigger("phone");
+                  }}
+                />
+              )}
+            />
+
+            <Controller
+              name="password"
+              control={control}
+              defaultValue=""
+              render={({
+                field: { ref, ...fields },
+                fieldState: { error },
+              }) => (
+                <TextField
+                  variant="outlined"
+                  label="Password"
+                  fullWidth
+                  sx={{ mt: 5 }}
+                  size="small"
+                  {...fields}
+                  type={values.showPassword ? "text" : "password"}
+                  InputProps={{
+                    endAdornment: (
+                      <IconButton onClick={handleClickShowPassword}>
+                        {values.showPassword === true ? (
+                          <Visibility />
+                        ) : (
+                          <VisibilityOff />
+                        )}
+                      </IconButton>
+                    ),
+                    style: {
+                      fontSize: "13px",
+                    },
+                  }}
+                  inputRef={ref}
+                  error={Boolean(error?.message)}
+                  helperText={error?.message}
+                  onKeyUp={() => {
+                    trigger("password");
+                  }}
+                />
+              )}
+            />
+            <Controller
+              name="confirmPassword"
+              control={control}
+              defaultValue=""
+              render={({
+                field: { ref, ...fields },
+                fieldState: { error },
+              }) => (
+                <TextField
+                  variant="outlined"
+                  label="Confirm Password"
+                  fullWidth
+                  sx={{ mt: 5, mb: 5 }}
+                  size="small"
+                  {...fields}
+                  type={values2.showPassword ? "text" : "password"}
+                  InputProps={{
+                    endAdornment: (
+                      <IconButton onClick={handleClickShowPassword2}>
+                        {values2.showPassword === true ? (
+                          <Visibility />
+                        ) : (
+                          <VisibilityOff />
+                        )}
+                      </IconButton>
+                    ),
+                    style: {
+                      fontSize: "13px",
+                    },
+                  }}
+                  inputRef={ref}
+                  error={Boolean(error?.message)}
+                  helperText={error?.message}
+                  onKeyUp={() => {
+                    trigger("confirmPassword");
+                  }}
+                />
+              )}
+            />
+            <Controller
+              name="role"
+              control={control}
+              defaultValue=""
+              render={({
+                field: { ref, ...fields },
+                fieldState: { error },
+              }) => (
+                <RadioGroup
+                  {...fields}
+                  inputRef={ref}
+                  error={Boolean(error?.message)}
+                  onKeyUp={() => {
+                    trigger("role");
+                  }}
+                >
+                  <FormControlLabel
+                    value="PATIENT"
+                    control={<Radio />}
+                    label="Patient"
+                  />
+                  <FormControlLabel
+                    value="CONSULTANT"
+                    control={<Radio />}
+                    label="Consultant"
+                  />
+                  <Typography
+                    color="#F48989"
+                    variant="caption"
+                    sx={{ textAlign: "left" }}
+                  >
+                    {error?.message}
+                  </Typography>
+                </RadioGroup>
+              )}
+            />
 
             <LoadingButton
               fullWidth
               size="small"
               loading={isLoading}
-              onClick={() => {
-                if (activeStep >= 2) {
-                  handleErrorField()
-                  handleSubmit(onSubmit)();
-                } else {
-                  handleNext();
-                }
-              }}
+              onClick={handleSubmit(onSubmit)}
+              endIcon={<Send />}
+              loadingPosition="end"
               variant="contained"
-              endIcon={<EastOutlined sx={{ marginLeft: "12px" }} />}
               sx={{
-                margin: "30px 0",
                 fontSize: "18px !important",
-                background: "#252B33",
+                background: "#87B7C7",
                 padding: "6px",
                 marginBottom: "6px",
                 color: "#fff",
                 "&:hover": {
-                  backgroundColor: "#252B33",
+                  backgroundColor: "#87B7C7",
+                  opacity: "0.9",
                 },
               }}
             >
-              {activeStep < 2 ? `Continue` : "Finish"}
+              Sign Up
             </LoadingButton>
 
             <Box
               sx={{
                 display: "flex",
                 justifyContent: "center",
-                marginBottom: "10px",
               }}
             >
-              {[1, 2, 3].map((testimonial, index) => (
-                <Box
-                  key={testimonial}
-                  sx={{
-                    width: "14px",
-                    height: "14px",
-                    borderRadius: "50%",
-                    backgroundColor: "gray",
-                    margin: "12px 4px",
-                    cursor: "pointer",
-                    ...(index === activeStep && {
-                      backgroundColor: "#252B33",
-                    }),
-                  }}
-                  onClick={() => handleSlide(index)}
-                />
-              ))}
+              <Typography
+                sx={{
+                  textAlign: "left",
+                  marginTop: "10px",
+                  color: "black",
+                }}
+              >
+                Already have an account?{" "}
+                <Link
+                  style={{ decoration: "none", color: "#87B7C7" }}
+                  to={"/signin"}
+                >
+                  Login
+                </Link>
+              </Typography>
             </Box>
-          </Box>
+          </form>
         </Box>
-      </Grid>
+      </Box>
     </Box>
   );
 };

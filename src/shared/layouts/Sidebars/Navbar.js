@@ -1,16 +1,11 @@
-import {
-  ArrowDropDownSharp,
-  KeyboardArrowDown,
-  Message,
-  MessageOutlined,
-  NotificationsOutlined,
-  Search,
-} from "@mui/icons-material";
-import { Box, InputAdornment, TextField, Typography } from "@mui/material";
+import { KeyboardArrowDown, NotificationsOutlined } from "@mui/icons-material";
+import { Box } from "@mui/material";
 import React from "react";
 import Logo from "../../../assets/images/femmetech-logo-removebg-preview.png";
 import { Squash as Hamburger } from "hamburger-react";
+import { getDecodedJwt } from "../../../utils/auth";
 const Navbar = (props) => {
+  const decodedUser = getDecodedJwt();
   return (
     <Box
       sx={{
@@ -37,42 +32,8 @@ const Navbar = (props) => {
           style={{ objectFit: "contain" }}
         />
       </Box>
-      <Box sx={{ display: { xs: "none", md: "block" } }}>
-        <TextField
-          size="small"
-          placeholder="Search User"
-          adorn
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <Search />
-              </InputAdornment>
-            ),
-          }}
-          sx={{
-            "& .MuiInputBase-input": {
-              outline: "none",
-              borderRadius: "3px",
-              color: "#000",
-            },
-          }}
-        />
-      </Box>
+
       <Box sx={{ display: "flex", alignItems: "center" }} pr={5}>
-        <Box
-          sx={{
-            backgroundColor: "#87B7C7",
-            width: "30px",
-            height: "30px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            borderRadius: "100%",
-            cursor: "pointer",
-          }}
-        >
-          <MessageOutlined fontSize="50%" sx={{ color: "#F8F8F8" }} />
-        </Box>
         <Box
           sx={{
             backgroundColor: "#87B7C7",
@@ -93,12 +54,21 @@ const Navbar = (props) => {
             sx={{
               width: "30px",
               height: "30px",
-              borderRadius: "100%",
-              border: "1px solid black",
+
               ml: 3,
               mr: 0.5,
             }}
-          ></Box>
+          >
+            <img
+              src={decodedUser?.profilePicture}
+              alt=""
+              width="30px"
+              height="30px"
+              style={{
+                borderRadius: "100%",
+              }}
+            />
+          </Box>
           <KeyboardArrowDown fontSize="10px" />
         </Box>
         <Box sx={{ display: { xs: "block", md: "none" } }}>

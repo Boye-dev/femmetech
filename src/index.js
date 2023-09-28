@@ -7,7 +7,8 @@ import { StyledEngineProvider, ThemeProvider } from "@mui/material";
 import { createRoot } from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { NotificationProvider } from "./context/NotificationProvider";
-
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 const container = document.getElementById("root");
 const root = createRoot(container);
 const queryClient = new QueryClient({
@@ -23,8 +24,8 @@ const queryClient = new QueryClient({
   },
 });
 root.render(
-  <React.StrictMode>
-    <StyledEngineProvider injectFirst>
+  <StyledEngineProvider injectFirst>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
       <ThemeProvider theme={theme}>
         {/* <CssBaseline /> */}
         <QueryClientProvider client={queryClient}>
@@ -35,8 +36,8 @@ root.render(
           </NotificationProvider>
         </QueryClientProvider>
       </ThemeProvider>
-    </StyledEngineProvider>
-  </React.StrictMode>
+    </LocalizationProvider>
+  </StyledEngineProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -1,15 +1,42 @@
 import { Box, TextField, Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import Chat from "../Patient/components/Chat";
 import { Group } from "@mui/icons-material";
 import SingleMessage from "../../components/SingleMessage";
 import { useState } from "react";
 import JoinMessage from "../../components/JoinMessage";
+import { useQuery } from "react-query";
+import { fetchChats } from "../Patient/services/patientService";
+import { getDecodedJwt } from "../../utils/auth";
+import { useContext } from "react";
+import { FemmetechContext } from "../../context/FemmetechContext";
 
 const Messages = () => {
   const [showDrop, setShowdrop] = useState(true);
-  const [chat, setChat] = useState();
+  const [chat, setChat] = useState(null);
   const [join, setJoin] = useState(false);
+  const decodedUser = getDecodedJwt();
+  const { socketRef } = useContext(FemmetechContext);
+
+  const { data: chats, isLoading: isLoadingChats } = useQuery(
+    ["chats", { userId: decodedUser._id }],
+    fetchChats
+  );
+  const leaveRoom = () => {
+    console.log("Leaving", chat, decodedUser);
+    if (chat) {
+      socketRef.emit("leaveRoom", {
+        chatId: chat._id,
+        userId: decodedUser && decodedUser._id,
+      });
+    }
+  };
+  console.log(chat);
+  useEffect(() => {
+    return () => {
+      leaveRoom();
+    };
+  }, [chat]);
 
   return (
     <>
@@ -87,11 +114,21 @@ const Messages = () => {
             </Box>
           </Box>
           <Box sx={{ height: "100%", pb: 5 }}>
-            {[1, 2, 34, 5, 6, 7, 8, , 9, 8, 75, 43, 234, 5, 6].map((item) => {
+            {chats?.chats?.map((item) => {
               return (
                 <Chat
-                  onClick={() => {
-                    setChat("chat");
+                  chat={item}
+                  onClick={(chat) => {
+                    setChat(chat);
+                    socketRef.emit("leaveRoom", {
+                      chatId: chat._id,
+                      userId: decodedUser._id,
+                    });
+                    socketRef.emit("joinRoom", {
+                      chatId: chat._id,
+                      userId: decodedUser._id,
+                    });
+
                     setShowdrop(false);
                   }}
                 />
@@ -101,10 +138,17 @@ const Messages = () => {
         </Box>
         <SingleMessage
           showDrop={showDrop}
+          chat={chat}
           onClose={() => {
+            socketRef.emit("leaveRoom", {
+              chatId: chat._id,
+              userId: decodedUser._id,
+            });
+            setChat(null);
             setShowdrop(true);
           }}
         />
+
         <JoinMessage open={join} onClose={() => setJoin(false)} />
       </Box>
     </>

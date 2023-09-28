@@ -6,21 +6,21 @@ import { getToken, isAuthenticated, removeToken } from "../utils/auth";
 let refreshed = false;
 
 export const baseUrl =
-  process.env.REACT_APP_API_BASE_URL ||
-  "https://nexus-backend-mhoe.onrender.com/api/v1";
+  process.env.REACT_APP_API_BASE_URL || "http://localhost:8080/api";
+
+// "http://13.48.194.188/api";
 // "http://localhost:4000/api/v1";
 
 export const subscriber = new BehaviorSubject(0);
 const Api = axios.create({
   baseURL: baseUrl,
-  withCredentials: true,
 });
 
 // Request interceptor for API calls
 Api.interceptors.request.use(
   async (config) => {
     config.headers = {
-      Authorization: isAuthenticated() ? `${getToken()}` : "",
+      Authorization: isAuthenticated() ? `Bearer ${getToken()}` : "",
     };
     return config;
   },
@@ -66,17 +66,6 @@ Api.interceptors.response.use(
         window.history.pushState({}, "User Login", "/home");
       }, 4000);
     }
-    // const originalRequest = error?.config;
-    // if (error?.response?.status === 401 && !originalRequest?._retry) {
-    //   originalRequest._retry = true;
-    //   const rToken = getRefreshToken();
-    //   if (rToken) {
-    //     const access_token = await refreshToken(rToken);
-    //     axios.defaults.headers.common["Authorization"] =
-    //       "Bearer " + access_token;
-    //   }
-    //   return Api(originalRequest);
-    // }
     return Promise.reject(error);
   }
 );

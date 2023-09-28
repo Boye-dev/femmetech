@@ -17,6 +17,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAlert } from "../../../context/NotificationProvider";
 import { setToken } from "../../../utils/auth";
 import { LoadingButton } from "@mui/lab";
+import axios from "axios";
+import Api from "../../../api/api";
 
 const Signin = () => {
   const navigate = useNavigate();
@@ -57,13 +59,12 @@ const Signin = () => {
       handleErrors(error);
     },
     onSuccess: (data) => {
-      if (data.data.verified) {
-        setToken(data?.token);
-        navigate("/patient", { replace: true });
-      } else {
-        showNotification?.("Please Verify Your Email", {
-          type: "error",
-        });
+      setToken(data?.token);
+      localStorage.setItem("scheduleSet", JSON.parse(data?.scheduleSet));
+      if (data?.role === "PATIENT") {
+        navigate("/patient");
+      } else if (data?.role === "CONSULTANT") {
+        navigate("/consultant");
       }
     },
   });
@@ -76,7 +77,7 @@ const Signin = () => {
   }, []);
 
   const schema = yup.object().shape({
-    email: yup.string().required("Email Is Required"),
+    email: yup.string().email().required("Email Is Required"),
     password: yup.string().required("Password Is Required"),
   });
 
@@ -238,7 +239,7 @@ const Signin = () => {
               fullWidth
               size="small"
               loading={isLoading}
-              // onClick={handleSubmit(onSubmit)}
+              onClick={handleSubmit(onSubmit)}
               endIcon={<SendIcon />}
               loadingPosition="end"
               variant="contained"

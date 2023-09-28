@@ -1,15 +1,43 @@
 import { Box, TextField, Typography } from "@mui/material";
-import React from "react";
+import React, { useContext } from "react";
 import Chat from "../components/Chat";
 import { Group } from "@mui/icons-material";
 import SingleGroup from "../components/SingleGroup";
 import { useState } from "react";
 import JoinGroup from "../../../components/JoinGroup";
+import { getDecodedJwt } from "../../../utils/auth";
+import { FemmetechContext } from "../../../context/FemmetechContext";
+import { useQuery } from "react-query";
+import { fetchGroups } from "../services/patientService";
+import { useEffect } from "react";
+import GroupChat from "../components/GroupChat";
 
 const Groups = () => {
   const [showDrop, setShowdrop] = useState(true);
   const [chat, setChat] = useState();
   const [join, setJoin] = useState(false);
+  const decodedUser = getDecodedJwt();
+  const { socketRef } = useContext(FemmetechContext);
+
+  const { data: groups, isLoading: isLoadingChats } = useQuery(
+    ["groups", { userId: decodedUser._id }],
+    fetchGroups
+  );
+  const leaveRoom = () => {
+    console.log("Leaving", chat, decodedUser);
+    if (chat) {
+      socketRef.emit("leaveRoom", {
+        chatId: chat._id,
+        userId: decodedUser && decodedUser._id,
+      });
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      leaveRoom();
+    };
+  }, [chat]);
 
   return (
     <>
@@ -56,7 +84,7 @@ const Groups = () => {
                 <Typography variant="h6">My Groups</Typography>
               </Box>
 
-              <Box
+              {/* <Box
                 onClick={() => setJoin(true)}
                 sx={{
                   width: "100px",
@@ -73,7 +101,7 @@ const Groups = () => {
                 <Typography color="white" variant="caption">
                   Join a group
                 </Typography>
-              </Box>
+              </Box> */}
             </Box>
             <Box mb={4}>
               <TextField
@@ -87,11 +115,21 @@ const Groups = () => {
             </Box>
           </Box>
           <Box sx={{ height: "100%", pb: 5 }}>
-            {[1, 2, 34, 5, 6, 7, 8, , 9, 8, 75, 43, 234, 5, 6].map((item) => {
+            {groups?.groups?.map((item) => {
               return (
-                <Chat
-                  onClick={() => {
-                    setChat("chat");
+                <GroupChat
+                  chat={item}
+                  onClick={(chat) => {
+                    setChat(chat);
+                    socketRef.emit("leaveRoom", {
+                      chatId: chat._id,
+                      userId: decodedUser._id,
+                    });
+                    socketRef.emit("joinRoom", {
+                      chatId: chat._id,
+                      userId: decodedUser._id,
+                    });
+
                     setShowdrop(false);
                   }}
                 />
@@ -101,7 +139,13 @@ const Groups = () => {
         </Box>
         <SingleGroup
           showDrop={showDrop}
+          chat={chat}
           onClose={() => {
+            socketRef.emit("leaveRoom", {
+              chatId: chat._id,
+              userId: decodedUser._id,
+            });
+            setChat(null);
             setShowdrop(true);
           }}
         />

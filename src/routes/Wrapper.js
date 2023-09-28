@@ -3,6 +3,7 @@ import Auth from "../modules/Auth/AuthRouter";
 
 import MainLayout from "../shared/layouts/Main";
 import PatientRouter from "../modules/Patient/PatientRouter";
+import ConsultantRouter from "../modules/Consultant/ConsultantRouter";
 
 export const RoutesWrapper = () => {
   return (
@@ -13,6 +14,7 @@ export const RoutesWrapper = () => {
         {/* <Route element={<PatientGuard />}> */}
         <Route path="/patient/*" element={<PatientRouter />} />
         {/* </Route> */}
+        <Route path="/consultant/*" element={<ConsultantRouter />} />
       </Route>
     </Routes>
   );

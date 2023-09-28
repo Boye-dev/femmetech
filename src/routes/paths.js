@@ -1,6 +1,6 @@
 export const BasePaths = {
   PATIENT: "/patient",
-  DOCTOR: "/doctor",
+  DOCTOR: "/consultant",
 };
 
 export const AuthPaths = {
@@ -18,14 +18,10 @@ export const PatientPaths = {
   PATIENT_JOURNAL: "/patient/my-journal",
 };
 
-// export const DoctorPaths = {
-//   DOCTOR_DASHBOARD: "/doctor/dashboard",
-//   DOCTOR_APPOINTMENT: "/doctor/appointments",
-//   DOCTOR_WAITLIST: "/doctor/waitlist",
-//   DOCTOR_MESSAGES: "/doctor/messages",
-//   DOCTOR_ANNOUNCEMENTS: "/doctor/announcements",
-//   DOCTOR_NOTIFICATIONS: "/doctor/notifications",
-//   DOCTOR_HISTORY: "/doctor/history",
-
-//   // DOCTOR_FAQ: "/doctor/faq",
-// };
+export const ConsultantPaths = {
+  CONSULTANT_FEED: "/consultant/feeds",
+  CONSULTANT_APPOINTMENT: "/consultant/appointments",
+  CONSULTANT_GROUPS: "/consultant/groups",
+  CONSULTANT_MESSAGES: "/consultant/messages",
+  CONSULTANT_JOURNAL: "/consultant/my-journal",
+};

@@ -1,4 +1,9 @@
-import { AuthPaths, DoctorPaths, PatientPaths } from "../routes/paths";
+import {
+  AuthPaths,
+  ConsultantPaths,
+  DoctorPaths,
+  PatientPaths,
+} from "../routes/paths";
 import { logOut } from "../utils/auth";
 import { Roles } from "./roles";
 import CampaignIcon from "@mui/icons-material/Campaign";
@@ -50,6 +55,37 @@ export const PATIENT_NAV_ITEMS = [
     url: PatientPaths.PATIENT_JOURNAL,
     icon: <NoteAdd />,
     role: Roles.PATIENT,
+    bottom: false,
+  },
+];
+
+export const CONSULTANT_NAV_ITEMS = [
+  {
+    name: "Feeds",
+    url: ConsultantPaths.CONSULTANT_FEED,
+    icon: <Campaign />,
+    role: Roles.CONSULTANT,
+    bottom: false,
+  },
+  {
+    name: "Appointments",
+    url: ConsultantPaths.CONSULTANT_APPOINTMENT,
+    icon: <CalendarMonth />,
+    role: Roles.CONSULTANT,
+    bottom: false,
+  },
+  {
+    name: "Groups",
+    url: ConsultantPaths.CONSULTANT_GROUPS,
+    icon: <Group />,
+    role: Roles.CONSULTANT,
+    bottom: false,
+  },
+  {
+    name: "Messages",
+    url: ConsultantPaths.CONSULTANT_MESSAGES,
+    icon: <Message />,
+    role: Roles.CONSULTANT,
     bottom: false,
   },
 ];
