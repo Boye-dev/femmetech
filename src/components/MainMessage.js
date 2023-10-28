@@ -80,7 +80,7 @@ const MainMessage = ({ message }) => {
         )}
 
         {message?.content?.files?.map((item) => {
-          if (item.filetype.startsWith("image/")) {
+          if (item.filetype?.startsWith("image/")) {
             return (
               <Box sx={{ display: "flex" }}>
                 {decodedUser._id === message?.sender?._id && (

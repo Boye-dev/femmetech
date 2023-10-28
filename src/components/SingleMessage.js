@@ -222,6 +222,7 @@ const SingleMessage = ({ showDrop, onClose, chat }) => {
                     socketRef.emit("typing", {
                       receiverIds: receiverIds,
                       sender: decodedUser,
+                      chatId: chat?._id,
                     });
                     let lastTypingTime = new Date().getTime();
                     var timerLength = 3000;
@@ -231,6 +232,7 @@ const SingleMessage = ({ showDrop, onClose, chat }) => {
                       if (timeDiff >= timerLength) {
                         socketRef.emit("stopTyping", {
                           receiverIds: receiverIds,
+                          chatId: chat?._id,
                           sender: decodedUser,
                         });
                       }

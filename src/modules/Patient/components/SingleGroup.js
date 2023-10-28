@@ -236,6 +236,7 @@ const SingleGroup = ({ showDrop, onClose, chat }) => {
                         socketRef.emit("stopTyping", {
                           receiverIds: receiverIds,
                           sender: decodedUser,
+                          chatId: chat?._id,
                         });
                       }
                     }, timerLength);
