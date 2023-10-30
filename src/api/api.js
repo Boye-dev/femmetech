@@ -7,8 +7,8 @@ let refreshed = false;
 
 export const baseUrl =
   process.env.REACT_APP_API_BASE_URL ||
-  // "https://femmetech-backend.onrender.com/api";
-  "http://localhost:8080/api";
+  "https://femmetech-backend.onrender.com/api";
+// "http://localhost:8080/api";
 
 // "http://localhost:4000/api/v1";
 
