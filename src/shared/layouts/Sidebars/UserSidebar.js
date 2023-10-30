@@ -22,6 +22,7 @@ import { useQuery } from "react-query";
 import { useAlert } from "../../../context/NotificationProvider";
 import { useNavigate } from "react-router-dom/dist";
 import { Logout, SettingsOutlined } from "@mui/icons-material";
+import { getUserById } from "../../../modules/Auth/services/authServices";
 
 const UserSidebar = (props) => {
   const location = useLocation();
@@ -30,7 +31,50 @@ const UserSidebar = (props) => {
   const navigate = useNavigate();
   const navItems =
     decodedUser?.role === "PATIENT" ? PATIENT_NAV_ITEMS : CONSULTANT_NAV_ITEMS;
+  const { isLoading: userLoading, data } = useQuery(
+    [
+      "getUserById",
+      {
+        id: decodedUser?._id,
+      },
+    ],
+    getUserById,
+    {
+      enabled: true,
 
+      onError: (error) => {
+        if (
+          error.response &&
+          (error.response.status === 500 || error.response.status === 400)
+        ) {
+          // Handle the 500 error here
+          showNotification?.(
+            error?.response?.data?.message ||
+              error.response?.data?.name ||
+              "Internal Server Error",
+            {
+              type: "error",
+            }
+          );
+        } else {
+          // Handle other errors
+          console.log(error);
+          showNotification?.(
+            error.response.data.errors[0] ||
+              error?.response?.data?.message ||
+              error.response?.data?.name ||
+              error.message ||
+              error.error ||
+              "An error occurred",
+            {
+              type: "error",
+            }
+          );
+        }
+      },
+      onSuccess: (data) => {},
+    }
+  );
   return (
     <>
       <Box>
@@ -59,20 +103,32 @@ const UserSidebar = (props) => {
               >
                 {" "}
                 <img
-                  src={decodedUser?.profilePicture}
+                  src={data?.profilePicture}
                   alt=""
                   width="60px"
                   height="60px"
                   style={{
                     borderRadius: "100%",
+                    objectFit: "cover",
                   }}
                 />
               </Box>
 
               <Box ml={3} sx={{ display: "flex", alignItems: "center" }}>
-                <Box>
+                <Box
+                  onClick={() => {
+                    navigate(
+                      `/${
+                        decodedUser?.role === "PATIENT"
+                          ? "patient"
+                          : "consultant"
+                      }/profile`
+                    );
+                  }}
+                  sx={{ cursor: "pointer" }}
+                >
                   <Typography variant="h6">
-                    {decodedUser.lastname} {decodedUser.firstname}
+                    {data?.lastname} {data?.firstname}
                   </Typography>
                   <Typography variant="caption">View Profile</Typography>
                 </Box>

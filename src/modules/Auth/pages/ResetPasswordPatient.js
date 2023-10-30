@@ -17,7 +17,7 @@ import ResetPasswordPatientStep2 from "../components.js/ResetPasswordPatientStep
 const ResetPasswordPatient = () => {
   const { showNotification } = useAlert();
 
-  const { resetPasswordHandleSubmit,  } = useSignupContext();
+  const { resetPasswordHandleSubmit } = useSignupContext();
 
   const [activeStep, setActiveStep] = useState(0);
   const [message, setmessage] = useState("");
@@ -27,9 +27,14 @@ const ResetPasswordPatient = () => {
     onError: (error) => {
       if (error.response && error.response.status === 500) {
         // Handle the 500 error here
-        showNotification?.(error.response.data.message || "Internal Server Error" , {
-          type: "error",
-        });
+        showNotification?.(
+          error?.response?.data?.message ||
+            error.response?.data?.name ||
+            "Internal Server Error",
+          {
+            type: "error",
+          }
+        );
       } else {
         // Handle other errors
         showNotification?.(

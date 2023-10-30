@@ -25,6 +25,7 @@ const List = ({ value, data }) => {
       // Handle the 500 error here
       showNotification?.(
         error?.response?.data?.message ||
+          error.response?.data?.name ||
           error?.response?.data?.errors[0] ||
           "Internal Server Error",
         {
@@ -37,6 +38,7 @@ const List = ({ value, data }) => {
       showNotification?.(
         error?.response?.data?.errors[0] ||
           error?.response?.data?.message ||
+          error.response?.data?.name ||
           error?.message ||
           error?.error ||
           "An error occurred",

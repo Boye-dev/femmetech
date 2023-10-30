@@ -19,9 +19,14 @@ const Journal = () => {
     fetchJournal,
     {
       onError: (error) => {
-        showNotification?.(error.response?.data?.message || error.message, {
-          type: "error",
-        });
+        showNotification?.(
+          error.response?.data?.message ||
+            error.response?.data?.name ||
+            error.message,
+          {
+            type: "error",
+          }
+        );
       },
     }
   );

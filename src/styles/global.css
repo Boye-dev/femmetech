@@ -14,3 +14,29 @@ body{margin: 0;}
     background-color: #87B7C7;
 
 }
+
+.swiper {
+    width: 100%;
+    height: 100vh
+  }
+  
+  .swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    width: 100%;
+    height: 100vh;
+  
+    /* Center slide text vertically */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .hovered_body:hover .target{
+z-index: 100;
+transition: z-index 0.5s;
+  }
+  .target{
+    z-index: -2000;
+
+  }

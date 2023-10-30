@@ -13,6 +13,8 @@ import { fetchPosts, likePost } from "../Patient/services/patientService";
 import { useAlert } from "../../context/NotificationProvider";
 import { getDecodedJwt } from "../../utils/auth";
 import { formatDate } from "../../utils/formatDate";
+import ImageView from "../Patient/components/ImageView";
+import "../../styles/global.css";
 
 const Feed = () => {
   const [createPost, setCreatePost] = useState(false);
@@ -20,11 +22,17 @@ const Feed = () => {
   const { showNotification } = useAlert();
   const decodedUser = getDecodedJwt();
   const [comments, setComments] = useState(null);
+  const [images, setImages] = useState(null);
   const { isLoading, data } = useQuery(["posts"], fetchPosts, {
     onError: (error) => {
-      showNotification?.(error.response?.data?.message || error.message, {
-        type: "error",
-      });
+      showNotification?.(
+        error.response?.data?.message ||
+          error.response?.data?.name ||
+          error.message,
+        {
+          type: "error",
+        }
+      );
     },
   });
 
@@ -36,6 +44,7 @@ const Feed = () => {
       // Handle the 500 error here
       showNotification?.(
         error?.response?.data?.message ||
+          error.response?.data?.name ||
           error?.response?.data?.errors[0] ||
           "Internal Server Error",
         {
@@ -48,6 +57,7 @@ const Feed = () => {
       showNotification?.(
         error?.response?.data?.errors[0] ||
           error?.response?.data?.message ||
+          error.response?.data?.name ||
           error?.message ||
           error?.error ||
           "An error occurred",
@@ -113,6 +123,7 @@ const Feed = () => {
                   height="50px"
                   style={{
                     borderRadius: "100%",
+                    objectFit: "cover",
                   }}
                 />
               </Box>
@@ -278,6 +289,7 @@ const Feed = () => {
                           height="50px"
                           style={{
                             borderRadius: "100%",
+                            objectFit: "cover",
                           }}
                         />
                       </Box>
@@ -302,32 +314,149 @@ const Feed = () => {
                           sx={{
                             wordBreak: "break-all",
                             height: "auto",
-                            width: "90%",
+                            width: "100%",
                           }}
                         >
-                          <pre>{item.text}</pre>
+                          <pre
+                            style={{
+                              whiteSpace: "pre-wrap",
+                            }}
+                          >
+                            {item.text}
+                          </pre>
                         </Typography>
                       </Box>
                       <Divider />
                     </Box>
-                    <Box>
+                    <Box
+                      sx={{
+                        cursor: "pointer",
+                        position: "relative",
+                      }}
+                      className="hovered_body"
+                      onClick={() => setImages(item.images)}
+                    >
+                      <Box
+                        className="target"
+                        sx={{
+                          backgroundColor: "rgba(128, 128, 128, 0.5)",
+                          position: "absolute",
+                          right: "0",
+                          width: "100%",
+                          height: "100%",
+                        }}
+                      ></Box>
+                      {item.images.length - 5 > 0 && (
+                        <Box
+                          sx={{
+                            backgroundColor: "rgba(128, 128, 128, 0.8)",
+                            position: "absolute",
+                            right: "0",
+                            width: "150px",
+                            height: "100%",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Typography sx={{ color: "white", fontSize: "3rem" }}>
+                            +{item.images.length - 5}
+                          </Typography>
+                        </Box>
+                      )}
                       <Grid container sx={{ width: "100%" }} spacing={0.5}>
-                        {item.images.map((v, index) => {
-                          let xs;
-                          if (
-                            item.images.length > 6 &&
-                            index >= item.images.length - 2
-                          ) {
-                            xs = 6;
-                          } else {
-                            xs = 12 / Math.min(3, item.images.length);
+                        {item.images.slice(0, 5).map((v, index, array) => {
+                          if (index === 3 && array.length === 4) {
+                            return (
+                              <Grid
+                                item
+                                xs={12}
+                                sx={{
+                                  cursor: "pointer",
+                                  height: { xs: "300px", md: "500px" },
+                                }}
+                              >
+                                <img
+                                  src={v}
+                                  style={{ objectFit: "cover" }}
+                                  alt="Img"
+                                  width="100%"
+                                  height="100%"
+                                />
+                              </Grid>
+                            );
                           }
-
+                          if (
+                            (index === 4 || index === 3) &&
+                            array.length === 5
+                          ) {
+                            return (
+                              <Grid
+                                item
+                                xs={6}
+                                sx={{
+                                  cursor: "pointer",
+                                  height: { xs: "300px", md: "500px" },
+                                }}
+                              >
+                                <img
+                                  src={v}
+                                  style={{ objectFit: "cover" }}
+                                  alt="Img"
+                                  width="100%"
+                                  height="100%"
+                                />
+                              </Grid>
+                            );
+                          }
+                          if (array.length < 4) {
+                            return (
+                              <Grid
+                                item
+                                xs={12 / array.length}
+                                sx={{
+                                  cursor: "pointer",
+                                  height: { xs: "300px", md: "500px" },
+                                }}
+                              >
+                                <img
+                                  src={v}
+                                  style={{ objectFit: "cover" }}
+                                  alt="Img"
+                                  width="100%"
+                                  height="100%"
+                                />
+                              </Grid>
+                            );
+                          }
+                          if (array.length >= 4) {
+                            return (
+                              <Grid
+                                item
+                                xs={4}
+                                sx={{
+                                  cursor: "pointer",
+                                  height: { xs: "300px", md: "500px" },
+                                }}
+                              >
+                                <img
+                                  src={v}
+                                  style={{ objectFit: "cover" }}
+                                  alt="Img"
+                                  width="100%"
+                                  height="100%"
+                                />
+                              </Grid>
+                            );
+                          }
                           return (
                             <Grid
                               item
-                              xs={xs}
-                              sx={{ cursor: "pointer", maxHeight: "500px" }}
+                              xs={12 / array.length}
+                              sx={{
+                                cursor: "pointer",
+                                height: { xs: "300px", md: "500px" },
+                              }}
                             >
                               <img
                                 src={v}
@@ -461,6 +590,7 @@ const Feed = () => {
         post={comments}
         onClose={() => setComments(null)}
       />
+      {images && <ImageView images={images} onClick={() => setImages(null)} />}
     </>
   );
 };

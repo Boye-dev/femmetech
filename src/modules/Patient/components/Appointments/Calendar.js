@@ -36,6 +36,7 @@ function Calendar({ data, value }) {
       // Handle the 500 error here
       showNotification?.(
         error?.response?.data?.message ||
+          error.response?.data?.name ||
           error?.response?.data?.errors[0] ||
           "Internal Server Error",
         {
@@ -48,6 +49,7 @@ function Calendar({ data, value }) {
       showNotification?.(
         error?.response?.data?.errors[0] ||
           error?.response?.data?.message ||
+          error.response?.data?.name ||
           error?.message ||
           error?.error ||
           "An error occurred",

@@ -39,7 +39,9 @@ const Signup = () => {
       ) {
         // Handle the 500 error here
         showNotification?.(
-          error.response.data.message || "Internal Server Error",
+          error?.response?.data?.message ||
+            error.response?.data?.name ||
+            "Internal Server Error",
           {
             type: "error",
           }
@@ -49,7 +51,8 @@ const Signup = () => {
         console.log(error);
         showNotification?.(
           error.response.data.errors[0] ||
-            error.response.data.message ||
+            error?.response?.data?.message ||
+            error.response?.data?.name ||
             error.message ||
             error.error ||
             "An error occurred",

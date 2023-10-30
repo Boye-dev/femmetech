@@ -8,6 +8,7 @@ import Note from "./components/Note";
 import AuthHelper from "./components/AuthHelper";
 import { FemmetechContextProvider } from "../../context/FemmetechContext";
 import CreateAppointment from "../SharedPages/CreateAppointment";
+import Profile from "../SharedPages/Profile";
 
 function PatientRouter() {
   return (
@@ -30,6 +31,7 @@ function PatientRouter() {
           />
           <Route exact path="/groups" element={<Groups />} />
           <Route exact path="/messages" element={<Messages />} />
+          <Route exact path="/profile" element={<Profile />} />
           <Route exact path="/my-journal" element={<Journal />} />
           <Route exact path="/my-journal/:id" element={<Note />} />
           <Route exact path="/my-journal/new" element={<Note />} />

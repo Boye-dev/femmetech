@@ -35,6 +35,7 @@ const CreateAppointment = () => {
       // Handle the 500 error here
       showNotification?.(
         error?.response?.data?.message ||
+          error.response?.data?.name ||
           error?.response?.data?.errors[0] ||
           "Internal Server Error",
         {
@@ -47,6 +48,7 @@ const CreateAppointment = () => {
       showNotification?.(
         error?.response?.data?.errors[0] ||
           error?.response?.data?.message ||
+          error.response?.data?.name ||
           error?.message ||
           error?.error ||
           "An error occurred",
@@ -137,9 +139,14 @@ const CreateAppointment = () => {
 
   const { data, isLoading } = useQuery(["consultants"], fetchConsultants, {
     onError: (error) => {
-      showNotification?.(error.response?.data?.message || error.message, {
-        type: "error",
-      });
+      showNotification?.(
+        error.response?.data?.message ||
+          error.response?.data?.name ||
+          error.message,
+        {
+          type: "error",
+        }
+      );
     },
   });
   const { data: appointment, isLoading: isLoadingAppointmnet } = useQuery(
@@ -147,9 +154,14 @@ const CreateAppointment = () => {
     fetchAppointmentById,
     {
       onError: (error) => {
-        showNotification?.(error.response?.data?.message || error.message, {
-          type: "error",
-        });
+        showNotification?.(
+          error.response?.data?.message ||
+            error.response?.data?.name ||
+            error.message,
+          {
+            type: "error",
+          }
+        );
       },
       enabled: Boolean(id),
     }
@@ -165,9 +177,14 @@ const CreateAppointment = () => {
     fetchUserById,
     {
       onError: (error) => {
-        showNotification?.(error.response?.data?.message || error.message, {
-          type: "error",
-        });
+        showNotification?.(
+          error.response?.data?.message ||
+            error.response?.data?.name ||
+            error.message,
+          {
+            type: "error",
+          }
+        );
       },
       enabled: Boolean(value?._id),
       onSuccess: (data) => {

@@ -33,6 +33,7 @@ const Signin = () => {
       // Handle the 500 error here
       showNotification?.(
         error?.response?.data?.message ||
+          error.response?.data?.name ||
           error?.response?.data?.errors[0] ||
           "Internal Server Error",
         {
@@ -45,6 +46,7 @@ const Signin = () => {
       showNotification?.(
         error?.response?.data?.errors[0] ||
           error?.response?.data?.message ||
+          error.response?.data?.name ||
           error?.message ||
           error?.error ||
           "An error occurred",
@@ -226,14 +228,14 @@ const Signin = () => {
                 mb: 5,
               }}
             >
-              <Typography variant="caption">
+              {/* <Typography variant="caption">
                 <Link
                   style={{ textDecoration: "none", color: "#87B7C7" }}
                   to={"/forgot-password-patient"}
                 >
                   Forgot Password?
                 </Link>
-              </Typography>
+              </Typography> */}
             </Box>
             <LoadingButton
               fullWidth

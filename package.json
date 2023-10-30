@@ -49,6 +49,7 @@
     "save-dev": "^0.0.1-security",
     "slick-carousel": "^1.8.1",
     "socket.io-client": "^4.7.2",
+    "swiper": "^11.0.3",
     "web-vitals": "^2.1.4",
     "websocket": "^1.0.34",
     "yup": "^1.1.1"

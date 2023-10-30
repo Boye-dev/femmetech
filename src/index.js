@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 import "./styles/global.css";
@@ -9,8 +9,10 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { NotificationProvider } from "./context/NotificationProvider";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { ChatBubbleOutline, Close } from "@mui/icons-material";
 const container = document.getElementById("root");
 const root = createRoot(container);
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -23,6 +25,57 @@ const queryClient = new QueryClient({
     },
   },
 });
+const Iframe = () => {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <div
+        style={{
+          position: "fixed",
+          zIndex: "500000",
+          display: open ? "block" : "none",
+          right: "50px",
+          bottom: "100px",
+        }}
+      >
+        <div>
+          <iframe
+            title="FAQ"
+            width="300"
+            height="430"
+            allow="microphone;"
+            src="https://console.dialogflow.com/api-client/demo/embedded/e6513aff-0422-4b97-b22a-9d0db6f70746"
+          ></iframe>
+        </div>
+      </div>
+      <div>
+        <div
+          onClick={() => setOpen(!open)}
+          style={{
+            position: "fixed",
+            right: "50px",
+            backgroundColor: "blue",
+            width: "50px",
+            height: "50px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: "500000",
+            borderRadius: "100%",
+            bottom: "50px",
+            cursor: "pointer",
+          }}
+        >
+          {open ? (
+            <Close style={{ color: "white" }} />
+          ) : (
+            <ChatBubbleOutline style={{ color: "white" }} />
+          )}
+        </div>
+      </div>
+    </>
+  );
+};
 root.render(
   <StyledEngineProvider injectFirst>
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -30,6 +83,7 @@ root.render(
         {/* <CssBaseline /> */}
         <QueryClientProvider client={queryClient}>
           <NotificationProvider>
+            <Iframe />
             <BrowserRouter>
               <App />
             </BrowserRouter>

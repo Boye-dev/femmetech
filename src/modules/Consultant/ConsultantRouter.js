@@ -5,6 +5,7 @@ import Messages from "../SharedPages/Messages";
 import AuthHelper from "./components/AuthHelper";
 import { FemmetechContextProvider } from "../../context/FemmetechContext";
 import Groups from "../Patient/pages/Groups";
+import Profile from "../SharedPages/Profile";
 
 function ConsultantRouter() {
   return (
@@ -16,6 +17,7 @@ function ConsultantRouter() {
           <Route exact path="/feeds" element={<Feed />} />
           <Route exact path="/appointments" element={<Appointments />} />
           <Route exact path="/groups" element={<Groups />} />
+          <Route exact path="/profile" element={<Profile />} />
 
           <Route exact path="/messages" element={<Messages />} />
         </Route>

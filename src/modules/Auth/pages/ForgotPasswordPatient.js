@@ -23,16 +23,26 @@ const ForgotPasswordPatient = () => {
 
   const { mutate, isLoading } = useMutation(forgotPasswordPatient, {
     onError: (error) => {
-      if (error.response && (error.response.status === 500 || error.response.status === 400)) {
+      if (
+        error.response &&
+        (error.response.status === 500 || error.response.status === 400)
+      ) {
         // Handle the 500 error here
-        showNotification?.(error.response.data.message || "Internal Server Error" , {
-          type: "error",
-        });
+        showNotification?.(
+          error?.response?.data?.message ||
+            error.response?.data?.name ||
+            "Internal Server Error",
+          {
+            type: "error",
+          }
+        );
       } else {
         // Handle other errors
         console.log(error);
         showNotification?.(
-          error.response.data.errors[0] || error.response.data.message ||
+          error.response.data.errors[0] ||
+            error?.response?.data?.message ||
+            error.response?.data?.name ||
             error.message ||
             error.error ||
             "An error occurred",

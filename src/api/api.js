@@ -7,8 +7,8 @@ let refreshed = false;
 
 export const baseUrl =
   process.env.REACT_APP_API_BASE_URL ||
-  "https://femmetech-backend.onrender.com/api";
-// "http://localhost:8080/api";
+  // "https://femmetech-backend.onrender.com/api";
+  "http://localhost:8080/api";
 
 // "http://localhost:4000/api/v1";
 
@@ -54,8 +54,8 @@ Api.interceptors.response.use(
   async function (error) {
     console.log({ error });
     if (
-      error?.response?.status === 401 &&
-      error?.response?.data?.message === "No Valid Token Please Login"
+      (error?.response?.status === 401 && error?.response?.data?.message) ||
+      error.response?.data?.name === "No Valid Token Please Login"
     ) {
       console.log("yes");
       toast.error("Session expired", {
