@@ -235,6 +235,7 @@ const CreatePost = ({ open, onClose }) => {
                 height="50px"
                 style={{
                   borderRadius: "100%",
+                  objectFit: "cover",
                 }}
               />
             </Box>

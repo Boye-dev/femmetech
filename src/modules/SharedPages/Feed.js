@@ -15,6 +15,7 @@ import { getDecodedJwt } from "../../utils/auth";
 import { formatDate } from "../../utils/formatDate";
 import ImageView from "../Patient/components/ImageView";
 import "../../styles/global.css";
+import { getUserById } from "../Auth/services/authServices";
 
 const Feed = () => {
   const [createPost, setCreatePost] = useState(false);
@@ -69,6 +70,50 @@ const Feed = () => {
   };
   const queryClient = useQueryClient();
 
+  const { isLoading: userLoading, data: user } = useQuery(
+    [
+      "getUserById",
+      {
+        id: decodedUser?._id,
+      },
+    ],
+    getUserById,
+    {
+      enabled: true,
+
+      onError: (error) => {
+        if (
+          error.response &&
+          (error.response.status === 500 || error.response.status === 400)
+        ) {
+          // Handle the 500 error here
+          showNotification?.(
+            error?.response?.data?.message ||
+              error.response?.data?.name ||
+              "Internal Server Error",
+            {
+              type: "error",
+            }
+          );
+        } else {
+          // Handle other errors
+          console.log(error);
+          showNotification?.(
+            error.response.data.errors[0] ||
+              error?.response?.data?.message ||
+              error.response?.data?.name ||
+              error.message ||
+              error.error ||
+              "An error occurred",
+            {
+              type: "error",
+            }
+          );
+        }
+      },
+      onSuccess: (data) => {},
+    }
+  );
   const { mutate, isLoading: isLiking } = useMutation(likePost, {
     onError: (error) => {
       handleErrors(error);
@@ -117,7 +162,7 @@ const Feed = () => {
                 }}
               >
                 <img
-                  src={decodedUser?.profilePicture}
+                  src={user?.profilePicture}
                   alt=""
                   width="50px"
                   height="50px"
@@ -142,7 +187,7 @@ const Feed = () => {
                 }}
               >
                 <Typography variant="caption" color="#87B7C7">
-                  Create a new post oyelola?
+                  Create a new post {user?.lastname}?
                 </Typography>
               </Box>
             </Box>
