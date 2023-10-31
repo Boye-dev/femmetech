@@ -10,7 +10,7 @@ const FemmetechContext = createContext({});
 const FemmetechContextProvider = ({ children }) => {
   const ENDPOINT = process.env.BACKEND_URL;
   const { socketRef, message, typing, inAppNotification, latestMessage } =
-    useSocket("http://localhost:8080");
+    useSocket("https://femmetech-backend.onrender.com");
   const [openNotification, setOpenNotification] = useState(false);
 
   useEffect(() => {
